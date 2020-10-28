@@ -15,7 +15,7 @@
 Audio::Audio() : Module()
 {
 	music = NULL;
-	name.create("audio");
+	name.Create("audio");
 }
 
 // Destructor
@@ -54,6 +54,9 @@ bool Audio::Awake(pugi::xml_node& config)
 		active = false;
 		ret = true;
 	}
+
+	volume = config.attribute("volume").as_int();
+	VolumeChange(volume);
 
 	return ret;
 }
@@ -175,4 +178,37 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+// Add a method in the audio module to control the volume
+bool Audio::VolumeChange(int volume)
+{
+	VolumeMinMax();
+	Mix_VolumeMusic(volume);
+
+	return true;
+}
+
+void Audio::VolumeMinMax()
+{
+	if (volume < 0)
+		volume = 0;
+	else if (volume > MIX_MAX_VOLUME)
+		volume = MIX_MAX_VOLUME;
+}
+
+// Make the current volume to be saved and loaded
+bool Audio::Save(pugi::xml_node& data)
+{
+	data.append_attribute("volume").set_value(volume);
+
+	return true;
+}
+
+bool Audio::Load(pugi::xml_node& data)
+{
+	volume = data.attribute("volume").as_int();
+	VolumeChange(volume);
+
+	return true;
 }

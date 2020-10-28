@@ -32,6 +32,16 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	// Add a method in the audio module to control the volume
+	bool VolumeChange(int volume);
+	void VolumeMinMax();
+
+	// Make the current volume to be saved and loaded
+	bool Save(pugi::xml_node&);
+	bool Load(pugi::xml_node&);
+
+	int volume;
+
 private:
 
 	_Mix_Music* music;
