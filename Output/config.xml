@@ -18,6 +18,9 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <!-- Add default volume in config.xml -->
+  <audio volume ="64"/>
+
   <!-- L03: Added maps folder as config option -->
   <map>
     <folder>Assets/maps/</folder>

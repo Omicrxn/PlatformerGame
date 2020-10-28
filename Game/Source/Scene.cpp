@@ -57,6 +57,19 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
 
+	// Change volume with +/- from the numeric keyboard
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	{
+		app->audio->volume += 16;
+		app->audio->VolumeChange(app->audio->volume);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	{
+		app->audio->volume -= 16;
+		app->audio->VolumeChange(app->audio->volume);
+	}
+
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
 
