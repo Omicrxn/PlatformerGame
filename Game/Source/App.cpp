@@ -4,6 +4,7 @@
 #include "FadeToBlack.h"
 #include "LogoScreen.h"
 #include "TitleScreen.h"
+#include "EndingScreen.h"
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -33,6 +34,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fade = new FadeToBlack();
 	logoScreen = new LogoScreen();
 	titleScreen = new TitleScreen();
+	endingScreen = new EndingScreen();
 	player = new Player();
 	collisions = new Collisions();
 
@@ -44,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	/*AddModule(audio);*/
 	AddModule(logoScreen);
 	AddModule(titleScreen); titleScreen->Disable();
+	AddModule(endingScreen); endingScreen->Disable();
 	AddModule(scene); scene->Disable();
 	AddModule(map);
 	AddModule(player);

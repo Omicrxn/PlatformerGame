@@ -6,6 +6,8 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "FadeToBlack.h"
+#include "EndingScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -88,12 +90,17 @@ bool Scene::Update(float dt)
 	app->map->Draw();
 
 	// L03: DONE 7: Set the window title with map/tileset info
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+	/*SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 				   app->map->data.width, app->map->data.height,
 				   app->map->data.tileWidth, app->map->data.tileHeight,
 				   app->map->data.tilesets.count());
 
-	app->win->SetTitle(title.GetString());
+	app->win->SetTitle(title.GetString());*/
+
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		app->fade->Fade(this, (Module*)app->endingScreen, 180);
+	}
 
 	return true;
 }

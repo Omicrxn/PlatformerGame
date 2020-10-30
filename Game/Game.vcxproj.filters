@@ -21,6 +21,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\TitleScreen.cpp" />
+    <ClCompile Include="Source\EndingScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\TitleScreen.h" />
+    <ClInclude Include="Source\EndingScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

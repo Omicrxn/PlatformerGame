@@ -10,7 +10,7 @@
 
 TitleScreen::TitleScreen() : Module()
 {
-	name = "Initial S";
+	name = "Title Screen";
 }
 
 TitleScreen::~TitleScreen() {}
@@ -65,7 +65,7 @@ bool TitleScreen::CleanUp()
 
 	if (!app->tex->UnLoad(tex)) 
 	{
-		LOG("%s","Start Screen -> Error unloading the texture.");
+		LOG("%s","Title Screen -> Error unloading the texture.");
 		ret = false;
 	}
 

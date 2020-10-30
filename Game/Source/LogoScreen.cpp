@@ -11,7 +11,7 @@
 
 LogoScreen::LogoScreen() : Module()
 {
-	name = "Initial S";
+	name = "Logo Screen";
 }
 
 LogoScreen::~LogoScreen() {}
@@ -71,7 +71,7 @@ bool LogoScreen::CleanUp()
 
 	if (!app->tex->UnLoad(logoTex))
 	{
-		LOG("Start Screen -> Error unloading the texture.");
+		LOG("Logo Screen -> Error unloading the texture.");
 		ret = false;
 	}
 
