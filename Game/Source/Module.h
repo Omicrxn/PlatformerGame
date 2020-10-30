@@ -20,6 +20,11 @@ public:
 		active = true;
 	}
 
+	void Disable()
+	{
+		active = false;
+	}
+
 	// Called before render is available
 	// L01: DONE 5: Sending config file to all modules
 	virtual bool Awake(pugi::xml_node&)
@@ -68,6 +73,7 @@ public:
 		return true;
 	}
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
+
 public:
 
 	SString name;

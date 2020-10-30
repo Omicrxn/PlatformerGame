@@ -18,7 +18,9 @@ class Audio;
 class Scene;
 class Map;
 class FadeToBlack;
-class InitialScreen;
+class LogoScreen;
+class TitleScreen;
+class Screen;
 class Player;
 class Collisions;
 
@@ -93,7 +95,8 @@ public:
 	Scene* scene;
 	Map* map;
 	FadeToBlack* fade;
-	InitialScreen* initialScreen;
+	LogoScreen* logoScreen;
+	TitleScreen* titleScreen;
 	Player* player;
 	Collisions* collisions;
 

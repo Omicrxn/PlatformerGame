@@ -2,7 +2,8 @@
 #include "Window.h"
 #include "Input.h"
 #include "FadeToBlack.h"
-#include "InitialScreen.h"
+#include "LogoScreen.h"
+#include "TitleScreen.h"
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -30,21 +31,24 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	map = new Map();
 	fade = new FadeToBlack();
-	initialScreen = new InitialScreen();
+	logoScreen = new LogoScreen();
+	titleScreen = new TitleScreen();
 	player = new Player();
 	collisions = new Collisions();
+
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(win);
 	AddModule(input);
-	AddModule(fade);
 	AddModule(tex);
-	AddModule(audio);
-	AddModule(initialScreen);
-	//AddModule(scene);
+	/*AddModule(audio);*/
+	AddModule(logoScreen);
+	AddModule(titleScreen); titleScreen->Disable();
+	AddModule(scene); scene->Disable();
 	AddModule(map);
 	AddModule(player);
 	AddModule(collisions);
+	AddModule(fade);
 
 	// Render last to swap buffer
 	AddModule(render);
