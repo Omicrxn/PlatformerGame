@@ -1,12 +1,12 @@
-# {Project Name}
+# Paracelsus
 
 ## Description
 
-{project description}
+Fantasy 2D platformer game developed by 3 students at CITM. In the game you are a magician who can control the elements which are learned after defeating the elemental enemies.
 
 ## Key Features
 
- - {Feature01}
+ - Elemental Spells.
  - {Feature02}
  - {Feature03}
  - {Feature04}
@@ -17,12 +17,10 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
- - {Dev05} - {Role(s)}
-
+ - Alejandro Ávila (github.com/Omicrxn) - Developer & Designer.
+ - Bosco Barber (https://github.com/boscobarberesbert) - Developer & Designer.
+ - Yeray Tarifa (https://github.com/yeraytm) - Developer & Designer.
+ 
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
