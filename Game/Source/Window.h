@@ -26,7 +26,8 @@ public:
 
 	// Retrive window size
 	void GetWindowSize(uint& width, uint& height) const;
-
+	int GetWindowWidth()const { return this->width; }
+	int GetWindowHeight()const { return this->height; }
 	// Retrieve window scale
 	uint GetScale() const;
 
@@ -41,7 +42,7 @@ private:
 	SString title;
 	uint width;
 	uint height;
-	uint scale;
+	float scale;
 };
 
 #endif // __WINDOW_H__

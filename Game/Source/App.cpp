@@ -1,11 +1,15 @@
 #include "App.h"
 #include "Window.h"
 #include "Input.h"
+#include "FadeToBlack.h"
+#include "InitialScreen.h"
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
+#include "Collisions.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -25,15 +29,22 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	map = new Map();
-
+	fade = new FadeToBlack();
+	initialScreen = new InitialScreen();
+	player = new Player();
+	collisions = new Collisions();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(win);
 	AddModule(input);
+	AddModule(fade);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(scene);
+	AddModule(initialScreen);
+	//AddModule(scene);
 	AddModule(map);
+	AddModule(player);
+	AddModule(collisions);
 
 	// Render last to swap buffer
 	AddModule(render);

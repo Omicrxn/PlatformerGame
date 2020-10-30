@@ -19,7 +19,7 @@
   </window>
 
   <!-- Add default volume in config.xml -->
-  <audio volume ="64"/>
+  <audio volume ="0"/>
 
   <!-- L03: Added maps folder as config option -->
   <map>

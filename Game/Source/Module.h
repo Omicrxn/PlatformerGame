@@ -6,6 +6,7 @@
 #include "PugiXml/src/pugixml.hpp"
 
 class App;
+struct Collider;
 
 class Module
 {
@@ -66,7 +67,7 @@ public:
 	{
 		return true;
 	}
-
+	virtual void OnCollision(Collider* c1, Collider* c2) {};
 public:
 
 	SString name;
