@@ -8,10 +8,10 @@
 	<EndingScreen />
 	<scene />
 	<map />
-	<player />
+	<Player />
 	<Collisions />
 	<FadeToBlack />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="0" y="-629" />
 	</renderer>
 </save>
