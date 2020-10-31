@@ -59,8 +59,8 @@ void Map::Draw()
 	ListItem<MapLayer*>* layer = data.layers.start;
 	while (layer != NULL)
 	{
-		if (layer->data->properties.GetProperty("Nodraw") != 0)
-		{
+		//if (layer->data->properties.GetProperty("Nodraw") != 0)
+		//{
 			for (int y = 0; y < data.height; ++y)
 			{
 				for (int x = 0; x < data.width; ++x)
@@ -77,7 +77,7 @@ void Map::Draw()
 					}
 				}
 			}
-		}
+		//}
 
 		layer = layer->next;
 	}
@@ -256,7 +256,7 @@ bool Map::Load(const char* filename)
 
 		ret = LoadLayer(layer, lay);
 
-		ret = LoadProperties(layer, lay->properties);
+		//ret = LoadProperties(layer, lay->properties);
 
 		if (ret == true)
 			data.layers.add(lay);

@@ -34,7 +34,7 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// L03: DONE: Load map
-	app->map->Load("hello2.tmx");
+	app->map->Load("level1.tmx");
 	
 	
 	// Load music

@@ -44,7 +44,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	/*AddModule(audio);*/
-	AddModule(logoScreen);
+	AddModule(logoScreen); 
 	AddModule(titleScreen); titleScreen->Disable();
 	AddModule(endingScreen); endingScreen->Disable();
 	AddModule(scene); scene->Disable();
