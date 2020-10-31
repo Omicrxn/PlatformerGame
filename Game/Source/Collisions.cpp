@@ -6,7 +6,7 @@
 #include "SDL/include/SDL_scancode.h"
 #include "Log.h"
 
-Collisions::Collisions() : Module() {
+Collisions::Collisions(bool startEnabled) : Module(startEnabled) {
 	name = "Collisions";
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)

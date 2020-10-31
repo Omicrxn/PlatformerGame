@@ -24,19 +24,19 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	win = new Window();
-	input = new Input();
-	render = new Render();
-	tex = new Textures();
-	audio = new Audio();
-	scene = new Scene();
-	map = new Map();
-	fade = new FadeToBlack();
-	logoScreen = new LogoScreen(); 
-	titleScreen = new TitleScreen(); 
-	endingScreen = new EndingScreen();
-	player = new Player();
-	collisions = new Collisions();
+	win = new Window(true);
+	input = new Input(true);
+	render = new Render(true);
+	tex = new Textures(true);
+	audio = new Audio(true);
+	scene = new Scene(true);
+	map = new Map(true);
+	fade = new FadeToBlack(true);
+	logoScreen = new LogoScreen(false); 
+	titleScreen = new TitleScreen(false); 
+	endingScreen = new EndingScreen(false);
+	player = new Player(false);
+	collisions = new Collisions(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -44,9 +44,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	/*AddModule(audio);*/
-	AddModule(logoScreen); logoScreen->Disable();
-	AddModule(titleScreen); titleScreen->Disable();
-	AddModule(endingScreen); endingScreen->Disable();
+	AddModule(logoScreen); 
+	AddModule(titleScreen); 
+	AddModule(endingScreen);
 	AddModule(scene); 
 	AddModule(map);
 	AddModule(player);
@@ -74,7 +74,7 @@ App::~App()
 
 void App::AddModule(Module* module)
 {
-	module->Init();
+	//module->Enable();
 	modules.add(module);
 }
 
@@ -195,12 +195,7 @@ bool App::PreUpdate()
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
-		}
-
-		ret = item->data->PreUpdate();
+		ret = pModule->isEnabled()? pModule->PreUpdate() : true;
 	}
 
 	return ret;
@@ -217,12 +212,7 @@ bool App::DoUpdate()
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
-		}
-
-		ret = item->data->Update(dt);
+		ret = pModule->isEnabled()? pModule->Update(dt) : true;
 	}
 
 	return ret;
@@ -238,12 +228,7 @@ bool App::PostUpdate()
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
-		}
-
-		ret = item->data->PostUpdate();
+		ret = pModule->isEnabled()? pModule->PostUpdate() : true;
 	}
 
 	return ret;

@@ -8,7 +8,7 @@
 #include "SDL/include/SDL_render.h"
 
 #include "Log.h"
-FadeToBlack::FadeToBlack() : Module()
+FadeToBlack::FadeToBlack(bool startEnabled) : Module( startEnabled)
 {
 	name = "FadeToBlack";
 }
@@ -40,7 +40,7 @@ bool FadeToBlack::Update(float dt)
 		if (frameCount >= maxFadeFrames)
 		{
 			moduleToDisable->Disable();
-			moduleToEnable->Init();
+			moduleToEnable->Enable();
 
 			currentStep = Fade_Step::FROM_BLACK;
 		}

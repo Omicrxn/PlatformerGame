@@ -9,7 +9,7 @@ struct SDL_Texture;
 class TitleScreen : public Module
 {
 public:
-	TitleScreen();
+	TitleScreen(bool startEnabled);
 	virtual ~TitleScreen();
 	
 	bool Start();

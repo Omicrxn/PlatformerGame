@@ -12,19 +12,24 @@ class Module
 {
 public:
 
-	Module() : active(false)
+	Module(bool startActive) : active(startActive)
 	{}
 
-	void Init()
+	void Module::Enable()
 	{
-		active = true;
+		if (!active) {
+			active = true;
+		}
 	}
 
-	void Disable()
+	void Module::Disable()
 	{
-		active = false;
+		if (active) {
+			active = false;
+			CleanUp();
+		}
 	}
-
+	bool isEnabled() { return active; }
 	// Called before render is available
 	// L01: DONE 5: Sending config file to all modules
 	virtual bool Awake(pugi::xml_node&)

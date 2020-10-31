@@ -8,7 +8,7 @@
 #include "Window.h"
 #include "Log.h"
 
-TitleScreen::TitleScreen() : Module()
+TitleScreen::TitleScreen(bool startEnabled) : Module(startEnabled)
 {
 	name = "TitleScreen";
 }

@@ -46,7 +46,7 @@ class Collisions : public Module
 public:
 	// Constructor
 	// Fills all collision matrix data
-	Collisions();
+	Collisions(bool startEnabled);
 
 	// Destructor
 	virtual ~Collisions();

@@ -8,7 +8,7 @@
 #include "Window.h"
 #include "Log.h"
 
-EndingScreen::EndingScreen() : Module()
+EndingScreen::EndingScreen(bool startEnabled) : Module(startEnabled)
 {
 	name = "EndingScreen";
 }
@@ -18,7 +18,7 @@ EndingScreen::~EndingScreen() {}
 bool EndingScreen::Start()
 {
 	bool ret = true;
-
+	
 	app->win->GetWindowSize(windowSizeX, windowSizeY);
 	windowScale = app->win->GetScale();
 
@@ -37,7 +37,12 @@ bool EndingScreen::Start()
 bool EndingScreen::Update(float dt)
 {
 	bool ret = true;
-
+	if (app->render->camera.x != 0 || app->render->camera.y != 0)
+	{
+		app->render->camera.x = 0;
+		app->render->camera.y = 0;
+	}
+	
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		app->fade->Fade(this, (Module*)app->titleScreen, 100);

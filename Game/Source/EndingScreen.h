@@ -9,7 +9,7 @@ struct SDL_Texture;
 class EndingScreen : public Module
 {
 public:
-	EndingScreen();
+	EndingScreen(bool startEnabled);
 	virtual ~EndingScreen();
 
 	bool Start();

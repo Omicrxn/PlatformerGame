@@ -9,7 +9,7 @@
 #include "Window.h"
 #include "Log.h"
 
-LogoScreen::LogoScreen() : Module()
+LogoScreen::LogoScreen(bool startEnabled) : Module(startEnabled)
 {
 	name = "LogoScreen";
 }

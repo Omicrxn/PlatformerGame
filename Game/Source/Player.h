@@ -12,7 +12,7 @@ struct SDL_Texture;
 class Player : public Module 
 {
 public:
-	Player();
+	Player(bool startEnabled);
 	~Player();
 	bool Start();
 	bool Update(float dt);
@@ -22,6 +22,8 @@ public:
 	void Jump();
 	void Fall();
 	void Die();
+	bool Died();
+	void UpdateCamera();
 	// The player's collider
 	Collider* collider = nullptr;
 

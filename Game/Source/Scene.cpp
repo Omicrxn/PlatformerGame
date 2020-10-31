@@ -13,7 +13,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-Scene::Scene() : Module()
+Scene::Scene(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("scene");
 }
@@ -34,9 +34,10 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	
 	// L03: DONE: Load map
 	app->map->Load("lvl1.tmx");
-	
+	app->player->Enable();
 	
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -102,9 +103,13 @@ bool Scene::Update(float dt)
 	{
 		app->player->Die();
 		
-		//app->fade->Fade(this, (Module*)app->endingScreen, 180);
 	}
-
+	if (app->player->Died()) 
+	{
+		app->fade->Fade(this, (Module*)app->endingScreen, 180);
+		
+	}
+		
 	return true;
 }
 
@@ -123,6 +128,6 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	app->player->Disable();
 	return true;
 }

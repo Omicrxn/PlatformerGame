@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 
-Player::Player() : Module() {
+Player::Player(bool startEnabled) : Module(startEnabled) {
 	name = "Player";
 
 }
@@ -23,9 +23,10 @@ bool Player::Start() {
 	texture = app->tex->Load("Assets/player/PlayerSheet.png");
 	//physics variables
 	isLeft = false;
-
-	initialPosition = { 50, app->win->GetWindowHeight() / 2 };
+	initialPosition = { 200, 900 };
 	position = initialPosition;
+	app->render->camera.x = position.x;
+	app->render->camera.y = position.y;
 	gravity = 0.5f;
 	velocityY = 0.0f;
 	onGround = false;
@@ -65,7 +66,7 @@ bool Player::Start() {
 	playerDeath.PushBack({ 464,595,105,101 });
 	playerDeath.PushBack({ 580,595,101,101 });
 	playerDeath.PushBack({ 696,595,105,101 });
-	playerDeath.loop = true;
+	playerDeath.loop = false;
 	playerDeath.speed = 0.12f;
 	playerDeath.speed = 0.12f;
 	return ret;
@@ -75,11 +76,7 @@ bool Player::Update(float dt) {
 	bool ret = true;
 	velocityY += gravity;
 	position.y += velocityY;
-	
-	/*if (dead) {
-		return true;
-	}*/
-
+	UpdateCamera();
 	if (position.y >= initialPosition.y)
 	{
 		position.y = initialPosition.y;
@@ -182,5 +179,20 @@ void Player::Die()
 	{
 		current_anim = &playerDeath;
 		playerJumping.Reset();
+	}
+}
+bool Player::Died() {
+	return (dead && playerDeath.Finished())? true : false;
+}
+void Player::UpdateCamera() {
+	int xAxis = (-position.x) + (app->win->GetWindowWidth() / 2);
+	int yAxis = (-position.y) + (app->win->GetWindowHeight() / 2);
+	app->render->camera.x = xAxis;
+	app->render->camera.y = yAxis;
+	if (app->render->camera.x >= 0) {
+		app->render->camera.x = 0;
+	}
+	else if (app->render->camera.x <= -1275) {
+		app->render->camera.x = -1275;
 	}
 }

@@ -9,7 +9,7 @@ struct SDL_Texture;
 class LogoScreen : public Module
 {
 public:
-	LogoScreen();
+	LogoScreen(bool startEnabled);
 	virtual ~LogoScreen();
 
 	bool Start();
