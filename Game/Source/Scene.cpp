@@ -40,8 +40,9 @@ bool Scene::Start()
 	background3 = app->tex->Load("Assets/maps/background3.png");
 	background4 = app->tex->Load("Assets/maps/background4a.png");
 	backgroundRect = { 0,0,2880,1440 };
+
 	// L03: DONE: Load map
-	app->map->Load("lvl1.tmx");
+	app->map->Load("level1.tmx");
 	app->player->Enable();
 	
 	// Load music
