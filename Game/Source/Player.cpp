@@ -25,12 +25,12 @@ bool Player::Start() {
 	texture = app->tex->Load("Assets/player/PlayerSheet.png");
 	//physics variables
 	isLeft = false;
-	airborne = false;
-	grounded = true;
+	
 	initialPosition = { 50, app->win->GetWindowHeight() / 2 };
 	position = initialPosition;
-	gravity = 50.0f;
-	speedY = 7;
+	gravity = 0.5f;
+	velocityY = 0.0f;
+	onGround = false;
 	//Loading Idle Anim
 	for (int i = 0; i <= (116*5); i+=116)
 	{
@@ -59,49 +59,72 @@ bool Player::Start() {
 
 bool Player::Update(float dt) {
 	bool ret = true;
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE ) {
-		if (current_anim != &playerIdle) {
-			current_anim = &playerIdle;
-		}
+	velocityY += gravity;
+	position.y += velocityY;
+	if (position.y >= initialPosition.y)
+	{
+		position.y = initialPosition.y;
+		velocityY = 0.0;
+		onGround = true;
 	}
+	
+	
+	
+		if (onGround) {
+			if (current_anim != &playerIdle) {
+				current_anim = &playerIdle;
+			}
+		}
+		else {
+			if (current_anim != &playerJumping) {
+				current_anim = &playerJumping;
+				playerJumping.Reset();
+			}
+		}
+		
+	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		isLeft = true;
-		if (current_anim != &playerRunning) {
-			current_anim = &playerRunning;
+		if (onGround) {
+			if (current_anim != &playerRunning) {
+				current_anim = &playerRunning;
+			}
 		}
+		else {
+			if (current_anim != &playerJumping) {
+				current_anim = &playerJumping;
+				playerJumping.Reset();
+			}
+		}
+		
 		position.x -= 5;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		isLeft = false;
-		if (current_anim != &playerRunning) {
-			current_anim = &playerRunning;
+		if (onGround) {
+			if (current_anim != &playerRunning) {
+				current_anim = &playerRunning;
+			}
+		}
+		else {
+			if (current_anim != &playerJumping) {
+				current_anim = &playerJumping;
+				playerJumping.Reset();
+			}
 		}
 		position.x += 5;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		if (current_anim != &playerJumping) {
-			current_anim = &playerJumping;
-			playerJumping.Reset();
-		}
-		if (position.y <= 200) {
-			airborne = false;
-			
-		}else{
-			airborne = true;
-		}
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+		
+		Jump();
 		
 		
-	}else if (airborne && (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE)) {
-			airborne = false;
+	}else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
+		Fall();
 	}
 	
-	if (airborne && position.y > 200) {
-		grounded = false;
-		if(!grounded)Jump();
-	}else if(!airborne && position.y < initialPosition.y){
-		Fall((1.0f / 60.0f));
-	}
+	
 	rectAnim = current_anim->GetCurrentFrame();
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim,isLeft)) {
 		ret = false;
@@ -129,12 +152,16 @@ void Player::OnCollision(Collider* c1, Collider* c2) {
 }
 void Player::Jump()
 {
-
-	position.y = position.y - speedY ;
+	if (onGround) {
+		velocityY = -15.0;
+		onGround = false;
+	}
+	
 }
 // Add acceleration to Y speed
-void Player::Fall(float dt)
+void Player::Fall()
 {
 	
-	position.y = position.y + speedY ;
+	if (velocityY < -9.0)
+		velocityY = -9.0;
 }

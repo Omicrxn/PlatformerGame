@@ -18,7 +18,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 	void Jump();
-	void Fall(float dt);
+	void Fall();
 	// The player's collider
 	Collider* collider = nullptr;
 
@@ -34,12 +34,9 @@ private:
 	//Physics variables
 	iPoint position;
 	iPoint initialPosition;
-	float speedX;
-	float speedY;
+	float velocityY;
 	float gravity;
-	int maxHeight;
-	bool airborne;
-	bool grounded;
+	bool onGround;
 	SDL_Texture* texture = nullptr;
 	Animation* current_anim = nullptr;
 	//Idle Animation
