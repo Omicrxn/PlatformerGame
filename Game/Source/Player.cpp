@@ -13,23 +13,6 @@
 
 Player::Player(bool startEnabled) : Module(startEnabled) {
 	name = "Player";
-
-}
-
-Player::~Player() {}
-
-bool Player::Start() {
-	bool ret = true;
-	texture = app->tex->Load("Assets/player/PlayerSheet.png");
-	//physics variables
-	isLeft = false;
-	initialPosition = { 200, 900 };
-	position = initialPosition;
-	app->render->camera.x = position.x;
-	app->render->camera.y = position.y;
-	gravity = 0.5f;
-	velocityY = 0.0f;
-	onGround = false;
 	//Loading Idle Anim
 	for (int i = 0; i <= (116 * 5); i += 116)
 	{
@@ -54,8 +37,8 @@ bool Player::Start() {
 	playerJumping.loop = true;
 	playerJumping.speed = 0.09f;
 	//Loading Falling Anim
-	playerFalling.PushBack({0,364,59,100});
-	playerFalling.PushBack({116,364,59,100});
+	playerFalling.PushBack({ 0,364,59,100 });
+	playerFalling.PushBack({ 116,364,59,100 });
 	playerFalling.loop = true;
 	playerFalling.speed = 0.09f;
 	//Loading Death Anim
@@ -68,7 +51,24 @@ bool Player::Start() {
 	playerDeath.PushBack({ 696,595,105,101 });
 	playerDeath.loop = false;
 	playerDeath.speed = 0.12f;
-	playerDeath.speed = 0.12f;
+}
+
+Player::~Player() {}
+
+bool Player::Start() {
+	bool ret = true;
+	texture = app->tex->Load("Assets/player/PlayerSheet.png");
+	//physics variables
+	isLeft = false;
+	initialPosition = { 200, 900 };
+	position = initialPosition;
+	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
+	app->render->camera.y = (-position.y) + (app->win->GetWindowHeight() / 2);
+	gravity = 0.5f;
+	velocityY = 0.0f;
+	onGround = false;
+	dead = false;
+	
 	return ret;
 }
 
@@ -128,15 +128,15 @@ bool Player::Update(float dt) {
 bool Player::PostUpdate()
 {
 	bool ret = true;
-
+	
 	return ret;
 }
 
 bool Player::CleanUp()
 {
 	bool ret = true;
-
-
+	app->tex->UnLoad(texture);
+	current_anim = nullptr;
 
 	return ret;
 }
@@ -178,7 +178,7 @@ void Player::Die()
 	if (current_anim != &playerDeath && onGround)
 	{
 		current_anim = &playerDeath;
-		playerJumping.Reset();
+		playerDeath.Reset();
 	}
 }
 bool Player::Died() {

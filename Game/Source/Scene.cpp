@@ -34,7 +34,12 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	
+	//Load Backgrounds
+	background1 = app->tex->Load("Assets/maps/background1.png");
+	background2 = app->tex->Load("Assets/maps/background2.png");
+	background3 = app->tex->Load("Assets/maps/background3.png");
+	background4 = app->tex->Load("Assets/maps/background4a.png");
+	backgroundRect = { 0,0,2880,1440 };
 	// L03: DONE: Load map
 	app->map->Load("lvl1.tmx");
 	app->player->Enable();
@@ -88,6 +93,24 @@ bool Scene::Update(float dt)
 
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
+	if (!app->render->DrawTexture(background1, 0, 0,&backgroundRect,false,0.2f)) {
+		LOG("%s %s","Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
+		return false;
+	}
+	if (!app->render->DrawTexture(background2, 0, 0, &backgroundRect, false, 0.4f)) {
+		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
+		return false;
+	}
+	if (!app->render->DrawTexture(background3, 0, 0, &backgroundRect, false, 0.6f)) {
+		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
+		return false;
+	}
+	if (!app->render->DrawTexture(background4, 0, 0, &backgroundRect, false, 0.8f)) {
+		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
+		return false;
+	}
+	
+
 	// Draw map
 	app->map->Draw();
 
@@ -117,7 +140,7 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
-
+	
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
@@ -129,5 +152,9 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	app->player->Disable();
+	app->tex->UnLoad(background1);
+	app->tex->UnLoad(background2);
+	app->tex->UnLoad(background3);
+	app->tex->UnLoad(background4);
 	return true;
 }

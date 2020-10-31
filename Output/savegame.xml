@@ -12,6 +12,6 @@
 	<Collisions />
 	<FadeToBlack />
 	<renderer>
-		<camera x="-70" y="-240" />
+		<camera x="0" y="-540" />
 	</renderer>
 </save>
