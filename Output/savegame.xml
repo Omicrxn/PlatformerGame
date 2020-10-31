@@ -1,10 +1,16 @@
 <?xml version="1.0"?>
 <save>
-	<input />
 	<window />
+	<input />
 	<textures />
-	<audio />
+	<LogoScreen />
+	<TitleScreen />
+	<EndingScreen />
 	<scene />
+	<map />
+	<Player />
+	<Collisions />
+	<FadeToBlack />
 	<renderer>
 		<camera x="0" y="0" />
 	</renderer>

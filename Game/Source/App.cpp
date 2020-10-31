@@ -317,6 +317,30 @@ bool App::LoadGame()
 
 	loadGameRequested = false;
 
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file("savegame.xml");
+
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		bool ret = true;
+
+		pugi::xml_node node = doc.child("save");
+
+		ListItem<Module*>* item;
+		item = modules.start;
+
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->LoadState(node.child(item->data->name.GetString()));
+			item = item->next;
+		}
+	}
+
 	return ret;
 }
 
@@ -328,6 +352,22 @@ bool App::SaveGame() const
 	//...
 
 	saveGameRequested = false;
+
+	pugi::xml_document doc;
+	pugi::xml_node node = doc.append_child("save");
+	pugi::xml_node newNode;
+
+	ListItem<Module*>* item;
+	item = modules.start;
+
+	while (item != NULL && ret == true)
+	{
+		newNode = node.append_child(item->data->name.GetString());
+		ret = item->data->SaveState(newNode);
+		item = item->next;
+	}
+
+	doc.save_file("savegame.xml");
 
 	return ret;
 }
