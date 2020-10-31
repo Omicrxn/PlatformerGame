@@ -10,7 +10,7 @@
 
 EndingScreen::EndingScreen() : Module()
 {
-	name = "Ending Screen";
+	name = "EndingScreen";
 }
 
 EndingScreen::~EndingScreen() {}

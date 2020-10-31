@@ -10,7 +10,7 @@
 
 TitleScreen::TitleScreen() : Module()
 {
-	name = "Title Screen";
+	name = "TitleScreen";
 }
 
 TitleScreen::~TitleScreen() {}

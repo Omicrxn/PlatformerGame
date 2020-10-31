@@ -11,7 +11,7 @@
 
 LogoScreen::LogoScreen() : Module()
 {
-	name = "Logo Screen";
+	name = "LogoScreen";
 }
 
 LogoScreen::~LogoScreen() {}

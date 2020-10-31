@@ -10,8 +10,7 @@
 #include "Log.h"
 FadeToBlack::FadeToBlack() : Module()
 {
-	name = "Fade to Black";
-	
+	name = "FadeToBlack";
 }
 
 FadeToBlack::~FadeToBlack() {}
