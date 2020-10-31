@@ -17,109 +17,36 @@ Collisions::Collisions() : Module() {
 	matrix[Collider::Type::WALL][Collider::Type::ENEMY] = true;
 	matrix[Collider::Type::WALL][Collider::Type::PLAYER_SHOT] = true;
 	matrix[Collider::Type::WALL][Collider::Type::ENEMY_SHOT] = true;
-	matrix[Collider::Type::WALL][Collider::Type::BOSS] = false;
-	matrix[Collider::Type::WALL][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::WALL][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::WALL][Collider::Type::WEAPON] = true;
-	matrix[Collider::Type::WALL][Collider::Type::WEAPON_SHELL] = true;
 
 	matrix[Collider::Type::PLAYER][Collider::Type::WALL] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::BOSS] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER_SHOT] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY_SHOT] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::POWERUP_ORANGE] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::POWERUP_BLUE] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::WEAPON] = false;
-	matrix[Collider::Type::PLAYER][Collider::Type::WEAPON_SHELL] = false;
 
 	matrix[Collider::Type::ENEMY][Collider::Type::WALL] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER_SHOT] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::ENEMY][Collider::Type::BOSS] = false;
-	matrix[Collider::Type::ENEMY][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::ENEMY][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::ENEMY][Collider::Type::WEAPON] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::WEAPON_SHELL] = true;
 
 	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::WALL] = true;
 	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::ENEMY] = true;
 	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::PLAYER_SHOT] = false;
 	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::BOSS] = true;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::WEAPON] = false;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::WEAPON_SHELL] = false;
 
 	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::WALL] = true;
 	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::PLAYER_SHOT] = false;
 	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::BOSS] = false;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::WEAPON] = false;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::WEAPON_SHELL] = false;
 
 	matrix[Collider::Type::BOSS][Collider::Type::WALL] = true;
 	matrix[Collider::Type::BOSS][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::BOSS][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::BOSS][Collider::Type::PLAYER_SHOT] = true;
 	matrix[Collider::Type::BOSS][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::BOSS][Collider::Type::BOSS] = false;
-	matrix[Collider::Type::BOSS][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::BOSS][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::BOSS][Collider::Type::WEAPON] = true;
-	matrix[Collider::Type::BOSS][Collider::Type::WEAPON_SHELL] = true;
-
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::PLAYER_SHOT] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::BOSS] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::WALL] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::WEAPON] = false;
-	matrix[Collider::Type::POWERUP_ORANGE][Collider::Type::WEAPON_SHELL] = false;
-
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::PLAYER_SHOT] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::BOSS] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::WALL] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::WEAPON] = false;
-	matrix[Collider::Type::POWERUP_BLUE][Collider::Type::WEAPON_SHELL] = false;
-
-	matrix[Collider::Type::WEAPON][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::WEAPON][Collider::Type::PLAYER] = false;
-	matrix[Collider::Type::WEAPON][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::WEAPON][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::WEAPON][Collider::Type::PLAYER_SHOT] = false;
-	matrix[Collider::Type::WEAPON][Collider::Type::BOSS] = true;
-	matrix[Collider::Type::WEAPON][Collider::Type::WALL] = true;
-	matrix[Collider::Type::WEAPON][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::WEAPON][Collider::Type::WEAPON] = false;
-	matrix[Collider::Type::WEAPON][Collider::Type::WEAPON_SHELL] = false;
-
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::POWERUP_ORANGE] = false;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::PLAYER] = false;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::PLAYER_SHOT] = false;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::BOSS] = true;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::WALL] = true;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::POWERUP_BLUE] = false;
-	matrix[Collider::Type::WEAPON_SHELL][Collider::Type::WEAPON] = false;
 }
 
 Collisions::~Collisions() {}
