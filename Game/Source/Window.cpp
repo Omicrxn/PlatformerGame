@@ -78,6 +78,8 @@ bool Window::Awake(pugi::xml_node& config)
 		}
 	}
 
+	SetTitle("Paracelsus Platformer Game");
+
 	return ret;
 }
 

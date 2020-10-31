@@ -126,7 +126,7 @@ void Render::ResetViewPort()
 }
 
 // Blit to screen
-bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section,bool isLeft, float speed, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
 	uint scale = app->win->GetScale();
@@ -150,15 +150,15 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
-
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	if(pivotX != INT_MAX && pivotY != INT_MAX)
 	{
 		pivot.x = pivotX;
 		pivot.y = pivotY;
 		p = &pivot;
 	}
-
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	if (isLeft) flip = SDL_FLIP_HORIZONTAL;
+	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;

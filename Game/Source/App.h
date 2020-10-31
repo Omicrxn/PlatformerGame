@@ -20,6 +20,7 @@ class Map;
 class FadeToBlack;
 class LogoScreen;
 class TitleScreen;
+class EndingScreen;
 class Screen;
 class Player;
 class Collisions;
@@ -97,6 +98,7 @@ public:
 	FadeToBlack* fade;
 	LogoScreen* logoScreen;
 	TitleScreen* titleScreen;
+	EndingScreen* endingScreen;
 	Player* player;
 	Collisions* collisions;
 
