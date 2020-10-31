@@ -9,7 +9,8 @@
 
 struct SDL_Texture;
 
-class Player : public Module {
+class Player : public Module 
+{
 public:
 	Player();
 	~Player();
@@ -17,15 +18,18 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+	void Run();
 	void Jump();
 	void Fall();
+	void Die();
 	// The player's collider
 	Collider* collider = nullptr;
 
 	// Collision callback, called when the player intersects with another collider
 	void OnCollision(Collider* c1, Collider* c2);
 
-	iPoint GetPlayerPosition() {
+	iPoint GetPlayerPosition() 
+	{
 		return position;
 	}
 
@@ -37,6 +41,7 @@ private:
 	float velocityY;
 	float gravity;
 	bool onGround;
+	bool dead;
 	SDL_Texture* texture = nullptr;
 	Animation* current_anim = nullptr;
 	//Idle Animation
@@ -45,6 +50,10 @@ private:
 	Animation playerRunning;
 	//Jumping Animation
 	Animation playerJumping;
+	//Falling Animation
+	Animation playerFalling;
+	//Death Animation
+	Animation playerDeath;
 	SDL_Rect rectAnim;
 	bool godMode = false;
 	bool isLeft;

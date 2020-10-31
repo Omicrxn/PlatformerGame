@@ -40,7 +40,7 @@ bool TitleScreen::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		app->fade->Fade(this, (Module*)app->scene, 180);
+		app->fade->Fade(this, (Module*)app->scene, 100);
 	}
 
 	return ret;
@@ -51,7 +51,7 @@ bool TitleScreen::PostUpdate()
 	bool ret = true;
 	
 	// Blit 
-	if (!app->render->DrawTexture(tex, 0, 0, &screen, 0.0f, false, true))
+	if (!app->render->DrawTexture(tex, 0, 0, &screen, 0.0f))
 	{
 		ret = false;
 	}

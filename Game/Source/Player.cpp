@@ -5,8 +5,6 @@
 #include "Render.h"
 #include "Collisions.h"
 #include "Window.h"
-//#include "StartScreen.h"
-//#include "LoseScreen.h"
 #include "FadeToBlack.h"
 #include "Audio.h"
 #include <math.h>
@@ -15,7 +13,7 @@
 
 Player::Player() : Module() {
 	name = "Player";
-	
+
 }
 
 Player::~Player() {}
@@ -25,14 +23,14 @@ bool Player::Start() {
 	texture = app->tex->Load("Assets/player/PlayerSheet.png");
 	//physics variables
 	isLeft = false;
-	
+
 	initialPosition = { 50, app->win->GetWindowHeight() / 2 };
 	position = initialPosition;
 	gravity = 0.5f;
 	velocityY = 0.0f;
 	onGround = false;
 	//Loading Idle Anim
-	for (int i = 0; i <= (116*5); i+=116)
+	for (int i = 0; i <= (116 * 5); i += 116)
 	{
 		playerIdle.PushBack({ i,30,57,86 });
 	}
@@ -53,7 +51,23 @@ bool Player::Start() {
 	playerJumping.PushBack({ 0,262,75,86 });
 	playerJumping.PushBack({ 116,261,70,87 });
 	playerJumping.loop = true;
-	playerJumping.speed = 0.06f;
+	playerJumping.speed = 0.09f;
+	//Loading Falling Anim
+	playerFalling.PushBack({0,364,59,100});
+	playerFalling.PushBack({116,364,59,100});
+	playerFalling.loop = true;
+	playerFalling.speed = 0.09f;
+	//Loading Death Anim
+	playerDeath.PushBack({ 0,603,65,93 });
+	playerDeath.PushBack({ 116,600,73,96 });
+	playerDeath.PushBack({ 232,597,73,96 });
+	playerDeath.PushBack({ 348,595,102,101 });
+	playerDeath.PushBack({ 464,595,105,101 });
+	playerDeath.PushBack({ 580,595,101,101 });
+	playerDeath.PushBack({ 696,595,105,101 });
+	playerDeath.loop = true;
+	playerDeath.speed = 0.12f;
+	playerDeath.speed = 0.12f;
 	return ret;
 }
 
@@ -61,107 +75,112 @@ bool Player::Update(float dt) {
 	bool ret = true;
 	velocityY += gravity;
 	position.y += velocityY;
+	
+	/*if (dead) {
+		return true;
+	}*/
+
 	if (position.y >= initialPosition.y)
 	{
 		position.y = initialPosition.y;
 		velocityY = 0.0;
 		onGround = true;
 	}
-	
-	
-	
-		if (onGround) {
-			if (current_anim != &playerIdle) {
-				current_anim = &playerIdle;
-			}
+
+
+	if (onGround && !dead) {
+		if (current_anim != &playerIdle) {
+			current_anim = &playerIdle;
+			playerJumping.Reset();
 		}
-		else {
-			if (current_anim != &playerJumping) {
-				current_anim = &playerJumping;
-				playerJumping.Reset();
-			}
+	}else if(!dead){
+		if (current_anim != &playerJumping) {
+			current_anim = &playerJumping;
+			playerJumping.Reset();
 		}
-		
-	
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		isLeft = true;
-		if (onGround) {
-			if (current_anim != &playerRunning) {
-				current_anim = &playerRunning;
-			}
-		}
-		else {
-			if (current_anim != &playerJumping) {
-				current_anim = &playerJumping;
-				playerJumping.Reset();
-			}
-		}
-		
-		position.x -= 5;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		isLeft = true;
+		Run();
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
 		isLeft = false;
-		if (onGround) {
-			if (current_anim != &playerRunning) {
-				current_anim = &playerRunning;
-			}
-		}
-		else {
-			if (current_anim != &playerJumping) {
-				current_anim = &playerJumping;
-				playerJumping.Reset();
-			}
-		}
-		position.x += 5;
+		Run();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-		
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
 		Jump();
-		
-		
-	}else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	{
 		Fall();
 	}
 	
-	
+
 	rectAnim = current_anim->GetCurrentFrame();
-	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim,isLeft)) {
+	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
+	{
 		ret = false;
 	}
 	return ret;
 }
 
-bool Player::PostUpdate() {
+bool Player::PostUpdate()
+{
 	bool ret = true;
-	
-	return ret;
-}
-
-bool Player::CleanUp() {
-	bool ret = true;
-
-	
 
 	return ret;
 }
 
-void Player::OnCollision(Collider* c1, Collider* c2) {
+bool Player::CleanUp()
+{
+	bool ret = true;
+
+
+
+	return ret;
+}
+
+void Player::OnCollision(Collider* c1, Collider* c2)
+{
 	// Detect collision with a bullet or an enemy. If so, disappear and explode.
-	
+
+}
+
+void Player::Run() {
+	if (current_anim != &playerRunning && onGround)
+	{
+		current_anim = &playerRunning;
+		playerJumping.Reset();
+	}
+	isLeft? position.x -= 5 : position.x += 5;
 }
 void Player::Jump()
 {
-	if (onGround) {
-		velocityY = -15.0;
+	if (onGround)
+	{
+
+		velocityY = -15.0f;
 		onGround = false;
 	}
-	
+
 }
 // Add acceleration to Y speed
 void Player::Fall()
 {
 	
-	if (velocityY < -9.0)
-		velocityY = -9.0;
+	if (velocityY < -9.0f)
+		velocityY = -9.0f;
+}
+void Player::Die()
+{
+	dead = true;
+	if (current_anim != &playerDeath && onGround)
+	{
+		current_anim = &playerDeath;
+		playerJumping.Reset();
+	}
 }

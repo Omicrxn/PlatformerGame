@@ -40,7 +40,7 @@ bool LogoScreen::Update(float dt)
 
 	if (actualTime >= endTime)
 	{
-		app->fade->Fade(this, (Module*)app->titleScreen, 180);
+		app->fade->Fade(this, (Module*)app->titleScreen, 100);
 	}
 
 	return ret;

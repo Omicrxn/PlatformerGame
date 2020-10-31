@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "FadeToBlack.h"
 #include "EndingScreen.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -99,7 +100,9 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		app->fade->Fade(this, (Module*)app->endingScreen, 180);
+		app->player->Die();
+		
+		//app->fade->Fade(this, (Module*)app->endingScreen, 180);
 	}
 
 	return true;

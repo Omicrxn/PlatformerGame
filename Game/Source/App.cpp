@@ -32,8 +32,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	map = new Map();
 	fade = new FadeToBlack();
-	logoScreen = new LogoScreen();
-	titleScreen = new TitleScreen();
+	logoScreen = new LogoScreen(); 
+	titleScreen = new TitleScreen(); 
 	endingScreen = new EndingScreen();
 	player = new Player();
 	collisions = new Collisions();
@@ -44,10 +44,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	/*AddModule(audio);*/
-	AddModule(logoScreen); 
+	AddModule(logoScreen); logoScreen->Disable();
 	AddModule(titleScreen); titleScreen->Disable();
 	AddModule(endingScreen); endingScreen->Disable();
-	AddModule(scene); scene->Disable();
+	AddModule(scene); 
 	AddModule(map);
 	AddModule(player);
 	AddModule(collisions);
