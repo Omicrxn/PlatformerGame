@@ -3,7 +3,6 @@
 #include "Textures.h"
 #include "Input.h"
 #include "Render.h"
-#include "Collisions.h"
 #include "Window.h"
 #include "FadeToBlack.h"
 #include "Audio.h"
@@ -93,7 +92,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 	iPoint tempPlayerPosition = position;
-	if (!dead)
+	if (!dead && !godMode)
 	{
 		velocity.y += gravity;
 		position.y += velocity.y;
@@ -149,7 +148,7 @@ bool Player::Update(float dt)
 	// Update player position
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !dead)
 	{
-		if (godMode) --position.x;
+		if (godMode) position.x-=3;
 		else
 		{
 			isLeft = true;
@@ -159,7 +158,7 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !dead)
 	{
-		if (godMode) ++position.x;
+		if (godMode) position.x+=3;
 		else
 		{
 			isLeft = false;
@@ -169,7 +168,7 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !dead && godMode)
 	{
-		--position.y;
+		position.y+=3;
 	}
 
 	rectAnim = current_anim->GetCurrentFrame();
@@ -192,7 +191,7 @@ bool Player::Update(float dt)
 					tileRect = { tilePosition.x, tilePosition.y, app->map->data.tileWidth, app->map->data.tileHeight };
 
 					// Red Collider
-					if (layer->data->Get(x, y) == 4097 && CheckCollision(tileRect, playerRect))
+					if (layer->data->Get(x, y) == 4097 && CheckCollision(tileRect, playerRect)&&!godMode)
 					{
 						collision = true;
 						if (playerRect.y < tileRect.y)
@@ -208,13 +207,13 @@ bool Player::Update(float dt)
 					}
 
 					// Green Collider
-					if (layer->data->Get(x, y) == 4098 && CheckCollision(tileRect, playerRect))
+					if (layer->data->Get(x, y) == 4098 && CheckCollision(tileRect, playerRect) && !godMode)
 					{
 						app->fade->Fade((Module*)app->scene, (Module*)app->titleScreen, 180);
 					}
 
 					// Blue Collider
-					if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect))
+					if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect) && !godMode)
 					{
 						collision = true;
 
@@ -235,7 +234,7 @@ bool Player::Update(float dt)
 					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
-						app->player->Die();
+						if(!godMode)app->player->Die();
 						break;
 					}
 				}
@@ -246,7 +245,7 @@ bool Player::Update(float dt)
 
 	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && !dead)
 	{
-		if (godMode) ++position.y;
+		if (godMode) position.y -=3;
 		else
 		{
 			Jump();
@@ -366,9 +365,9 @@ void Player::UpdateCamera()
 	{
 		app->render->camera.y = -6;
 	}
-	else if (app->render->camera.y <= -715)
+	else if (app->render->camera.y <= -720)
 	{
-		app->render->camera.y = -715;
+		app->render->camera.y = -720;
 	}
 }
 

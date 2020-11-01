@@ -23,7 +23,7 @@ class TitleScreen;
 class EndingScreen;
 class Screen;
 class Player;
-class Collisions;
+
 
 class App
 {
@@ -100,7 +100,7 @@ public:
 	TitleScreen* titleScreen;
 	EndingScreen* endingScreen;
 	Player* player;
-	Collisions* collisions;
+
 
 private:
 
