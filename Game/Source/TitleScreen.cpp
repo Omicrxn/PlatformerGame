@@ -13,7 +13,8 @@ TitleScreen::TitleScreen(bool startEnabled) : Module(startEnabled)
 	name = "titlescreen";
 }
 
-TitleScreen::~TitleScreen() {}
+TitleScreen::~TitleScreen()
+{}
 
 bool TitleScreen::Start()
 {
@@ -55,13 +56,13 @@ bool TitleScreen::Update(float dt)
 bool TitleScreen::PostUpdate()
 {
 	bool ret = true;
-	
+
 	// Blit 
 	if (!app->render->DrawTexture(tex, 0, 0, &screen, 0.0f))
 	{
 		ret = false;
 	}
-	
+
 	return ret;
 }
 
@@ -69,9 +70,9 @@ bool TitleScreen::CleanUp()
 {
 	bool ret = true;
 
-	if (!app->tex->UnLoad(tex)) 
+	if (!app->tex->UnLoad(tex))
 	{
-		LOG("%s","Title Screen -> Error unloading the texture.");
+		LOG("%s", "Title Screen -> Error unloading the texture.");
 		ret = false;
 	}
 

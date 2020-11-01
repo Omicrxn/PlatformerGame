@@ -77,7 +77,7 @@ void Map::ChangeLayerProperty(SString layerName, SString propertyName, int value
 bool Map::Awake(pugi::xml_node& config)
 {
     LOG("Loading Map Parser");
-    bool ret = true;
+	bool ret = true;
 
     folder.Create(config.child("folder").child_value());
 
@@ -256,16 +256,16 @@ bool Map::Load(const char* filename)
 
     pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
-    if(result == NULL)
-    {
-        LOG("Could not load map xml file %s. pugi error: %s", filename, result.description());
-        ret = false;
-    }
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file %s. pugi error: %s", filename, result.description());
+		ret = false;
+	}
 
 	// Load general info
-    if(ret == true)
-    {
-        // Create and call a private function to load and fill all your map data
+	if (ret == true)
+	{
+		// Create and call a private function to load and fill all your map data
 		ret = LoadMap();
 	}
 
@@ -294,18 +294,18 @@ bool Map::Load(const char* filename)
 
 		ret = LoadProperties(layer, lay->properties);
 
-		if (ret == true)
-			data.layers.add(lay);
+		if (ret == true) data.layers.add(lay);
 	}
     
-    if(ret == true)
-    {
-        // LOG all the data loaded iterate all tilesets and LOG everything
+	if (ret == true)
+	{
+		// LOG all the data loaded iterate all tilesets and LOG everything
 		LOG("Successfully parsed map XML file: %s", filename);
 		LOG("width: %d", data.width);
 		LOG("height: %d", data.height);
 		LOG("tile width: %d", data.tileWidth);
 		LOG("tile height: %d", data.tileHeight);
+
 		if (data.type == MAPTYPE_ORTHOGONAL)
 		{
 			LOG("orientation: orthogonal");
@@ -329,7 +329,6 @@ bool Map::Load(const char* filename)
 			LOG("height: %d", data.tilesets[i]->texHeight);
 		}
 
-
 		// LOG the info for each loaded layer
 		for (int i = 0; i < data.layers.count(); i++)
 		{
@@ -338,7 +337,7 @@ bool Map::Load(const char* filename)
 			LOG("width: %d", data.layers[i]->width);
 			LOG("height: %d", data.layers[i]->height);
 		}
-    }
+	}
 
     mapLoaded = ret;
 
@@ -381,7 +380,7 @@ bool Map::LoadMap()
 bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	
+
 	// Load Tileset attributes
 	set->name = tileset_node.attribute("name").as_string();
 	set->firstgid = tileset_node.attribute("firstgid").as_int();

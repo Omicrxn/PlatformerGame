@@ -37,5 +37,4 @@ public:
 	List<SDL_Texture*> textures;
 };
 
-
 #endif // __TEXTURES_H__

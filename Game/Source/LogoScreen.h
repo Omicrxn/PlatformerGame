@@ -5,10 +5,13 @@
 #include "Module.h"
 #include "SDL/include/SDL_timer.h"
 #include "SDL/include/SDL_rect.h"
+
 struct SDL_Texture;
+
 class LogoScreen : public Module
 {
 public:
+
 	LogoScreen(bool startEnabled);
 	virtual ~LogoScreen();
 
@@ -18,6 +21,7 @@ public:
 	bool CleanUp();
 
 private:
+
 	SDL_Texture* logoTex = nullptr;
 	SDL_Rect logo;
 	SDL_Rect screen;

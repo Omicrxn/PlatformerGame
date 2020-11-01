@@ -67,6 +67,7 @@ bool FadeToBlack::PostUpdate()
 
 	// Render the black square with alpha on the screen
 	SDL_SetRenderDrawColor(app->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));
+
 	SDL_RenderFillRect(app->render->renderer, &screenRect);
 
 	return true;
@@ -96,10 +97,8 @@ bool FadeToBlack::hasEnded()
 {
 	bool ret = true;
 
-	if (currentStep == Fade_Step::NONE)
-		ret = true;
-	else
-		ret = false;
+	if (currentStep == Fade_Step::NONE) ret = true;
+	else ret = false;
 
 	return ret;
 }

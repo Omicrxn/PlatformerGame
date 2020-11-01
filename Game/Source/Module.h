@@ -17,7 +17,8 @@ public:
 
 	void Module::Enable()
 	{
-		if (!active) {
+		if (!active)
+		{
 			active = true;
 			Start();
 		}
@@ -25,12 +26,15 @@ public:
 
 	void Module::Disable()
 	{
-		if (active) {
+		if (active)
+		{
 			active = false;
 			CleanUp();
 		}
 	}
+
 	bool isEnabled() { return active; }
+
 	// Called before render is available
 	// L01: DONE 5: Sending config file to all modules
 	virtual bool Awake(pugi::xml_node&)
@@ -85,7 +89,6 @@ public:
 
 	SString name;
 	bool active;
-
 };
 
 #endif // __MODULE_H__

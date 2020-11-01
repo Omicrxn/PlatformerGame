@@ -6,7 +6,6 @@
 
 #include "SDL/include/SDL.h"
 
-
 Window::Window(bool startEnabled) : Module(startEnabled)
 {
 	window = NULL;
@@ -16,8 +15,7 @@ Window::Window(bool startEnabled) : Module(startEnabled)
 
 // Destructor
 Window::~Window()
-{
-}
+{}
 
 // Called before render is available
 bool Window::Awake(pugi::xml_node& config)
@@ -25,7 +23,7 @@ bool Window::Awake(pugi::xml_node& config)
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -73,14 +71,15 @@ bool Window::CleanUp()
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
 
-	//Destroy window
-	if(window != NULL)
+	// Destroy window
+	if (window != NULL)
 	{
 		SDL_DestroyWindow(window);
 	}
 
-	//Quit SDL subsystems
+	// Quit SDL subsystems
 	SDL_Quit();
+
 	return true;
 }
 

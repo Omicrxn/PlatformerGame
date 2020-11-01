@@ -36,14 +36,14 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	//Load Backgrounds
+	// Load Backgrounds
 	background1 = app->tex->Load("Assets/maps/background1.png");
 	background2 = app->tex->Load("Assets/maps/background2.png");
 	background3 = app->tex->Load("Assets/maps/background3.png");
 	background4 = app->tex->Load("Assets/maps/background4a.png");
 	backgroundRect = { 0,0,2880,1440 };
 
-	// L03: DONE: Load map
+	// Load map
 	app->map->Load("level1.tmx");
 	app->player->Enable();
 	
@@ -63,18 +63,13 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	// F5 Save the current game state
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		app->SaveGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
 
 	// F6 Load the previous state (even across levels)
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		app->LoadGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 
 	// F9 View colliders / logic
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	{
-		app->map->ChangeLayerProperty("Collisions", "Draw", 1);
-	}
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) app->map->ChangeLayerProperty("Collisions", "Draw", 1);
 
 	// F10 God Mode (fly around, cannot be killed)
 
@@ -91,38 +86,40 @@ bool Scene::Update(float dt)
 		app->audio->VolumeChange(app->audio->volume);
 	}
 
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= 1;
+	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) app->render->camera.y -= 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += 1;
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) app->render->camera.y += 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= 1;
+	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) app->render->camera.x -= 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += 1;
+	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) app->render->camera.x += 1;
 
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
-	if (!app->render->DrawTexture(background1, 0, 0,&backgroundRect,false,0.2f)) {
-		LOG("%s %s","Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
-		return false;
-	}
-	if (!app->render->DrawTexture(background2, 0, 0, &backgroundRect, false, 0.4f)) {
+	if (!app->render->DrawTexture(background1, 0, 0, &backgroundRect, false, 0.2f))
+	{
 		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
 		return false;
 	}
-	if (!app->render->DrawTexture(background3, 0, 0, &backgroundRect, false, 0.6f)) {
+
+	if (!app->render->DrawTexture(background2, 0, 0, &backgroundRect, false, 0.4f))
+	{
 		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
 		return false;
 	}
-	if (!app->render->DrawTexture(background4, 0, 0, &backgroundRect, false, 0.8f)) {
+
+	if (!app->render->DrawTexture(background3, 0, 0, &backgroundRect, false, 0.6f))
+	{
 		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
 		return false;
 	}
 	
-
+	if (!app->render->DrawTexture(background4, 0, 0, &backgroundRect, false, 0.8f))
+	{
+		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
+		return false;
+	}
+	
 	// Draw map
 	app->map->Draw();
 
@@ -137,12 +134,11 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		app->player->Die();
-		
 	}
+
 	if (app->player->Died()) 
 	{
 		app->fade->Fade(this, (Module*)app->endingScreen, 180);
-		
 	}
 		
 	return true;
@@ -153,8 +149,7 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 	
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
 	return ret;
 }

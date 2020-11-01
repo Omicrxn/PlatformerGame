@@ -9,16 +9,23 @@ struct SDL_Texture;
 class EndingScreen : public Module
 {
 public:
+
 	EndingScreen(bool startEnabled);
+
 	virtual ~EndingScreen();
 
 	bool Start();
+
 	bool Update(float dt);
+
 	bool PostUpdate();
+
 	bool CleanUp();
 
 private:
+
 	SDL_Texture* tex = nullptr;
+
 	SDL_Rect screen;
 
 	uint windowSizeX;

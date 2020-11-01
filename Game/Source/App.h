@@ -111,7 +111,7 @@ private:
 
 	List<Module *> modules;
 
-	// L01: DONE 2: Create new variables from pugui namespace
+	// Create new variables from pugui namespace
 	// NOTE: Redesigned LoadConfig() to avoid storing this variables
 	//pugi::xml_document configFile;
 	//pugi::xml_node config;

@@ -32,8 +32,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene(false);
 	map = new Map(false);
 	fade = new FadeToBlack(true);
-	logoScreen = new LogoScreen(true); 
-	titleScreen = new TitleScreen(false); 
+	logoScreen = new LogoScreen(true);
+	titleScreen = new TitleScreen(false);
 	endingScreen = new EndingScreen(false);
 	player = new Player(false);
 	collisions = new Collisions(true);
@@ -44,10 +44,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(logoScreen); 
-	AddModule(titleScreen); 
+	AddModule(logoScreen);
+	AddModule(titleScreen);
 	AddModule(endingScreen);
-	AddModule(scene); 
+	AddModule(scene);
 	AddModule(map);
 	AddModule(player);
 	AddModule(collisions);
@@ -63,7 +63,7 @@ App::~App()
 	// Release modules
 	ListItem<Module*>* item = modules.end;
 
-	while(item != NULL)
+	while (item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
@@ -87,7 +87,7 @@ bool App::Awake()
 
 	bool ret = false;
 
-	// L01: DONE 3: Load config from XML
+	// Load config from XML
 	config = LoadConfig(configFile);
 
 	if (config.empty() == false)
@@ -95,7 +95,7 @@ bool App::Awake()
 		ret = true;
 		configApp = config.child("app");
 
-		// L01: DONE 4: Read the title from the config file
+		// Read the title from the config file
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
 	}
@@ -107,7 +107,7 @@ bool App::Awake()
 
 		while ((item != NULL) && (ret == true))
 		{
-			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
+			// Add a new argument to the Awake method to receive a pointer to an xml node.
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 			// that can be used to read all variables for that module.
 			// Send nullptr if the node does not exist in config.xml
@@ -126,7 +126,7 @@ bool App::Start()
 	ListItem<Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->isEnabled() ? item->data->Start() : true;
 		item = item->next;
@@ -141,19 +141,13 @@ bool App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
-		ret = false;
-
-	if(ret == true)
-		ret = PreUpdate();
-
-	if(ret == true)
-		ret = DoUpdate();
-
-	if(ret == true)
-		ret = PostUpdate();
+	if(input->GetWindowEvent(WE_QUIT) == true) ret = false;
+	if(ret == true) ret = PreUpdate();
+	if(ret == true) ret = DoUpdate();
+	if(ret == true) ret = PostUpdate();
 
 	FinishUpdate();
+
 	return ret;
 }
 
@@ -173,13 +167,12 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 
 // ---------------------------------------------
 void App::PrepareUpdate()
-{
-}
+{}
 
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// L02: DONE 1: This is a good place to call Load / Save methods
+	// This is a good place to call Load / Save methods
 	if (loadGameRequested == true) LoadGame();
 	if (saveGameRequested == true) SaveGame();
 }
@@ -192,10 +185,10 @@ bool App::PreUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->isEnabled()? pModule->PreUpdate() : true;
+		ret = pModule->isEnabled() ? pModule->PreUpdate() : true;
 	}
 
 	return ret;
@@ -209,10 +202,10 @@ bool App::DoUpdate()
 	item = modules.start;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->isEnabled()? pModule->Update(dt) : true;
+		ret = pModule->isEnabled() ? pModule->Update(dt) : true;
 	}
 
 	return ret;
@@ -225,10 +218,10 @@ bool App::PostUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->isEnabled()? pModule->PostUpdate() : true;
+		ret = pModule->isEnabled() ? pModule->PostUpdate() : true;
 	}
 
 	return ret;
@@ -241,7 +234,7 @@ bool App::CleanUp()
 	ListItem<Module*>* item;
 	item = modules.end;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
@@ -259,10 +252,8 @@ int App::GetArgc() const
 // ---------------------------------------
 const char* App::GetArgv(int index) const
 {
-	if(index < argc)
-		return args[index];
-	else
-		return NULL;
+	if (index < argc) return args[index];
+	else return NULL;
 }
 
 // ---------------------------------------
@@ -292,7 +283,7 @@ void App::SaveGameRequest() const
 }
 
 // ---------------------------------------
-// L02: TODO 5: Create a method to actually load an xml file
+// Create a method to actually load an xml file
 // then call all the modules to load themselves
 bool App::LoadGame()
 {
