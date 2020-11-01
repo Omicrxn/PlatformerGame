@@ -35,6 +35,44 @@ int Properties::GetProperty(const char* value, int defaultValue) const
 	return defaultValue;
 }
 
+// Set the value of a custom property
+void Properties::SetProperty(const char* value, int num)
+{
+	ListItem<Property*>* property = list.start;
+	while (property != NULL)
+	{
+		if (property->data->name == value)
+		{
+			property->data->value = num;
+			break;
+		}
+
+		property = property->next;
+	}
+}
+
+// Change a layer property value
+void Map::ChangeLayerProperty(SString layerName, SString propertyName, int value)
+{
+	ListItem<MapLayer*>* layer = data.layers.start;
+	while (layer != NULL)
+	{
+		if (layer->data->name == layerName)
+		{
+			if (layer->data->properties.GetProperty(propertyName.GetString()) == 0)
+			{
+				layer->data->properties.SetProperty(propertyName.GetString(), 1);
+			}
+			else if (layer->data->properties.GetProperty(propertyName.GetString()) == 1)
+			{
+				layer->data->properties.SetProperty(propertyName.GetString(), 0);
+			}
+		}
+
+		layer = layer->next;
+	}
+}
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -58,8 +96,8 @@ void Map::Draw()
 	ListItem<MapLayer*>* layer = data.layers.start;
 	while (layer != NULL)
 	{
-		//if (layer->data->properties.GetProperty("Drawable") != false)
-		//{
+		if (layer->data->properties.GetProperty("Draw") != 0)
+		{
 			for (int y = 0; y < data.height; ++y)
 			{
 				for (int x = 0; x < data.width; ++x)
@@ -76,7 +114,8 @@ void Map::Draw()
 					}
 				}
 			}
-		//}
+		}
+
 		layer = layer->next;
 	}
 }
@@ -253,7 +292,7 @@ bool Map::Load(const char* filename)
 
 		ret = LoadLayer(layer, lay);
 
-		//ret = LoadProperties(layer, lay->properties);
+		ret = LoadProperties(layer, lay->properties);
 
 		if (ret == true)
 			data.layers.add(lay);

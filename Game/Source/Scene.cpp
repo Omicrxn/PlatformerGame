@@ -62,7 +62,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	// DEBUG Key to start from the first level
+	// F1/F2 Start from the first/second level
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		if (app->logoScreen->isEnabled()) app->fade->Fade((Module*)app->logoScreen, (Module*)app->scene, 100);
@@ -70,12 +70,21 @@ bool Scene::Update(float dt)
 		if (app->endingScreen->isEnabled()) app->fade->Fade((Module*)app->endingScreen, (Module*)app->scene, 100);
 	}
 
-	// DEBUG Keys to Request Load / Save
+	// F5 Save the current game state
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		app->SaveGameRequest();
+
+	// F6 Load the previous state (even across levels)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		app->SaveGameRequest();
+	// F9 View colliders / logic
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		app->map->ChangeLayerProperty("Collisions", "Draw", 1);
+	}
+
+	// F10 God Mode (fly around, cannot be killed)
 
 	// Change volume with +/- from the numeric keyboard
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)

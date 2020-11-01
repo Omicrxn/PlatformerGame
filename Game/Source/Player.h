@@ -42,10 +42,13 @@ public:
 	// Collision callback, called when the player intersects with another collider
 	void OnCollision(Collider* c1, Collider* c2);
 
+	// Get the current player position
 	iPoint GetPlayerPosition() 
 	{
 		return position;
 	}
+
+	bool CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect);
 
 private:
 	// Physics variables

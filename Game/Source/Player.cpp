@@ -7,9 +7,10 @@
 #include "Window.h"
 #include "FadeToBlack.h"
 #include "Audio.h"
-#include <math.h>
+#include "Map.h"
 
 #include <stdio.h>
+#include <math.h>
 
 Player::Player(bool startEnabled) : Module(startEnabled) 
 {
@@ -113,13 +114,17 @@ bool Player::Update(float dt)
 		}
 	}
 
-	// DEBUG Key to start from the beggining of level 1
+	// F3 Start from the beginning of the current level
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
 		position.x = initialPosition.x;
 		position.y = initialPosition.y;
 	}
+
+	// Saving the player position for collision cases
+	iPoint tempPlayerPosition = position;
 	
+	// Update player position
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		isLeft = true;
@@ -136,11 +141,45 @@ bool Player::Update(float dt)
 	{
 		Jump();
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	/*else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
 	{
 		Fall();
-	}
+	}*/
 	
+	// Map collisions detection (platforms)
+	bool collision = false;
+	SDL_Rect playerRect = { position.x, position.y, rectAnim.w, rectAnim.h };
+	iPoint tilePosition;
+	SDL_Rect tileRect;
+
+	ListItem<MapLayer*>* layer = app->map->data.layers.start;
+	while (layer != NULL)
+	{
+		if (layer->data->name == "Collisions")
+		{
+			for (int y = 0; y < app->map->data.height; y++)
+			{
+				for (int x = 0; x < app->map->data.width; x++)
+				{
+					tilePosition = app->map->MapToWorld(x, y);
+					tileRect = { tilePosition.x, tilePosition.y, app->map->data.tileWidth, app->map->data.tileHeight };
+					if (layer->data->Get(x, y) == 4097 && CheckCollision(tileRect, playerRect))
+					{
+						collision = true;
+						break;
+					}
+				}
+			}
+		}
+
+		layer = layer->next;
+	}
+
+	if (collision == true)
+	{
+		position = tempPlayerPosition;
+	}
+
 	rectAnim = current_anim->GetCurrentFrame();
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
@@ -246,4 +285,13 @@ void Player::UpdateCamera()
 	{
 		app->render->camera.x = -1275;
 	}
+}
+
+bool Player::CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect)
+{
+	// Check if there is an overlap between two rects
+	return (tileRect.x < playerRect.x + playerRect.w &&
+		tileRect.x + tileRect.w > playerRect.x &&
+		tileRect.y < playerRect.y + playerRect.h &&
+		tileRect.y + tileRect.h > playerRect.y);
 }

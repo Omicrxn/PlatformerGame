@@ -58,6 +58,9 @@ struct Properties
 	// Method to ask for the value of a custom property
 	int GetProperty(const char* name, int default_value = 0) const;
 
+	// Method to set the value of a custom property
+	void SetProperty(const char* name, int num);
+
 	List<Property*> list;
 };
 
@@ -128,6 +131,9 @@ public:
 
 	// Add orthographic world to map coordinates
 	iPoint WorldToMap(int x, int y) const;
+
+	// Change a layer property value
+	void ChangeLayerProperty(SString layerName, SString propertyName, int value);
 
 private:
 
