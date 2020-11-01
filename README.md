@@ -49,4 +49,6 @@ Fantasy 2D platformer game developed by 3 students at CITM. In the game you are 
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
-{AdditionalLicenses}
+### Additional Licenses
+The assets' work is licensed under the Creative Commons Attribution 4.0 International License.
+For map and character assets, check [ASSETS_LICENSES](ASSETS_LICENSES) for the artists' work links.
