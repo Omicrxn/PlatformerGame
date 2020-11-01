@@ -39,6 +39,8 @@ private:
 	SDL_Texture* background3;
 	SDL_Texture* background4;
 	SDL_Rect backgroundRect;
+
+	bool debugDraw = 0;
 };
 
 #endif // __SCENE_H__

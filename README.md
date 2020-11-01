@@ -27,7 +27,7 @@ Fantasy 2D platformer game developed by 3 students at CITM. In the game you are 
 |W / SPACE|Jump|
 |A|Move left|
 |D|Move right|
- 
+
 ### DEBUG Keys
 
 |Key|Action|
@@ -41,14 +41,15 @@ Fantasy 2D platformer game developed by 3 students at CITM. In the game you are 
 
 ## Developers
 
- - Alejandro Ávila (https://github.com/Omicrxn) - Developer & Designer
- - Bosco Barber (https://github.com/boscobarberesbert) - Developer & Designer
- - Yeray Tarifa (https://github.com/yeraytm) - Developer & Designer
- 
+ - Alejandro Ávila [Omicrxn](https://github.com/Omicrxn) - Developer & Designer
+ - Bosco Barber [boscobarberesbert](https://github.com/boscobarberesbert) - Developer & Designer
+ - Yeray Tarifa [yeraytm](https://github.com/yeraytm) - Developer & Designer
+
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
 ### Additional Licenses
-The assets' work is licensed under the Creative Commons Attribution 4.0 International License.
-For map and character assets, check [ASSETS_LICENSES](ASSETS_LICENSES) for the artists' work links.
+The assets' work of this project is licensed under the Creative Commons Attribution 4.0 International License.
+For map assets license, check [LICENSE_MAP](/Output/Assets/maps/LICENSE_MAP) for the artists' work link.
+For character assets license, check [LICENSE_CHARACTER](/Output/Assets/player/LICENSE_CHARACTER) for the artists' work link.
