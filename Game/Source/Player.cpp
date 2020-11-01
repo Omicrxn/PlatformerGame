@@ -101,7 +101,8 @@ bool Player::Update(float dt)
 			position.y = tempPlayerPosition.y;
 			collision = false;
 		}
-		
+	}else{
+		Fall();
 	}
 	UpdateCamera();
 	if (onGround && !dead) 
@@ -175,9 +176,18 @@ bool Player::Update(float dt)
 						
 						break;
 					}
-					else if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect)) {
+					if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect)) {
 						collision = true;
 						velocity.x *= -1;
+						if (isLeft)
+						{
+							position.x += 3;
+						}
+						else
+						{
+							position.x -= 3;
+						}
+						break;
 					}
 				}
 			}
@@ -250,7 +260,7 @@ void Player::Run()
 		current_anim = &playerRunning;
 		playerJumping.Reset();
 	}
-	velocity.x = 2;
+	velocity.x = 4;
 }
 
 void Player::Jump()
@@ -271,7 +281,7 @@ void Player::SmallJump()
 
 void Player::Fall() 
 {
-	velocity.y = 1;
+	velocity.y = 3;
 }
 void Player::Die()
 {
