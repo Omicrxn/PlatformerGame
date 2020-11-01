@@ -62,14 +62,6 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	// F1/F2 Start from the first/second level
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	{
-		if (app->logoScreen->isEnabled()) app->fade->Fade((Module*)app->logoScreen, (Module*)app->scene, 100);
-		if (app->titleScreen->isEnabled()) app->fade->Fade((Module*)app->titleScreen, (Module*)app->scene, 100);
-		if (app->endingScreen->isEnabled()) app->fade->Fade((Module*)app->endingScreen, (Module*)app->scene, 100);
-	}
-
 	// F5 Save the current game state
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();

@@ -43,6 +43,12 @@ bool TitleScreen::Update(float dt)
 		app->fade->Fade(this, (Module*)app->scene, 100);
 	}
 
+	// F1/F2 Start from the first/second level
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		app->fade->Fade(this, (Module*)app->scene, 100);
+	}
+
 	return ret;
 }
 
