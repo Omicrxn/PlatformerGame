@@ -60,7 +60,7 @@ private:
 	bool collision;
 	bool onGround;
 	bool dead;
-
+	uint scale;
 	SDL_Texture* texture = nullptr;
 
 	Animation* current_anim = nullptr;

@@ -131,14 +131,10 @@ bool Scene::Update(float dt)
 
 	app->win->SetTitle(title.GetString());*/
 
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		app->player->Die();
-	}
-
+	
 	if (app->player->Died()) 
 	{
-		app->fade->Fade(this, (Module*)app->endingScreen, 180);
+		app->fade->Fade(this, (Module*)app->endingScreen, 180);		
 	}
 		
 	return true;

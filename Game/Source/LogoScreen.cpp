@@ -19,7 +19,8 @@ LogoScreen::~LogoScreen() {}
 bool LogoScreen::Start()
 {
 	bool ret = true;
-
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 	startTime = SDL_GetTicks();
 	actualTime = 0;
 	endTime = 3000;

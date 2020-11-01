@@ -69,7 +69,7 @@ bool Player::Start()
 	
 	// Physics variables
 	isLeft = false;
-	initialPosition = { 200 , 900 };
+	initialPosition = { 200, 900};
 	position = initialPosition;
 	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
 	app->render->camera.y = (-position.y) + (app->win->GetWindowHeight() / 2);
@@ -78,6 +78,7 @@ bool Player::Start()
 	onGround = true;
 	dead = false;
 	collision = false;
+	scale = app->win->GetScale();
 	return ret;
 }
 
@@ -85,19 +86,17 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 	iPoint tempPlayerPosition = position;
-	velocity.y += gravity;
-	position.y += velocity.y;
-	isLeft ? position.x -= velocity.x : position.x += velocity.x;
+	if (!dead) {
+		
+		velocity.y += gravity;
+		position.y += velocity.y;
+		isLeft ? position.x -= velocity.x : position.x += velocity.x;
+	}
 	
-	//if (position.y >= initialPosition.y)
-	//{
-	//	/*position.y = initialPosition.y;*/
-	//	//velocityY = 0.0;
-	//	//onGround = true;
-	//}
 	if (collision == true)
 	{
-		if (onGround) {
+		if (onGround || dead) {
+			velocity.y = 0.0;
 			position.y = tempPlayerPosition.y;
 			collision = false;
 		}
@@ -134,13 +133,13 @@ bool Player::Update(float dt)
 	
 	
 	// Update player position
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !dead)
 	{
 		isLeft = true;
 		Run();
 	}
 	
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !dead)
 	{
 		isLeft = false;
 		Run();
@@ -164,6 +163,7 @@ bool Player::Update(float dt)
 				{
 					tilePosition = app->map->MapToWorld(x, y);
 					tileRect = { tilePosition.x, tilePosition.y, app->map->data.tileWidth, app->map->data.tileHeight };
+					//Red Collider
 					if (layer->data->Get(x, y) == 4097 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
@@ -171,11 +171,17 @@ bool Player::Update(float dt)
 							onGround = true;
 						}
 						else if (playerRect.y > tileRect.y) {
-							Fall();
+							velocity.y = 1;
 						}
 						
 						break;
 					}
+					//Green Collider
+					if (layer->data->Get(x, y) == 4098 && CheckCollision(tileRect, playerRect))
+					{
+						app->fade->Fade((Module*)app->scene, (Module*)app->titleScreen, 180);
+					}
+					//Blue Collider
 					if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect)) {
 						collision = true;
 						velocity.x *= -1;
@@ -189,6 +195,13 @@ bool Player::Update(float dt)
 						}
 						break;
 					}
+					//Yellow Collider
+					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
+					{
+						collision = true;
+						app->player->Die();
+						break;
+					}
 				}
 			}
 		}
@@ -196,11 +209,11 @@ bool Player::Update(float dt)
 		layer = layer->next;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && !dead)
 	{
 		Jump();
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	else if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP) && !dead)
 	{
 		SmallJump();
 	}
@@ -281,8 +294,8 @@ void Player::SmallJump()
 
 void Player::Fall() 
 {
-	if (velocity.y < -9.0f)
-		velocity.y = -9.0f;
+	if (velocity.y > 0)
+		velocity.y = 8;
 }
 void Player::Die()
 {
@@ -301,10 +314,10 @@ bool Player::Died()
 
 void Player::UpdateCamera()
 {
-	int xAxis = (-position.x) + (app->win->GetWindowWidth() / 2);
-	int yAxis = (-position.y) + (app->win->GetWindowHeight() / 2);
-	app->render->camera.x = xAxis;
-	app->render->camera.y = yAxis;
+	int xAxis = (-position.x * scale) + (app->win->GetWindowWidth() / 2 );
+	int yAxis = (-position.y*scale) + ((app->win->GetWindowHeight() / 2) );
+	app->render->camera.x = xAxis ;
+	app->render->camera.y = yAxis ;
 
 	if (app->render->camera.x >= 0)
 	{
@@ -313,6 +326,15 @@ void Player::UpdateCamera()
 	else if (app->render->camera.x <= -1275)
 	{
 		app->render->camera.x = -1275;
+	}
+
+	if (app->render->camera.y >= -6)
+	{
+		app->render->camera.y = -6;
+	}
+	else if (app->render->camera.y <= -715)
+	{
+		app->render->camera.y = -715;
 	}
 }
 

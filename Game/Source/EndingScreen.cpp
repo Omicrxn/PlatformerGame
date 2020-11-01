@@ -21,7 +21,8 @@ bool EndingScreen::Start()
 	
 	app->win->GetWindowSize(windowSizeX, windowSizeY);
 	windowScale = app->win->GetScale();
-
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 	// Screen rect
 	screen = { 0, 0, (int)windowSizeX * windowScale , (int)windowSizeY * windowScale };
 	tex = app->tex->Load("Assets/textures/Ending Screen.jpg");
@@ -37,11 +38,6 @@ bool EndingScreen::Start()
 bool EndingScreen::Update(float dt)
 {
 	bool ret = true;
-	if (app->render->camera.x != 0 || app->render->camera.y != 0)
-	{
-		app->render->camera.x = 0;
-		app->render->camera.y = 0;
-	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{

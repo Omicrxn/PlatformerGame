@@ -19,7 +19,8 @@ TitleScreen::~TitleScreen()
 bool TitleScreen::Start()
 {
 	bool ret = true;
-
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 	app->win->GetWindowSize(windowSizeX, windowSizeY);
 	windowScale = app->win->GetScale();
 

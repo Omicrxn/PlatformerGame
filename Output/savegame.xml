@@ -12,7 +12,7 @@
 	<scene />
 	<map />
 	<player>
-		<player x="200" y="709" />
+		<player x="510" y="888" />
 	</player>
 	<collisions />
 	<fadetoblack />
