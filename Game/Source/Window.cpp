@@ -44,36 +44,21 @@ bool Window::Awake(pugi::xml_node& config)
 		height = config.child("resolution").attribute("height").as_int(480);
 		scale = config.child("resolution").attribute("scale").as_int(1);
 
-		if(fullscreen == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN;
-		}
-
-		if(borderless == true)
-		{
-			flags |= SDL_WINDOW_BORDERLESS;
-		}
-
-		if(resizable == true)
-		{
-			flags |= SDL_WINDOW_RESIZABLE;
-		}
-
-		if(fullscreen_window == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-		}
+		if (fullscreen == true) flags |= SDL_WINDOW_FULLSCREEN;
+		if (borderless == true) flags |= SDL_WINDOW_BORDERLESS;
+		if (resizable == true) flags |= SDL_WINDOW_RESIZABLE;
+		if (fullscreen_window == true)flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 		window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-		if(window == NULL)
+		if (window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
 		else
 		{
-			//Get window surface
+			// Get window surface
 			screenSurface = SDL_GetWindowSurface(window);
 		}
 	}
@@ -102,7 +87,6 @@ bool Window::CleanUp()
 // Set new window title
 void Window::SetTitle(const char* new_title)
 {
-	//title.create(new_title);
 	SDL_SetWindowTitle(window, new_title);
 }
 

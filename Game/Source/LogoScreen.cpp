@@ -11,7 +11,7 @@
 
 LogoScreen::LogoScreen(bool startEnabled) : Module(startEnabled)
 {
-	name = "LogoScreen";
+	name = "logoscreen";
 }
 
 LogoScreen::~LogoScreen() {}

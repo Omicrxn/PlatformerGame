@@ -10,7 +10,7 @@
 
 TitleScreen::TitleScreen(bool startEnabled) : Module(startEnabled)
 {
-	name = "TitleScreen";
+	name = "titlescreen";
 }
 
 TitleScreen::~TitleScreen() {}

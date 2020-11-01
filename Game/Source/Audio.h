@@ -37,8 +37,8 @@ public:
 	void VolumeMinMax();
 
 	// Make the current volume to be saved and loaded
-	bool Save(pugi::xml_node&);
-	bool Load(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
+	bool LoadState(pugi::xml_node&);
 
 	int volume;
 

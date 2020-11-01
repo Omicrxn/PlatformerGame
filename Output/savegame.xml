@@ -3,15 +3,18 @@
 	<window />
 	<input />
 	<textures />
-	<LogoScreen />
-	<TitleScreen />
-	<EndingScreen />
+	<audio>
+		<volume value="128" />
+	</audio>
+	<logoscreen />
+	<titlescreen />
+	<endingscreen />
 	<scene />
 	<map />
-	<Player />
-	<Collisions />
-	<FadeToBlack />
-	<renderer>
-		<camera x="-475" y="-540" />
-	</renderer>
+	<player>
+		<player x="850" y="900" />
+	</player>
+	<collisions />
+	<fadetoblack />
+	<renderer />
 </save>

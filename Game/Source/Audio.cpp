@@ -55,7 +55,7 @@ bool Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	volume = config.attribute("volume").as_int();
+	volume = config.child("volume").attribute("value").as_int(0);
 	VolumeChange(volume);
 
 	return ret;
@@ -198,16 +198,16 @@ void Audio::VolumeMinMax()
 }
 
 // Make the current volume to be saved and loaded
-bool Audio::Save(pugi::xml_node& data)
+bool Audio::SaveState(pugi::xml_node& data) const
 {
-	data.append_attribute("volume").set_value(volume);
+	data.append_child("volume").append_attribute("value").set_value(volume);
 
 	return true;
 }
 
-bool Audio::Load(pugi::xml_node& data)
+bool Audio::LoadState(pugi::xml_node& data)
 {
-	volume = data.attribute("volume").as_int();
+	volume = data.child("volume").attribute("value").as_int();
 	VolumeChange(volume);
 
 	return true;

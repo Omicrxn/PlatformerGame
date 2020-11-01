@@ -43,7 +43,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(input);
 	AddModule(tex);
-	/*AddModule(audio);*/
+	AddModule(audio);
 	AddModule(logoScreen); 
 	AddModule(titleScreen); 
 	AddModule(endingScreen);
@@ -298,8 +298,6 @@ bool App::LoadGame()
 {
 	bool ret = false;
 
-	//...
-
 	loadGameRequested = false;
 
 	pugi::xml_document doc;
@@ -334,8 +332,6 @@ bool App::SaveGame() const
 {
 	bool ret = true;
 
-	//...
-
 	saveGameRequested = false;
 
 	pugi::xml_document doc;
@@ -356,6 +352,3 @@ bool App::SaveGame() const
 
 	return ret;
 }
-
-
-

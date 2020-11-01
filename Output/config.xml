@@ -2,7 +2,7 @@
 <!-- L01: DONE 1: Create configuration file-->
 <config>
   <app>
-    <title>Game Development Testbed</title>
+    <title>Game Development Platformer Game</title>
     <organization>UPC</organization>
   </app>
 
@@ -19,7 +19,9 @@
   </window>
 
   <!-- Add default volume in config.xml -->
-  <audio volume ="64"/>
+  <audio>
+    <volume value="128"/>
+  </audio>
 
   <!-- L03: Added maps folder as config option -->
   <map>

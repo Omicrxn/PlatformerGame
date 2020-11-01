@@ -1,6 +1,5 @@
 #include "FadeToBlack.h"
 
-
 #include "App.h"
 #include "Render.h"
 #include "Window.h"
@@ -8,9 +7,10 @@
 #include "SDL/include/SDL_render.h"
 
 #include "Log.h"
+
 FadeToBlack::FadeToBlack(bool startEnabled) : Module( startEnabled)
 {
-	name = "FadeToBlack";
+	name = "fadetoblack";
 }
 
 FadeToBlack::~FadeToBlack() {}
@@ -26,6 +26,7 @@ bool FadeToBlack::Start()
 
 	// Enable blending mode for transparency
 	SDL_SetRenderDrawBlendMode(app->render->renderer, SDL_BLENDMODE_BLEND);
+	
 	return true;
 }
 
@@ -91,7 +92,8 @@ bool FadeToBlack::Fade(Module* moduleToDisable, Module* moduleToEnable, float fr
 	return ret;
 }
 
-bool FadeToBlack::hasEnded() {
+bool FadeToBlack::hasEnded() 
+{
 	bool ret = true;
 
 	if (currentStep == Fade_Step::NONE)

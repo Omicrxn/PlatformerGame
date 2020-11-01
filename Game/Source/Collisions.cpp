@@ -7,7 +7,7 @@
 #include "Log.h"
 
 Collisions::Collisions(bool startEnabled) : Module(startEnabled) {
-	name = "Collisions";
+	name = "collisions";
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		colliders[i] = nullptr;

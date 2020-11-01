@@ -14411,6 +14411,10 @@
   </data>
  </layer>
  <layer id="2" name="Collisions" width="160" height="90">
+  <properties>
+   <property name="Drawable" type="bool" value="true"/>
+   <property name="Navigation" type="bool" value="false"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -17719,11 +17723,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="4097"/>
+   <tile gid="4097"/>
+   <tile gid="4097"/>
+   <tile gid="4097"/>
+   <tile gid="4097"/>
    <tile/>
    <tile gid="4097"/>
    <tile/>
@@ -22085,7 +22089,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="4097"/>
    <tile gid="4097"/>
    <tile gid="4097"/>
    <tile gid="4097"/>

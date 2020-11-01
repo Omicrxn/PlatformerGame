@@ -13,17 +13,29 @@ class Player : public Module
 {
 public:
 	Player(bool startEnabled);
+	
 	~Player();
+	
 	bool Start();
+	
 	bool Update(float dt);
+	
 	bool PostUpdate();
+	
 	bool CleanUp();
+
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
+	
 	void Run();
 	void Jump();
 	void Fall();
+	
 	void Die();
 	bool Died();
+	
 	void UpdateCamera();
+	
 	// The player's collider
 	Collider* collider = nullptr;
 
@@ -35,31 +47,40 @@ public:
 		return position;
 	}
 
-
 private:
-	//Physics variables
+	// Physics variables
 	iPoint position;
 	iPoint initialPosition;
+
 	float velocityY;
 	float gravity;
+
 	bool onGround;
 	bool dead;
+
 	SDL_Texture* texture = nullptr;
+
 	Animation* current_anim = nullptr;
-	//Idle Animation
+
+	// Idle Animation
 	Animation playerIdle;
-	//Running Animation
+
+	// Running Animation
 	Animation playerRunning;
-	//Jumping Animation
+
+	// Jumping Animation
 	Animation playerJumping;
-	//Falling Animation
+
+	// Falling Animation
 	Animation playerFalling;
-	//Death Animation
+
+	// Death Animation
 	Animation playerDeath;
+
 	SDL_Rect rectAnim;
+
 	bool godMode = false;
 	bool isLeft;
-	
 };
 
 #endif // __MODULEPLAYER_H__

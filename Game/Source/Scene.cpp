@@ -7,6 +7,8 @@
 #include "Scene.h"
 #include "Map.h"
 #include "FadeToBlack.h"
+#include "LogoScreen.h"
+#include "TitleScreen.h"
 #include "EndingScreen.h"
 #include "Player.h"
 
@@ -60,11 +62,19 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-    // L02: DONE 3: Request Load / Save when pressing L/S
-	if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	// DEBUG Key to start from the first level
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		if (app->logoScreen->isEnabled()) app->fade->Fade((Module*)app->logoScreen, (Module*)app->scene, 100);
+		if (app->titleScreen->isEnabled()) app->fade->Fade((Module*)app->titleScreen, (Module*)app->scene, 100);
+		if (app->endingScreen->isEnabled()) app->fade->Fade((Module*)app->endingScreen, (Module*)app->scene, 100);
+	}
+
+	// DEBUG Keys to Request Load / Save
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 
-	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();
 
 	// Change volume with +/- from the numeric keyboard
@@ -152,10 +162,13 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
 	app->player->Disable();
+
 	app->tex->UnLoad(background1);
 	app->tex->UnLoad(background2);
 	app->tex->UnLoad(background3);
 	app->tex->UnLoad(background4);
+
 	return true;
 }
