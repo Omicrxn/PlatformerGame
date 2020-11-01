@@ -69,7 +69,18 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 
 	// F9 View colliders / logic
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) app->map->ChangeLayerProperty("Collisions", "Draw", 1);
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{ 
+		debugDraw = !debugDraw;
+		if (debugDraw)
+		{
+			app->map->ChangeLayerProperty("Collisions", "Draw", 1);
+		}
+		else
+		{
+			app->map->ChangeLayerProperty("Collisions", "Draw", 0);
+		}
+	}
 
 	// Change volume with +/- from the numeric keyboard
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
@@ -150,6 +161,8 @@ bool Scene::CleanUp()
 	app->tex->UnLoad(background4);
 
 	app->audio->StopMusic();
+
+	debugDraw = false;
 
 	return true;
 }

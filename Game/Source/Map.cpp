@@ -57,7 +57,7 @@ void Map::ChangeLayerProperty(SString layerName, SString propertyName, int value
 	ListItem<MapLayer*>* layer = data.layers.start;
 	while (layer != NULL)
 	{
-		if (layer->data->name == layerName)
+		/*if (layer->data->name == layerName)
 		{
 			if (layer->data->properties.GetProperty(propertyName.GetString()) == 0)
 			{
@@ -67,6 +67,11 @@ void Map::ChangeLayerProperty(SString layerName, SString propertyName, int value
 			{
 				layer->data->properties.SetProperty(propertyName.GetString(), 0);
 			}
+		}*/
+
+		if (layer->data->name == layerName)
+		{
+			layer->data->properties.SetProperty(propertyName.GetString(), value);
 		}
 
 		layer = layer->next;
