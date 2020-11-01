@@ -7,6 +7,7 @@
 #include "SDL/include/SDL_rect.h"
 
 struct SDL_Texture;
+
 class TitleScreen : public Module
 {
 public:

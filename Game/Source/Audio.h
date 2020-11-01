@@ -40,12 +40,16 @@ public:
 	bool SaveState(pugi::xml_node&) const;
 	bool LoadState(pugi::xml_node&);
 
+	bool StopMusic();
+
+public:
+
 	int volume;
 
 private:
 
 	_Mix_Music* music;
-	List<Mix_Chunk *>	fx;
+	List<Mix_Chunk *> fx;
 };
 
 #endif // __AUDIO_H__

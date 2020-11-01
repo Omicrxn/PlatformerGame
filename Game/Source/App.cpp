@@ -28,7 +28,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	input = new Input(true);
 	render = new Render(true);
 	tex = new Textures(true);
-	audio = new Audio(false);
+	audio = new Audio(true);
 	scene = new Scene(false);
 	map = new Map(false);
 	fade = new FadeToBlack(true);

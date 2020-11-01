@@ -202,3 +202,13 @@ bool Audio::LoadState(pugi::xml_node& data)
 
 	return true;
 }
+
+bool Audio::StopMusic() 
+{
+	Mix_FreeMusic(music);
+	music = nullptr;
+
+	Mix_HaltMusic();
+
+	return true;
+}

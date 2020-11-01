@@ -17,13 +17,13 @@ Player::Player(bool startEnabled) : Module(startEnabled)
 	name = "player";
 
 	// Loading Idle Anim
-
 	playerIdle.PushBack({ 25,23,17,25 });
 	playerIdle.PushBack({ 89,23,17,25 });
 	playerIdle.PushBack({ 153,23,17,25 });
 	playerIdle.PushBack({ 217,23,17,25 });
 	playerIdle.PushBack({ 217,23,17,25 });
 	playerIdle.PushBack({ 281,23,17,25 });
+
 	playerIdle.loop = true;
 	playerIdle.speed = 0.09f;
 
@@ -69,30 +69,37 @@ bool Player::Start()
 	
 	// Physics variables
 	isLeft = false;
+
 	initialPosition = { 200, 900};
 	position = initialPosition;
+
 	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
 	app->render->camera.y = (-position.y) + (app->win->GetWindowHeight() / 2);
+
 	gravity = 1;
+
 	velocity = {0,0};
+
 	onGround = true;
 	dead = false;
 	collision = false;
+
 	scale = app->win->GetScale();
+
 	return ret;
 }
 
-bool Player::Update(float dt) 
+bool Player::Update(float dt)
 {
 	bool ret = true;
 	iPoint tempPlayerPosition = position;
-	if (!dead) {
-		
+	if (!dead)
+	{
 		velocity.y += gravity;
 		position.y += velocity.y;
 		isLeft ? position.x -= velocity.x : position.x += velocity.x;
 	}
-	
+
 	if (collision == true)
 	{
 		if (onGround || dead) {
@@ -100,13 +107,17 @@ bool Player::Update(float dt)
 			position.y = tempPlayerPosition.y;
 			collision = false;
 		}
-	}else{
+	}
+	else
+	{
 		Fall();
 	}
+
 	UpdateCamera();
-	if (onGround && !dead) 
+
+	if (onGround && !dead)
 	{
-		if (current_anim != &playerIdle) 
+		if (current_anim != &playerIdle)
 		{
 			current_anim = &playerIdle;
 			playerJumping.Reset();
@@ -115,7 +126,7 @@ bool Player::Update(float dt)
 	}
 	else if (!dead)
 	{
-		if (current_anim != &playerJumping) 
+		if (current_anim != &playerJumping)
 		{
 			current_anim = &playerJumping;
 			playerJumping.Reset();
@@ -129,24 +140,40 @@ bool Player::Update(float dt)
 		position.y = initialPosition.y;
 	}
 
-	// Saving the player position for collision cases
-	
-	
+	// F10 God Mode (fly around, cannot be killed)
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		godMode = !godMode;
+	}
+
 	// Update player position
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !dead)
 	{
-		isLeft = true;
-		Run();
-	}
-	
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !dead)
-	{
-		isLeft = false;
-		Run();
+		if (godMode) --position.x;
+		else
+		{
+			isLeft = true;
+			Run();
+		}
 	}
 
-	
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !dead)
+	{
+		if (godMode) ++position.x;
+		else
+		{
+			isLeft = false;
+			Run();
+		}
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !dead && godMode)
+	{
+		--position.y;
+	}
+
 	rectAnim = current_anim->GetCurrentFrame();
+
 	// Map collisions detection (platforms)
 	SDL_Rect playerRect = { position.x, position.y, rectAnim.w, rectAnim.h };
 	iPoint tilePosition;
@@ -163,28 +190,36 @@ bool Player::Update(float dt)
 				{
 					tilePosition = app->map->MapToWorld(x, y);
 					tileRect = { tilePosition.x, tilePosition.y, app->map->data.tileWidth, app->map->data.tileHeight };
-					//Red Collider
+
+					// Red Collider
 					if (layer->data->Get(x, y) == 4097 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
-						if (playerRect.y < tileRect.y) {
+						if (playerRect.y < tileRect.y)
+						{
 							onGround = true;
 						}
-						else if (playerRect.y > tileRect.y) {
+						else if (playerRect.y > tileRect.y)
+						{
 							velocity.y = 1;
 						}
-						
+
 						break;
 					}
-					//Green Collider
+
+					// Green Collider
 					if (layer->data->Get(x, y) == 4098 && CheckCollision(tileRect, playerRect))
 					{
 						app->fade->Fade((Module*)app->scene, (Module*)app->titleScreen, 180);
 					}
-					//Blue Collider
-					if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect)) {
+
+					// Blue Collider
+					if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect))
+					{
 						collision = true;
+
 						velocity.x *= -1;
+
 						if (isLeft)
 						{
 							position.x += 3;
@@ -195,7 +230,8 @@ bool Player::Update(float dt)
 						}
 						break;
 					}
-					//Yellow Collider
+
+					// Yellow Collider
 					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
@@ -205,17 +241,20 @@ bool Player::Update(float dt)
 				}
 			}
 		}
-
 		layer = layer->next;
 	}
 
 	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && !dead)
 	{
-		Jump();
+		if (godMode) ++position.y;
+		else
+		{
+			Jump();
+		}
 	}
 	else if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP) && !dead)
 	{
-		SmallJump();
+		if (!godMode) SmallJump();
 	}
 
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
@@ -236,6 +275,7 @@ bool Player::PostUpdate()
 bool Player::CleanUp()
 {
 	bool ret = true;
+
 	app->tex->UnLoad(texture);
 	current_anim = nullptr;
 
@@ -260,12 +300,6 @@ bool Player::SaveState(pugi::xml_node& data) const
 	return true;
 }
 
-void Player::OnCollision(Collider* c1, Collider* c2)
-{
-	// Detect collision with a bullet or an enemy. If so, disappear and explode.
-
-}
-
 void Player::Run()
 {
 	if (current_anim != &playerRunning && onGround)
@@ -288,15 +322,14 @@ void Player::Jump()
 // Add acceleration to Y speed
 void Player::SmallJump()
 {
-	if (velocity.y < -9.0f)
-		velocity.y = -9.0f;
+	if (velocity.y < -9.0f) velocity.y = -9.0f;
 }
 
-void Player::Fall() 
+void Player::Fall()
 {
-	if (velocity.y > 0)
-		velocity.y = 8;
+	if (velocity.y > 0) velocity.y = 8;
 }
+
 void Player::Die()
 {
 	dead = true;
@@ -314,10 +347,11 @@ bool Player::Died()
 
 void Player::UpdateCamera()
 {
-	int xAxis = (-position.x * scale) + (app->win->GetWindowWidth() / 2 );
-	int yAxis = (-position.y*scale) + ((app->win->GetWindowHeight() / 2) );
-	app->render->camera.x = xAxis ;
-	app->render->camera.y = yAxis ;
+	int xAxis = (-position.x * scale) + (app->win->GetWindowWidth() / 2);
+	int yAxis = (-position.y * scale) + ((app->win->GetWindowHeight() / 2));
+
+	app->render->camera.x = xAxis;
+	app->render->camera.y = yAxis;
 
 	if (app->render->camera.x >= 0)
 	{

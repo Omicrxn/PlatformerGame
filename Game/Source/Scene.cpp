@@ -71,8 +71,6 @@ bool Scene::Update(float dt)
 	// F9 View colliders / logic
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) app->map->ChangeLayerProperty("Collisions", "Draw", 1);
 
-	// F10 God Mode (fly around, cannot be killed)
-
 	// Change volume with +/- from the numeric keyboard
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
@@ -93,8 +91,6 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) app->render->camera.x -= 1;
 
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) app->render->camera.x += 1;
-
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	if (!app->render->DrawTexture(background1, 0, 0, &backgroundRect, false, 0.2f))
 	{
@@ -122,21 +118,12 @@ bool Scene::Update(float dt)
 	
 	// Draw map
 	app->map->Draw();
-
-	// L03: DONE 7: Set the window title with map/tileset info
-	/*SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-				   app->map->data.width, app->map->data.height,
-				   app->map->data.tileWidth, app->map->data.tileHeight,
-				   app->map->data.tilesets.count());
-
-	app->win->SetTitle(title.GetString());*/
-
 	
 	if (app->player->Died()) 
 	{
 		app->fade->Fade(this, (Module*)app->endingScreen, 180);		
 	}
-		
+
 	return true;
 }
 
@@ -161,6 +148,8 @@ bool Scene::CleanUp()
 	app->tex->UnLoad(background2);
 	app->tex->UnLoad(background3);
 	app->tex->UnLoad(background4);
+
+	app->audio->StopMusic();
 
 	return true;
 }

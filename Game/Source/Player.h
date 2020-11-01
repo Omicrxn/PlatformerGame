@@ -12,6 +12,7 @@ struct SDL_Texture;
 class Player : public Module 
 {
 public:
+
 	Player(bool startEnabled);
 	
 	~Player();
@@ -30,17 +31,13 @@ public:
 	void Run();
 	void Jump();
 	void SmallJump();
+
 	void Fall();
+
 	void Die();
 	bool Died();
 	
 	void UpdateCamera();
-	
-	// The player's collider
-	Collider* collider = nullptr;
-
-	// Collision callback, called when the player intersects with another collider
-	void OnCollision(Collider* c1, Collider* c2);
 
 	// Get the current player position
 	iPoint GetPlayerPosition() 
@@ -51,16 +48,21 @@ public:
 	bool CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect);
 
 private:
+
 	// Physics variables
 	iPoint position;
 	iPoint initialPosition;
 
 	iPoint velocity;
 	float gravity;
+
 	bool collision;
 	bool onGround;
+
 	bool dead;
+
 	uint scale;
+
 	SDL_Texture* texture = nullptr;
 
 	Animation* current_anim = nullptr;

@@ -21,13 +21,13 @@ private:
 	int lastFrame = 0;
 	int loops = 0;
 
-	enum flow 
+	enum Flow 
 	{
 		FORWARDS,
 		BACKWARDS
 	} 
 	
-	direction = flow::FORWARDS;
+	direction = Flow::FORWARDS;
 
 public:
 
@@ -47,29 +47,30 @@ public:
 	{
 		switch (direction)
 		{
-		case flow::FORWARDS:
+		case Flow::FORWARDS:
 		{
 			currentFrame += speed;
 			if (currentFrame >= lastFrame)
 			{
 				currentFrame = (loop || flow) ? 0.0f : lastFrame - 1;
-				direction = flow ? flow::BACKWARDS : flow::FORWARDS;
+				direction = flow ? Flow::BACKWARDS : Flow::FORWARDS;
 				loops++;
 			}
 		}
 		break;
-		case flow::BACKWARDS:
+		case Flow::BACKWARDS:
 		{
 			currentFrame -= speed;
 			if (currentFrame <= 0.0f)
 			{
 				currentFrame = 0.0f;
-				direction = flow::FORWARDS;
+				direction = Flow::FORWARDS;
 				loops++;
 			}
 		}
 		break;
 		}
+
 		return frames[(int)currentFrame];
 	}
 
