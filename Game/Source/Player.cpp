@@ -76,27 +76,36 @@ bool Player::Start()
 	app->render->camera.y = (-position.y) + (app->win->GetWindowHeight() / 2);
 	gravity = 0.5f;
 	velocityY = 0.0f;
-	onGround = false;
+	onGround = true;
+	onWall = false;
 	dead = false;
-	
+	collision = false;
 	return ret;
 }
 
 bool Player::Update(float dt) 
 {
 	bool ret = true;
-
+	iPoint tempPlayerPosition = position;
 	velocityY += gravity;
 	position.y += velocityY;
-	UpdateCamera();
 	
-	if (position.y >= initialPosition.y)
+	
+	//if (position.y >= initialPosition.y)
+	//{
+	//	/*position.y = initialPosition.y;*/
+	//	//velocityY = 0.0;
+	//	//onGround = true;
+	//}
+	if (collision == true)
 	{
-		position.y = initialPosition.y;
-		velocityY = 0.0;
-		onGround = true;
+		if (onGround) {
+			position.y = tempPlayerPosition.y;
+			collision = false;
+		}
+		
 	}
-
+	UpdateCamera();
 	if (onGround && !dead) 
 	{
 		if (current_anim != &playerIdle) 
@@ -122,7 +131,7 @@ bool Player::Update(float dt)
 	}
 
 	// Saving the player position for collision cases
-	iPoint tempPlayerPosition = position;
+	
 	
 	// Update player position
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -137,17 +146,9 @@ bool Player::Update(float dt)
 		Run();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		Jump();
-	}
-	/*else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-	{
-		Fall();
-	}*/
 	
+	rectAnim = current_anim->GetCurrentFrame();
 	// Map collisions detection (platforms)
-	bool collision = false;
 	SDL_Rect playerRect = { position.x, position.y, rectAnim.w, rectAnim.h };
 	iPoint tilePosition;
 	SDL_Rect tileRect;
@@ -166,6 +167,19 @@ bool Player::Update(float dt)
 					if (layer->data->Get(x, y) == 4097 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
+						if (playerRect.y < tileRect.y) {
+							onGround = true;
+						}
+						else if (playerRect.y > tileRect.y) {
+							Fall();
+						}
+						if (tileRect.x < playerRect.x) {
+							//Colisiona por la derecha
+							onWall = true;
+						}
+						else if (tileRect.x + tileRect.w > playerRect.x + playerRect.w) {
+							//colisiona por la izquierda
+						}
 						break;
 					}
 				}
@@ -175,12 +189,18 @@ bool Player::Update(float dt)
 		layer = layer->next;
 	}
 
-	if (collision == true)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		position = tempPlayerPosition;
+		Jump();
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	{
+		SmallJump();
 	}
 
-	rectAnim = current_anim->GetCurrentFrame();
+	if (onWall) {
+		position.x = tempPlayerPosition.x;
+	}
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;
@@ -249,12 +269,16 @@ void Player::Jump()
 }
 
 // Add acceleration to Y speed
-void Player::Fall()
+void Player::SmallJump()
 {
 	if (velocityY < -9.0f)
 		velocityY = -9.0f;
 }
 
+void Player::Fall() 
+{
+	velocityY = 1;
+}
 void Player::Die()
 {
 	dead = true;

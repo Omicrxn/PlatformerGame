@@ -29,8 +29,8 @@ public:
 	
 	void Run();
 	void Jump();
+	void SmallJump();
 	void Fall();
-	
 	void Die();
 	bool Died();
 	
@@ -57,8 +57,9 @@ private:
 
 	float velocityY;
 	float gravity;
-
+	bool collision;
 	bool onGround;
+	bool onWall;
 	bool dead;
 
 	SDL_Texture* texture = nullptr;
