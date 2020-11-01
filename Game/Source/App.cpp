@@ -29,10 +29,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(true);
 	tex = new Textures(true);
 	audio = new Audio(false);
-	scene = new Scene(true);
-	map = new Map(true);
+	scene = new Scene(false);
+	map = new Map(false);
 	fade = new FadeToBlack(true);
-	logoScreen = new LogoScreen(false); 
+	logoScreen = new LogoScreen(true); 
 	titleScreen = new TitleScreen(false); 
 	endingScreen = new EndingScreen(false);
 	player = new Player(false);
@@ -128,7 +128,7 @@ bool App::Start()
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Start();
+		ret = item->data->isEnabled() ? item->data->Start() : true;
 		item = item->next;
 	}
 
