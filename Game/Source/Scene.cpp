@@ -44,6 +44,7 @@ bool Scene::Start()
 	backgroundRect = { 0,0,2880,1440 };
 
 	// Load map
+	app->map->Enable();
 	app->map->Load("level1.tmx");
 	app->player->Enable();
 	
@@ -143,7 +144,7 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	app->player->Disable();
-
+	app->map->Disable();
 	app->tex->UnLoad(background1);
 	app->tex->UnLoad(background2);
 	app->tex->UnLoad(background3);

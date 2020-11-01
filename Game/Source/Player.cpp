@@ -148,20 +148,22 @@ bool Player::Update(float dt)
 	// Update player position
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !dead)
 	{
+		isLeft = true;
 		if (godMode) position.x-=3;
 		else
 		{
-			isLeft = true;
+			
 			Run();
 		}
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !dead)
 	{
+		isLeft = false;
 		if (godMode) position.x+=3;
 		else
 		{
-			isLeft = false;
+			
 			Run();
 		}
 	}
@@ -276,6 +278,7 @@ bool Player::CleanUp()
 	bool ret = true;
 
 	app->tex->UnLoad(texture);
+	texture = nullptr;
 	current_anim = nullptr;
 
 	return ret;

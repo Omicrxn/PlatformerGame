@@ -225,7 +225,9 @@ bool Map::CleanUp()
 
 	while (item != NULL)
 	{
+		app->tex->UnLoad(item->data->texture);
 		RELEASE(item->data);
+		
 		item = item->next;
 	}
 	data.tilesets.clear();
