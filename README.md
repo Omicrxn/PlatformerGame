@@ -52,4 +52,4 @@ This project is licensed under an unmodified MIT license, which is an OSI-certif
 ### Additional Licenses
 The assets' work of this project is licensed under the Creative Commons Attribution 4.0 International License.
 For map assets license, check [LICENSE_MAP](/Output/Assets/maps/LICENSE_MAP) for the artists' work link.
-For map assets license, check [LICENSE_CHARACTER](/Output/Assets/player/LICENSE_CHARACTER) for the artists' work link.
+For character assets license, check [LICENSE_CHARACTER](/Output/Assets/player/LICENSE_CHARACTER) for the artists' work link.
