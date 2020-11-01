@@ -55,11 +55,10 @@ private:
 	iPoint position;
 	iPoint initialPosition;
 
-	float velocityY;
+	iPoint velocity;
 	float gravity;
 	bool collision;
 	bool onGround;
-	bool onWall;
 	bool dead;
 
 	SDL_Texture* texture = nullptr;

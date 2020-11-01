@@ -17,45 +17,44 @@ Player::Player(bool startEnabled) : Module(startEnabled)
 	name = "player";
 
 	// Loading Idle Anim
-	for (int i = 0; i <= (116 * 5); i += 116)
-	{
-		playerIdle.PushBack({ i,30,57,86 });
-	}
+
+	playerIdle.PushBack({ 25,23,17,25 });
+	playerIdle.PushBack({ 89,23,17,25 });
+	playerIdle.PushBack({ 153,23,17,25 });
+	playerIdle.PushBack({ 217,23,17,25 });
+	playerIdle.PushBack({ 217,23,17,25 });
+	playerIdle.PushBack({ 281,23,17,25 });
 	playerIdle.loop = true;
 	playerIdle.speed = 0.09f;
 
 	// Loading Running Anim
-	playerRunning.PushBack({ 0,146,75,86 });
-	playerRunning.PushBack({ 116,146,70,86 });
-	playerRunning.PushBack({ 232,146,59,86 });
-	playerRunning.PushBack({ 348,146,71,86 });
-	playerRunning.PushBack({ 464,146,75,86 });
-	playerRunning.PushBack({ 580,146,63,86 });
-	playerRunning.PushBack({ 696,146,55,86 });
-	playerRunning.PushBack({ 811,146,71,86 });
+	playerRunning.PushBack({ 26,86,17,25 });
+	playerRunning.PushBack({ 90,86,17,25 });
+	playerRunning.PushBack({ 154,86,17,26 });
+	playerRunning.PushBack({ 217,86,17,26 });
+	playerRunning.PushBack({ 280,86,19,25 });
+	playerRunning.PushBack({ 343,86,21,25 });
+	playerRunning.PushBack({ 408,86,19,26 });
+	playerRunning.PushBack({ 473,86,19,26 });
+
 	playerRunning.loop = true;
 	playerRunning.speed = 0.12f;
 
 	// Loading Jumping Anim
-	playerJumping.PushBack({ 0,262,75,86 });
-	playerJumping.PushBack({ 116,261,70,87 });
+	playerJumping.PushBack({ 26,151,17,25 });
+	playerJumping.PushBack({ 89,151,17,25 });
+	playerJumping.PushBack({ 152,151,17,26 });
+
 	playerJumping.loop = true;
 	playerJumping.speed = 0.09f;
 
-	// Loading Falling Anim
-	playerFalling.PushBack({ 0,364,59,100 });
-	playerFalling.PushBack({ 116,364,59,100 });
-	playerFalling.loop = true;
-	playerFalling.speed = 0.09f;
-
 	// Loading Death Anim
-	playerDeath.PushBack({ 0,603,65,93 });
-	playerDeath.PushBack({ 116,600,73,96 });
-	playerDeath.PushBack({ 232,597,73,96 });
-	playerDeath.PushBack({ 348,595,102,101 });
-	playerDeath.PushBack({ 464,595,105,101 });
-	playerDeath.PushBack({ 580,595,101,101 });
-	playerDeath.PushBack({ 696,595,105,101 });
+	playerDeath.PushBack({ 7,474,36,22 });
+	playerDeath.PushBack({ 80,474,36,22 });
+	playerDeath.PushBack({ 142,474,41,22 });
+	playerDeath.PushBack({ 209,474,41,22 });
+	playerDeath.PushBack({ 272,474,41,22 });
+
 	playerDeath.loop = false;
 	playerDeath.speed = 0.12f;
 }
@@ -66,18 +65,17 @@ bool Player::Start()
 {
 	bool ret = true;
 
-	texture = app->tex->Load("Assets/player/PlayerSheet.png");
+	texture = app->tex->Load("Assets/player/Player.png");
 	
 	// Physics variables
 	isLeft = false;
-	initialPosition = { 200, 900 };
+	initialPosition = { 200 , 900 };
 	position = initialPosition;
 	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
 	app->render->camera.y = (-position.y) + (app->win->GetWindowHeight() / 2);
-	gravity = 0.5f;
-	velocityY = 0.0f;
+	gravity = 1;
+	velocity = {0,0};
 	onGround = true;
-	onWall = false;
 	dead = false;
 	collision = false;
 	return ret;
@@ -87,9 +85,9 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 	iPoint tempPlayerPosition = position;
-	velocityY += gravity;
-	position.y += velocityY;
-	
+	velocity.y += gravity;
+	position.y += velocity.y;
+	isLeft ? position.x -= velocity.x : position.x += velocity.x;
 	
 	//if (position.y >= initialPosition.y)
 	//{
@@ -113,6 +111,7 @@ bool Player::Update(float dt)
 			current_anim = &playerIdle;
 			playerJumping.Reset();
 		}
+		velocity.x = 0;
 	}
 	else if (!dead)
 	{
@@ -173,14 +172,12 @@ bool Player::Update(float dt)
 						else if (playerRect.y > tileRect.y) {
 							Fall();
 						}
-						if (tileRect.x < playerRect.x) {
-							//Colisiona por la derecha
-							onWall = true;
-						}
-						else if (tileRect.x + tileRect.w > playerRect.x + playerRect.w) {
-							//colisiona por la izquierda
-						}
+						
 						break;
+					}
+					else if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect)) {
+						collision = true;
+						velocity.x *= -1;
 					}
 				}
 			}
@@ -198,9 +195,6 @@ bool Player::Update(float dt)
 		SmallJump();
 	}
 
-	if (onWall) {
-		position.x = tempPlayerPosition.x;
-	}
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;
@@ -256,14 +250,14 @@ void Player::Run()
 		current_anim = &playerRunning;
 		playerJumping.Reset();
 	}
-	isLeft ? position.x -= 5 : position.x += 5;
+	velocity.x = 2;
 }
 
 void Player::Jump()
 {
 	if (onGround)
 	{
-		velocityY = -15.0f;
+		velocity.y = -15.0f;
 		onGround = false;
 	}
 }
@@ -271,13 +265,13 @@ void Player::Jump()
 // Add acceleration to Y speed
 void Player::SmallJump()
 {
-	if (velocityY < -9.0f)
-		velocityY = -9.0f;
+	if (velocity.y < -9.0f)
+		velocity.y = -9.0f;
 }
 
 void Player::Fall() 
 {
-	velocityY = 1;
+	velocity.y = 1;
 }
 void Player::Die()
 {
