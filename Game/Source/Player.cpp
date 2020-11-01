@@ -281,7 +281,8 @@ void Player::SmallJump()
 
 void Player::Fall() 
 {
-	velocity.y = 3;
+	if (velocity.y < -9.0f)
+		velocity.y = -9.0f;
 }
 void Player::Die()
 {
