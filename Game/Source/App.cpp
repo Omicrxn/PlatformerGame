@@ -10,7 +10,6 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
-#include "Collisions.h"
 #include "Player.h"
 
 #include "Defs.h"
@@ -36,7 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	titleScreen = new TitleScreen(false);
 	endingScreen = new EndingScreen(false);
 	player = new Player(false);
-	collisions = new Collisions(true);
+
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -50,7 +49,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(map);
 	AddModule(player);
-	AddModule(collisions);
+
 	AddModule(fade);
 
 	// Render last to swap buffer
