@@ -21,6 +21,8 @@
     <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\TitleScreen.cpp" />
     <ClCompile Include="Source\EndingScreen.cpp" />
+    <ClCompile Include="Source\PerfTimer.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -62,6 +64,8 @@
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\TitleScreen.h" />
     <ClInclude Include="Source\EndingScreen.h" />
+    <ClInclude Include="Source\PerfTimer.h" />
+    <ClInclude Include="Source\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

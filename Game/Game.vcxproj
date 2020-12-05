@@ -97,6 +97,8 @@
     <ClCompile Include="Source\Audio.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
+    <ClCompile Include="Source\PerfTimer.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TitleScreen.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -108,6 +110,8 @@
     <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\PerfTimer.h" />
+    <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TitleScreen.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Scene.h" />

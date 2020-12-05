@@ -96,19 +96,18 @@ bool Scene::Update(float dt)
 		app->audio->VolumeChange(app->audio->volume);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) app->render->camera.y -= 1;
+	    // Make the camera movement independent of framerate
+	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		app->render->camera.y -= floor(100*dt);
 
-	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) app->render->camera.y += 1;
+	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		app->render->camera.y += floor(100*dt);
 
-	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) app->render->camera.x -= 1;
+	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		app->render->camera.x -= floor(100*dt);
 
-	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) app->render->camera.x += 1;
-
-	if (!app->render->DrawTexture(background1, 0, 0, &backgroundRect, false, 0.2f))
-	{
-		LOG("%s %s", "Cannot blit the texture in ModulePlayer %s\n", SDL_GetError());
-		return false;
-	}
+	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		app->render->camera.x += floor(100*dt);
 
 	if (!app->render->DrawTexture(background2, 0, 0, &backgroundRect, false, 0.4f))
 	{

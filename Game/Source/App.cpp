@@ -18,10 +18,14 @@
 #include <iostream>
 #include <sstream>
 
+// Measure the amount of ms that takes to execute:
+// App constructor, Awake, Start and CleanUp
+// LOG the result
+
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
+	PERF_START(ptimer);
 
 	win = new Window(true);
 	input = new Input(true);
@@ -54,6 +58,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(render);
+
+	
+	PERF_PEEK(ptimer);
 }
 
 // Destructor
@@ -80,6 +87,8 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
+	PERF_START(ptimer);
+
 	pugi::xml_document configFile;
 	pugi::xml_node config;
 	pugi::xml_node configApp;
@@ -97,6 +106,12 @@ bool App::Awake()
 		// Read the title from the config file
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
+
+        // Read from config file your framerate cap
+		newMaxFramerate = configApp.attribute("framerate_cap").as_int();
+
+		if (newMaxFramerate > 0)
+			cappedMs = (1000.0f / (float)newMaxFramerate);
 	}
 
 	if (ret == true)
@@ -114,6 +129,8 @@ bool App::Awake()
 			item = item->next;
 		}
 	}
+	
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -121,6 +138,8 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
+	PERF_START(ptimer);
+	
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.start;
@@ -130,6 +149,8 @@ bool App::Start()
 		ret = item->data->isEnabled() ? item->data->Start() : true;
 		item = item->next;
 	}
+	
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -166,7 +187,14 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 
 // ---------------------------------------------
 void App::PrepareUpdate()
-{}
+{
+    frameCount++;
+    lastSecFrameCount++;
+
+    // Calculate the dt: differential time since last frame
+	dt = frameTime.ReadSec();
+	frameTime.Start();
+}
 
 // ---------------------------------------------
 void App::FinishUpdate()
@@ -174,6 +202,44 @@ void App::FinishUpdate()
 	// This is a good place to call Load / Save methods
 	if (loadGameRequested == true) LoadGame();
 	if (saveGameRequested == true) SaveGame();
+    
+    // Framerate calculations
+	// Amount of frames since startup
+	// Amount of time since game start (use a low resolution timer)
+	// Average FPS for the whole game life
+	// Amount of ms took the last update
+	// Amount of frames during the last second
+    
+	float averageFps = 0.0f;
+	float secondsSinceStartup = 0.0f;
+	uint32 lastFrameMs = 0;
+	uint32 framesOnLastSec = 0;
+
+	secondsSinceStartup = startupTime.ReadSec();
+	averageFps = (float)frameCount / startupTime.ReadSec();
+	lastFrameMs = frameTime.Read();
+	if (lastSecFrameTime.Read() > 1000)
+	{
+		lastSecFrameTime.Start();
+		prevLastSecFrameCount = lastSecFrameCount;
+		lastSecFrameCount = 0;
+	}
+	framesOnLastSec = prevLastSecFrameCount;
+
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
+			  averageFps, lastFrameMs, framesOnLastSec, dt, secondsSinceStartup, frameCount);
+
+	app->win->SetTitle(title);
+
+    // L08: TODO 2: Use SDL_Delay to make sure you get your capped framerate
+	if (cappedMs - lastFrameMs > 0 && cappedMs != -1)
+	{
+		// L08: TODO 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
+		PERF_START(ptimer);
+		SDL_Delay(cappedMs - lastFrameMs);
+		PERF_PEEK(ptimer);
+	}
 }
 
 // Call modules before each loop iteration
@@ -229,6 +295,8 @@ bool App::PostUpdate()
 // Called before quitting
 bool App::CleanUp()
 {
+	PERF_START(ptimer);
+
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.end;
@@ -238,6 +306,8 @@ bool App::CleanUp()
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
+
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -251,8 +321,10 @@ int App::GetArgc() const
 // ---------------------------------------
 const char* App::GetArgv(int index) const
 {
-	if (index < argc) return args[index];
-	else return NULL;
+	if(index < argc)
+		return args[index];
+	else
+		return NULL;
 }
 
 // ---------------------------------------
