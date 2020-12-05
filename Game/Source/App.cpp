@@ -115,6 +115,7 @@ bool App::Awake()
 
         // Read from config file your framerate cap
 		newMaxFramerate = configApp.attribute("framerate_cap").as_int();
+		framerateCap = true;
 	}
 
 	if (ret == true)

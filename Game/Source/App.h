@@ -117,7 +117,7 @@ private:
 	SString organization;
 	SString vsyncStr;
 
-	bool framerateCap;
+	bool framerateCap = true;
 
 	List<Module *> modules;
 
