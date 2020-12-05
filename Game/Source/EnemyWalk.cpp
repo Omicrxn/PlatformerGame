@@ -2,6 +2,11 @@
 #include "App.h"
 #include "Textures.h"
 #include "Render.h"
+#include "Map.h"
+#include "Pathfinding.h"
+#include "Player.h"
+#include "Scene.h"
+
 EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 {
 	movingAnim.PushBack({ 0,1,18,16 });
@@ -16,7 +21,7 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 
 	isLeft = true;
 
-	initialPosition = { 760, 1327 };
+	initialPosition = { 760, 975 };
 	position = initialPosition;
 
 	gravity = 1;
@@ -25,11 +30,31 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 	dead = false;
 	collision = false;
 
+	counter = 0;
+
+	origin = app->map->WorldToMap(position.x, position.y);
+	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+
+	app->pathfinding->lastPath.Clear();
+	app->pathfinding->CreatePath(origin, goal);
+	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+	{
+		path.PushBack(*app->pathfinding->lastPath.At(i));
+	}
+	path.Flip();
 }
 
 bool EnemyWalk::Update(float dt)
 {
 	bool ret = true;
+	if (!dead)
+	{
+		/*velocity.y += gravity;*/
+		position.y += velocity.y * dt;
+		/*isLeft ? position.x -= velocity.x : position.x += velocity.x;*/
+		position.x += velocity.x * dt;
+	}
+
 	if (current_anim != &movingAnim)
 	{
 		current_anim = &movingAnim;
@@ -40,10 +65,37 @@ bool EnemyWalk::Update(float dt)
 	{
 		ret = false;
 	}
+
+	if (counter >= 1.0f)
+	{
+		counter = 0.0f;
+		Move();
+	}
+	counter += dt;
+
 	return ret;
 }
 
 void EnemyWalk::Move()
 {
+	if (path.Count() > 0)
+	{
+		iPoint nextTile;
+		path.Pop(nextTile);
 
+		iPoint mapPos = app->map->WorldToMap(position.x, position.y);
+		if (mapPos.x < nextTile.x)
+			this->velocity.x = 1;
+		else
+			this->velocity.x = -1;
+
+		if (mapPos.y < nextTile.y)
+			this->velocity.y = gravity;
+		else
+			this->velocity.y = 0;
+	}
+	else
+	{
+		velocity = { 0,0 };
+	}
 }

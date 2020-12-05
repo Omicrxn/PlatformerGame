@@ -215,9 +215,6 @@ bool Player::Update(float dt)
 		layer = layer->next;
 	}
 
-	
-
-
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;
@@ -225,8 +222,6 @@ bool Player::Update(float dt)
 
 	return ret;
 }
-
-
 
 //bool Player::LoadState(pugi::xml_node& data)
 //{

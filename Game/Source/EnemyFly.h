@@ -20,5 +20,5 @@ public:
 	DynArray<iPoint> path;
 	iPoint origin;
 	iPoint goal;
-	uint counter;
+	float counter;
 };

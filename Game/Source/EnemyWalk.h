@@ -16,4 +16,9 @@ public:
 
 	Animation movingAnim;
 	
+	// Variables to manage the enemies path
+	DynArray<iPoint> path;
+	iPoint origin;
+	iPoint goal;
+	float counter;
 };

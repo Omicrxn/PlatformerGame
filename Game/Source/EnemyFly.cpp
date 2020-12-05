@@ -2,7 +2,6 @@
 #include "App.h"
 #include "Textures.h"
 #include "Render.h"
-#include "Input.h"
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Player.h"
@@ -22,7 +21,7 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 
 	isLeft = true;
 
-	initialPosition = { 725, 900 };
+	initialPosition = { 725, 1200 };
 	position = initialPosition;
 
 	gravity = 1;
@@ -32,6 +31,17 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 	collision = false;
 
 	counter = 0;
+
+	origin = app->map->WorldToMap(position.x, position.y);
+	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+
+	app->pathfinding->lastPath.Clear();
+	app->pathfinding->CreatePath(origin, goal);
+	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+	{
+		path.PushBack(*app->pathfinding->lastPath.At(i));
+	}
+	path.Flip();
 }
 
 bool EnemyFly::Update(float dt) 
@@ -39,9 +49,10 @@ bool EnemyFly::Update(float dt)
 	bool ret = true;
 	if (!dead)
 	{
-		velocity.y += gravity;
-		position.y += velocity.y;
-		isLeft ? position.x -= velocity.x : position.x += velocity.x;
+		/*velocity.y += gravity;*/
+		position.y += velocity.y*dt;
+		/*isLeft ? position.x -= velocity.x : position.x += velocity.x;*/
+		position.x += velocity.x*dt;
 	}
 
 	if (current_anim != &movingAnim)
@@ -55,10 +66,10 @@ bool EnemyFly::Update(float dt)
 		ret = false;
 	}
 
-	if (counter > 1000)
+	if (counter >= 0.27f)
 	{
-		counter = 0;
-		//Move();
+		counter = 0.0f;
+		Move();
 	}
 	counter += dt;
 
@@ -67,23 +78,24 @@ bool EnemyFly::Update(float dt)
 
 void EnemyFly::Move()
 {
-	origin = position;
-	goal = app->scene->player->position;
+	if (path.Count() > 0)
+	{
+		iPoint nextTile;
+		path.Pop(nextTile);
 
-	app->pathfinding->lastPath.Clear();
-	app->pathfinding->CreatePath(origin, goal);
-	path = app->pathfinding->lastPath;
+		iPoint mapPos = app->map->WorldToMap(position.x, position.y);
+		if (mapPos.x < nextTile.x)
+			this->velocity.x = 1;
+		else
+			this->velocity.x = -1;
 
-	iPoint nextTile = { path.At(0)->x, path.At(0)->y };
-	if (nextTile.x < position.x)
-		velocity.x = -10;
-
-	else if (nextTile.x > position.x)
-		velocity.x;
-
-	if (nextTile.y < position.y)
-		velocity.y = -10;
-
-	else if (nextTile.x > position.x)
-		velocity.y = 10;
+		if (mapPos.y < nextTile.y)
+			this->velocity.y = 1;
+		else
+			this->velocity.y = -1;
+	}
+	else
+	{
+		velocity = { 0,0 };
+	}
 }
