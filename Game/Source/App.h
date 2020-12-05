@@ -18,6 +18,7 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class Collisions;
 class Scene;
 class Map;
 class FadeToBlack;
@@ -98,6 +99,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	Collisions* collisions;
 	PathFinding* pathfinding;
 	Scene* scene;
 	Map* map;

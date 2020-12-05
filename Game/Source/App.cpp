@@ -9,6 +9,7 @@
 #include "Textures.h"
 #include "Pathfinding.h"
 #include "Audio.h"
+#include "Collisions.h"
 #include "Scene.h"
 #include "Map.h"
 #include "EntityManager.h"
@@ -34,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(true);
 	tex = new Textures(true);
 	audio = new Audio(false);
+	collisions = new Collisions(true);
 	scene = new Scene(true);
 	map = new Map(false);
 	fade = new FadeToBlack(true);
@@ -51,6 +53,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(inputHandler);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(collisions);
 	AddModule(logoScreen);
 	AddModule(titleScreen);
 	AddModule(endingScreen);

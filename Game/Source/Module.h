@@ -5,8 +5,8 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
-class App;
 
+struct Collider;
 
 class Module
 {
@@ -83,7 +83,9 @@ public:
 		return true;
 	}
 
-	
+	//Called when two colliders are intersecting
+	//and the module is registered as the listener
+	virtual void OnCollision(Collider* c1, Collider* c2){}
 
 public:
 
