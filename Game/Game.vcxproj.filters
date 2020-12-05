@@ -26,6 +26,7 @@
       <Filter>External</Filter>
     </ClCompile>
     <ClCompile Include="Source\InputHandler.cpp" />
+    <ClCompile Include="Source\EnemyFly.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation.h" />
@@ -74,6 +75,7 @@
     </ClInclude>
     <ClInclude Include="Source\Command.h" />
     <ClInclude Include="Source\InputHandler.h" />
+    <ClInclude Include="Source\EnemyFly.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

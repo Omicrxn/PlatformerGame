@@ -1,6 +1,7 @@
 #include "EntityManager.h"
 #include "App.h"
 #include "Player.h"
+#include "EnemyFly.h"
 #include "Textures.h"
 
 
@@ -21,6 +22,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::ENEMY_WALK:
 		break;
 	case EntityType::ENEMY_FLY:
+		ret = new EnemyFly();
 		break;
 	case EntityType::ITEM_COIN:
 		break;

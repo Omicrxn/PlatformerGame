@@ -5,6 +5,7 @@
 
 struct SDL_Texture;
 struct Player;
+struct EnemyFly;
 class Scene : public Module
 {
 public:
@@ -41,6 +42,7 @@ private:
 	SDL_Texture* debugTex;
 	SDL_Rect backgroundRect;
 	Player* player = nullptr;
+	EnemyFly* flyingEnemy1 = nullptr;
 	bool debugDraw = 0;
 };
 

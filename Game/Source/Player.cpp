@@ -111,7 +111,7 @@ bool Player::Update(float dt)
 		if (current_anim != &playerIdle)
 		{
 			current_anim = &playerIdle;
-			playerJumping.Reset();
+			playerIdle.Reset();
 		}
 		velocity.x = 0;
 	}

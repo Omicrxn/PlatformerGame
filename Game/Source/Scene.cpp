@@ -14,6 +14,7 @@
 #include "Command.h"
 #include "InputHandler.h"
 #include "Player.h"
+#include "EnemyFly.h"
 #include "PathFinding.h"
 
 #include "Defs.h"
@@ -66,6 +67,7 @@ bool Scene::Start()
 	
 
 	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
+	flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
 
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -239,5 +241,6 @@ bool Scene::CleanUp()
 	
 	debugDraw = false;
 	player = nullptr;
+	flyingEnemy1 = nullptr;
 	return true;
 }
