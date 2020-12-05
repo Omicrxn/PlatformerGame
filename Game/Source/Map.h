@@ -48,9 +48,20 @@ struct Properties
 		SString name;
 		int value;
 	};
-	
-	~Properties() 
-	{}
+
+	~Properties()
+	{
+		ListItem<Property*>* item;
+		item = list.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+
+		list.Clear();
+	}
 
 	// Method to ask for the value of a custom property
 	int GetProperty(const char* name, int default_value = 0) const;
@@ -131,6 +142,9 @@ public:
 
 	// Change a layer property value
 	void ChangeLayerProperty(SString layerName, SString propertyName, int value);
+	
+	// Create walkability map for pathfinding
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 private:
 

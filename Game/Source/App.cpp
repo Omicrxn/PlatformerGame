@@ -7,6 +7,7 @@
 #include "EndingScreen.h"
 #include "Render.h"
 #include "Textures.h"
+#include "Pathfinding.h"
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
@@ -39,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	titleScreen = new TitleScreen(false);
 	endingScreen = new EndingScreen(false);
 	player = new Player(false);
+	pathfinding = new PathFinding(false);
 
 
 	// Ordered for awake / Start / Update
@@ -50,6 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(logoScreen);
 	AddModule(titleScreen);
 	AddModule(endingScreen);
+	AddModule(pathfinding);
 	AddModule(scene);
 	AddModule(map);
 	AddModule(player);
@@ -75,13 +78,13 @@ App::~App()
 		item = item->prev;
 	}
 
-	modules.clear();
+	modules.Clear();
 }
 
 void App::AddModule(Module* module)
 {
 	//module->Enable();
-	modules.add(module);
+	modules.Add(module);
 }
 
 // Called before render is available

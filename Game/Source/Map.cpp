@@ -235,7 +235,7 @@ bool Map::CleanUp()
 		
 		item = item->next;
 	}
-	data.tilesets.clear();
+	data.tilesets.Clear();
 
 	// Clean up all layer data
 	// Remove all layers
@@ -247,7 +247,7 @@ bool Map::CleanUp()
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
-	data.layers.clear();
+	data.layers.Clear();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -287,7 +287,7 @@ bool Map::Load(const char* filename)
 
 		if (ret == true) ret = LoadTilesetImage(tileset, set);
 
-		data.tilesets.add(set);
+		data.tilesets.Add(set);
 	}
 
 	// Iterate all layers and load each of them
@@ -301,7 +301,7 @@ bool Map::Load(const char* filename)
 
 		ret = LoadProperties(layer, lay->properties);
 
-		if (ret == true) data.layers.add(lay);
+		if (ret == true) data.layers.Add(lay);
 	}
     
 	if (ret == true)
@@ -322,7 +322,7 @@ bool Map::Load(const char* filename)
 			LOG("orientation: isometric");
 		}
 
-		for (int i = 0; i < data.tilesets.count(); i++)
+		for (int i = 0; i < data.tilesets.Count(); i++)
 		{
 			LOG("Tileset %d", i + 1);
 			LOG("name: %s", data.tilesets[i]->name.GetString());
@@ -337,7 +337,7 @@ bool Map::Load(const char* filename)
 		}
 
 		// LOG the info for each loaded layer
-		for (int i = 0; i < data.layers.count(); i++)
+		for (int i = 0; i < data.layers.Count(); i++)
 		{
 			LOG("Layer %d", i + 1);
 			LOG("name: %s", data.layers[i]->name.GetString());
@@ -466,8 +466,52 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 			Properties::Property* prop = new Properties::Property();
 			prop->name = propertiesNode.attribute("name").as_string();
 			prop->value = propertiesNode.attribute("value").as_int();
-			properties.list.add(prop);
+			properties.list.Add(prop);
 		}
+	}
+
+	return ret;
+}
+
+// Create walkability map for pathfinding
+bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+	ListItem<MapLayer*>* item;
+	item = data.layers.start;
+
+	for(item = data.layers.start; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if(layer->properties.GetProperty("Navigation", 0) == 0)
+			continue;
+
+		uchar* map = new uchar[layer->width*layer->height];
+		memset(map, 1, layer->width*layer->height);
+
+		for(int y = 0; y < data.height; ++y)
+		{
+			for(int x = 0; x < data.width; ++x)
+			{
+				int i = (y*layer->width) + x;
+
+				int tileId = layer->Get(x, y);
+				TileSet* tileset = (tileId > 0) ? GetTilesetFromTileId(tileId) : NULL;
+				
+				if(tileset != NULL)
+				{
+					map[i] = (tileId - tileset->firstgid) > 0 ? 0 : 1;
+				}
+			}
+		}
+
+		*buffer = map;
+		width = data.width;
+		height = data.height;
+		ret = true;
+
+		break;
 	}
 
 	return ret;

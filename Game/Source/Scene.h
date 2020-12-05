@@ -38,6 +38,7 @@ private:
 	SDL_Texture* background2;
 	SDL_Texture* background3;
 	SDL_Texture* background4;
+	SDL_Texture* debugTex;
 	SDL_Rect backgroundRect;
 
 	bool debugDraw = 0;

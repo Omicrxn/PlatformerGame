@@ -26,7 +26,7 @@ class TitleScreen;
 class EndingScreen;
 class Screen;
 class Player;
-
+class PathFinding;
 
 class App
 {
@@ -96,6 +96,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	PathFinding* pathfinding;
 	Scene* scene;
 	Map* map;
 	FadeToBlack* fade;
