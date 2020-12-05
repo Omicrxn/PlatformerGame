@@ -4,17 +4,19 @@
 	<input />
 	<textures />
 	<audio>
-		<volume value="128" />
+		<volume value="64" />
 	</audio>
 	<logoscreen />
 	<titlescreen />
 	<endingscreen />
+	<pathfinding />
 	<scene />
 	<map />
 	<player>
-		<player x="248" y="973" />
+		<player x="200" y="973" />
 	</player>
-	<collisions />
 	<fadetoblack />
-	<renderer />
+	<renderer>
+		<camera x="0" y="-613" />
+	</renderer>
 </save>

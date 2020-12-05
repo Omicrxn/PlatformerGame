@@ -44,7 +44,7 @@ bool PathFinding::CheckBoundaries(const iPoint& pos) const
 			pos.y >= 0 && pos.y <= (int)height);
 }
 
-// Utility: returns true is the tile is walkable
+// Utility: returns true if the tile is walkable
 bool PathFinding::IsWalkable(const iPoint& pos) const
 {
 	uchar t = GetTileAt(pos);
@@ -182,11 +182,11 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	while(open.list.Count() != 0)
 	{
-		// L12b: TODO 3: Move the lowest score cell from open list to the closed list
+		// Move the lowest score cell from open list to the closed list
 		close.list.Add(open.GetNodeLowestScore()->data);
 		open.list.Del(open.GetNodeLowestScore());
 
-		// L12b: TODO 4: If we just added the destination, we are done!
+		// If we just added the destination, we are done!
 		// Backtrack to create the final path
 		// Use the Pathnode::parent and Flip() the path when you are finish
 		if (close.list.end->data.pos == destination)

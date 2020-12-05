@@ -32,7 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	input = new Input(true);
 	render = new Render(true);
 	tex = new Textures(true);
-	audio = new Audio(true);
+	audio = new Audio(false);
 	scene = new Scene(true);
 	map = new Map(false);
 	fade = new FadeToBlack(true);
@@ -41,8 +41,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	endingScreen = new EndingScreen(false);
 	pathfinding = new PathFinding(false);
 	entityman = new EntityManager(false);
-
-
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
