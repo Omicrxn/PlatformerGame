@@ -52,6 +52,7 @@ bool Scene::Start()
 	app->map->Enable();
 	app->map->Load("level1.tmx");
 	app->entityman->Enable();
+
 	// Create walkability map on map loading
 	if(app->map->Load("level1.tmx") == true)
 	{
@@ -64,7 +65,6 @@ bool Scene::Start()
 	}
 
 	debugTex = app->tex->Load("Assets/maps/pathfinding_debug.png");
-	
 
 	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
 	flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);

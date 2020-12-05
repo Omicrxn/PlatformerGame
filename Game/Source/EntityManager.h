@@ -15,5 +15,4 @@ public:
 	List<Entity*> entities;
 	bool doLogic = false;
 	float accumulatedTime = 0;
-
 };

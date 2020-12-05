@@ -2,6 +2,12 @@
 #include "App.h"
 #include "Textures.h"
 #include "Render.h"
+#include "Input.h"
+#include "Map.h"
+#include "Pathfinding.h"
+#include "Player.h"
+#include "Scene.h"
+
 EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 {
 	movingAnim.PushBack({ 1,3,13,8 });
@@ -25,11 +31,19 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 	dead = false;
 	collision = false;
 
+	counter = 0;
 }
 
 bool EnemyFly::Update(float dt) 
 {
 	bool ret = true;
+	if (!dead)
+	{
+		velocity.y += gravity;
+		position.y += velocity.y;
+		isLeft ? position.x -= velocity.x : position.x += velocity.x;
+	}
+
 	if (current_anim != &movingAnim)
 	{
 		current_anim = &movingAnim;
@@ -40,10 +54,36 @@ bool EnemyFly::Update(float dt)
 	{
 		ret = false;
 	}
+
+	if (counter > 1000)
+	{
+		counter = 0;
+		Move();
+	}
+	counter += dt;
+
 	return ret;
 }
 
 void EnemyFly::Move()
 {
+	origin = position;
+	goal = app->scene->player->position;
 
+	app->pathfinding->lastPath.Clear();
+	app->pathfinding->CreatePath(origin, goal);
+	path = app->pathfinding->lastPath;
+
+	iPoint nextTile = { path.At(0)->x, path.At(0)->y };
+	if (nextTile.x < position.x)
+		velocity.x = -10;
+
+	else if (nextTile.x > position.x)
+		velocity.x;
+
+	if (nextTile.y < position.y)
+		velocity.y = -10;
+
+	else if (nextTile.x > position.x)
+		velocity.y = 10;
 }

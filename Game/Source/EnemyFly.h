@@ -15,5 +15,10 @@ public:
 	bool collision;
 
 	Animation movingAnim;
-	
+
+	// Variables to manage the enemies path
+	DynArray<iPoint> path;
+	iPoint origin;
+	iPoint goal;
+	uint counter;
 };

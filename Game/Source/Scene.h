@@ -33,6 +33,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	Player* player = nullptr;
 private:
 
 	SDL_Texture* background1;
@@ -41,7 +42,6 @@ private:
 	SDL_Texture* background4;
 	SDL_Texture* debugTex;
 	SDL_Rect backgroundRect;
-	Player* player = nullptr;
 	EnemyFly* flyingEnemy1 = nullptr;
 	bool debugDraw = 0;
 };

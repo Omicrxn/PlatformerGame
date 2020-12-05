@@ -250,25 +250,28 @@ void Player::Run(bool isLeft)
 {
 	this->isLeft = isLeft;
 	
-	if (godMode) {
+	if (godMode)
+	{
 		isLeft ? position.y -= 3 : position.y += 3;
 	}
-	else {
+	else
+	{
 		if (current_anim != &playerRunning && onGround)
 		{
 			current_anim = &playerRunning;
-			playerJumping.Reset();
+			playerRunning.Reset();
 		}
 		velocity.x = 4;
 	}
-	
 }
 
 void Player::Jump()
 {
-	if (godMode) {
+	if (godMode)
+	{
 		position.y -= 3;
-	}else
+	}
+	else
 	{
 		if (onGround)
 		{

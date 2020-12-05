@@ -2,6 +2,8 @@
 #include "Point.h"
 #include "SDL/include/SDL_rect.h"
 #include "Animation.h"
+#include "DynArray.h"
+
 struct SDL_Texture;
 enum class EntityType
 {
@@ -14,8 +16,6 @@ enum class EntityType
 
 class Entity
 {
-
-	
 public:
 	Entity(EntityType type) : type(type) {}
 	virtual bool Update(float dt) { return true; }
@@ -37,5 +37,4 @@ public:
 	Animation* current_anim = nullptr;
 	SDL_Texture* texture;
 	SDL_Rect rectAnim;
-	
 };
