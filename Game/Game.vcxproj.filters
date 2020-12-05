@@ -27,6 +27,9 @@
     </ClCompile>
     <ClCompile Include="Source\InputHandler.cpp" />
     <ClCompile Include="Source\EnemyFly.cpp" />
+    <ClCompile Include="Source\EnemyWalk.cpp" />
+    <ClCompile Include="Source\Coin.cpp" />
+    <ClCompile Include="Source\Heart.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation.h" />
@@ -76,6 +79,9 @@
     <ClInclude Include="Source\Command.h" />
     <ClInclude Include="Source\InputHandler.h" />
     <ClInclude Include="Source\EnemyFly.h" />
+    <ClInclude Include="Source\EnemyWalk.h" />
+    <ClInclude Include="Source\Coin.h" />
+    <ClInclude Include="Source\Heart.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

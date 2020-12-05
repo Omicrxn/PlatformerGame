@@ -18,7 +18,7 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 	movingAnim.loop = true;
 	movingAnim.speed = 0.09f;
 
-	texture = app->tex->Load("Assets/enemies/Bat/bat.png");
+	texture = app->tex->Load("Assets/enemies/bat.png");
 
 	isLeft = true;
 
@@ -58,7 +58,7 @@ bool EnemyFly::Update(float dt)
 	if (counter > 1000)
 	{
 		counter = 0;
-		Move();
+		//Move();
 	}
 	counter += dt;
 

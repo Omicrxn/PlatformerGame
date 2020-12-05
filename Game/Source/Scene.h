@@ -6,6 +6,9 @@
 struct SDL_Texture;
 struct Player;
 struct EnemyFly;
+struct EnemyWalk;
+struct Coin;
+struct Heart;
 class Scene : public Module
 {
 public:
@@ -48,6 +51,9 @@ private:
 	SDL_Texture* debugTex;
 	SDL_Rect backgroundRect;
 	EnemyFly* flyingEnemy1 = nullptr;
+	EnemyWalk* walkingEnemy1 = nullptr;
+	Coin* coin = nullptr;
+	Heart* heart = nullptr;
 	bool debugDraw = 0;
 };
 

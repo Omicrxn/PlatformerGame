@@ -15,6 +15,7 @@
 #include "InputHandler.h"
 #include "Player.h"
 #include "EnemyFly.h"
+#include "Coin.h"
 #include "PathFinding.h"
 
 #include "Defs.h"
@@ -68,6 +69,9 @@ bool Scene::Start()
 
 	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
 	flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
+	walkingEnemy1 = (EnemyWalk*)app->entityman->CreateEntity(EntityType::ENEMY_WALK);
+	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
+	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);
 
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
