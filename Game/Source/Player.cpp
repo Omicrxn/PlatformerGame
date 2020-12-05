@@ -11,9 +11,8 @@
 #include <stdio.h>
 #include <math.h>
 
-Player::Player(bool startEnabled) : Module(startEnabled) 
+Player::Player() : Entity(EntityType::PLAYER) 
 {
-	name = "player";
 
 	// Loading Idle Anim
 	playerIdle.PushBack({ 25,23,17,25 });
@@ -56,20 +55,13 @@ Player::Player(bool startEnabled) : Module(startEnabled)
 
 	playerDeath.loop = false;
 	playerDeath.speed = 0.12f;
-}
-
-Player::~Player() {}
-
-bool Player::Start() 
-{
-	bool ret = true;
 
 	texture = app->tex->Load("Assets/player/Player.png");
-	
+
 	// Physics variables
 	isLeft = false;
 
-	initialPosition = { 200, 900};
+	initialPosition = { 200, 900 };
 	position = initialPosition;
 
 	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
@@ -77,16 +69,16 @@ bool Player::Start()
 
 	gravity = 1;
 
-	velocity = {0,0};
+	velocity = { 0,0 };
 
 	onGround = true;
 	dead = false;
 	collision = false;
 
 	scale = app->win->GetScale();
-
-	return ret;
 }
+
+Player::~Player() {}
 
 bool Player::Update(float dt)
 {
@@ -236,7 +228,7 @@ bool Player::Update(float dt)
 					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
-						if(!godMode)app->player->Die();
+						if(!godMode)Die();
 						break;
 					}
 				}
@@ -266,41 +258,25 @@ bool Player::Update(float dt)
 	return ret;
 }
 
-bool Player::PostUpdate()
-{
-	bool ret = true;
-	
-	return ret;
-}
 
-bool Player::CleanUp()
-{
-	bool ret = true;
 
-	app->tex->UnLoad(texture);
-	texture = nullptr;
-	current_anim = nullptr;
-
-	return ret;
-}
-
-bool Player::LoadState(pugi::xml_node& data)
-{
-	position.x = data.child("player").attribute("x").as_int();
-	position.y = data.child("player").attribute("y").as_int();
-
-	return true;
-}
-
-bool Player::SaveState(pugi::xml_node& data) const
-{
-	pugi::xml_node player = data.append_child("player");
-
-	player.append_attribute("x") = position.x;
-	player.append_attribute("y") = position.y;
-
-	return true;
-}
+//bool Player::LoadState(pugi::xml_node& data)
+//{
+//	position.x = data.child("player").attribute("x").as_int();
+//	position.y = data.child("player").attribute("y").as_int();
+//
+//	return true;
+//}
+//
+//bool Player::SaveState(pugi::xml_node& data) const
+//{
+//	pugi::xml_node player = data.append_child("player");
+//
+//	player.append_attribute("x") = position.x;
+//	player.append_attribute("y") = position.y;
+//
+//	return true;
+//}
 
 void Player::Run()
 {

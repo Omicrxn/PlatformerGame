@@ -2,31 +2,26 @@
 #ifndef __MODULEPLAYER_H__
 #define __MODULEPLAYER_H__
 
-#include "Module.h"
+#include "Entity.h"
 #include "Point.h"
 #include "SDL/include/SDL_rect.h"
 #include "Animation.h"
 
 struct SDL_Texture;
 
-class Player : public Module 
+class Player : public Entity 
 {
 public:
 
-	Player(bool startEnabled);
+	Player();
 	
 	~Player();
 	
-	bool Start();
 	
 	bool Update(float dt);
 	
-	bool PostUpdate();
-	
-	bool CleanUp();
-
-	bool LoadState(pugi::xml_node&);
-	bool SaveState(pugi::xml_node&) const;
+	/*bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;*/
 	
 	void Run();
 	void Jump();
@@ -50,7 +45,7 @@ public:
 private:
 
 	// Physics variables
-	iPoint position;
+
 	iPoint initialPosition;
 
 	iPoint velocity;
@@ -63,7 +58,6 @@ private:
 
 	uint scale;
 
-	SDL_Texture* texture = nullptr;
 
 	Animation* current_anim = nullptr;
 
@@ -82,7 +76,6 @@ private:
 	// Death Animation
 	Animation playerDeath;
 
-	SDL_Rect rectAnim;
 
 	bool godMode = false;
 	bool isLeft;

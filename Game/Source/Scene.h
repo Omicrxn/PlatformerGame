@@ -4,7 +4,7 @@
 #include "Module.h"
 
 struct SDL_Texture;
-
+struct Player;
 class Scene : public Module
 {
 public:
@@ -40,7 +40,7 @@ private:
 	SDL_Texture* background4;
 	SDL_Texture* debugTex;
 	SDL_Rect backgroundRect;
-
+	Player* player = nullptr;
 	bool debugDraw = 0;
 };
 

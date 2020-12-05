@@ -25,8 +25,9 @@ class LogoScreen;
 class TitleScreen;
 class EndingScreen;
 class Screen;
-class Player;
 class PathFinding;
+class EntityManager;
+
 
 class App
 {
@@ -103,7 +104,7 @@ public:
 	LogoScreen* logoScreen;
 	TitleScreen* titleScreen;
 	EndingScreen* endingScreen;
-	Player* player;
+	EntityManager* entityman;
 
 
 private:
@@ -136,10 +137,11 @@ private:
 	uint32 lastSecFrameCount = 0;
 	uint32 prevLastSecFrameCount = 0;
 	float dt = 0.0f;
-
+	uint32 newMaxFramerate;
+	public:
 	int	cappedMs = -1;
 
-	uint32 newMaxFramerate;
+
 };
 
 extern App* app;

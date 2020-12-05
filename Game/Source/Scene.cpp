@@ -10,6 +10,7 @@
 #include "LogoScreen.h"
 #include "TitleScreen.h"
 #include "EndingScreen.h"
+#include "EntityManager.h"
 #include "Player.h"
 #include "PathFinding.h"
 
@@ -47,8 +48,7 @@ bool Scene::Start()
 	// Load map
 	app->map->Enable();
 	app->map->Load("level1.tmx");
-	app->player->Enable();
-	
+	app->entityman->Enable();
 	// Create walkability map on map loading
 	if(app->map->Load("level1.tmx") == true)
 	{
@@ -62,6 +62,9 @@ bool Scene::Start()
 
 	debugTex = app->tex->Load("Assets/maps/pathfinding_debug.png");
 	
+
+	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
+
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
@@ -169,7 +172,7 @@ bool Scene::Update(float dt)
 	// Draw map
 	app->map->Draw();
 	
-	if (app->player->Died()) 
+	if (player->Died()) 
 	{
 		app->fade->Fade(this, (Module*)app->endingScreen, 180);		
 	}
@@ -220,7 +223,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	app->player->Disable();
+	app->entityman->Disable();
 	app->map->Disable();
 	app->tex->UnLoad(background1);
 	app->tex->UnLoad(background2);
@@ -228,8 +231,8 @@ bool Scene::CleanUp()
 	app->tex->UnLoad(background4);
 
 	app->audio->StopMusic();
-
+	
 	debugDraw = false;
-
+	player = nullptr;
 	return true;
 }
