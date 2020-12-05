@@ -110,53 +110,11 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	ListItem<Command*>* command = app->inputHandler->commandList.start;
-	while (command != NULL) {
+	while (command != NULL) 
+	{
 		command->data->Execute(player);
 		command = command->next;
 	}
-	
-	// F6 Load the previous state (even across levels)
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
-
-	// F9 View colliders / logic
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	{ 
-		debugDraw = !debugDraw;
-		if (debugDraw)
-		{
-			app->map->ChangeLayerProperty("Collisions", "Draw", 1);
-		}
-		else
-		{
-			app->map->ChangeLayerProperty("Collisions", "Draw", 0);
-		}
-	}
-
-	// Change volume with +/- from the numeric keyboard
-	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
-	{
-		app->audio->volume += 16;
-		app->audio->VolumeChange(app->audio->volume);
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
-	{
-		app->audio->volume -= 16;
-		app->audio->VolumeChange(app->audio->volume);
-	}
-
-	    // Make the camera movement independent of framerate
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= floor(100*dt);
-
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += floor(100*dt);
-
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= floor(100*dt);
-
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += floor(100*dt);
 
 	if (!app->render->DrawTexture(background2, 0, 0, &backgroundRect, false, 0.4f))
 	{
@@ -184,9 +142,10 @@ bool Scene::Update(float dt)
 		app->fade->Fade(this, (Module*)app->endingScreen, 180);		
 	}
 
-	// L03: DONE 7: Set the window title with map/tileset info
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
+
+	// L03: DONE 7: Set the window title with map/tileset info
 	/*iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x, mouseY - app->render->camera.y);
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:[%d,%d]",
@@ -242,5 +201,31 @@ bool Scene::CleanUp()
 	debugDraw = false;
 	player = nullptr;
 	flyingEnemy1 = nullptr;
+
 	return true;
+}
+
+void Scene::DrawDebug()
+{
+	debugDraw = !debugDraw;
+	if (debugDraw)
+	{
+		app->map->ChangeLayerProperty("Collisions", "Draw", 1);
+	}
+	else
+	{
+		app->map->ChangeLayerProperty("Collisions", "Draw", 0);
+	}
+}
+
+void Scene::VolumeUp()
+{
+	app->audio->volume += 16;
+	app->audio->VolumeChange(app->audio->volume);
+}
+
+void Scene::VolumeDown()
+{
+	app->audio->volume -= 16;
+	app->audio->VolumeChange(app->audio->volume);
 }

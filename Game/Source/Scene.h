@@ -33,6 +33,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void DrawDebug();
+
+	void VolumeUp();
+	void VolumeDown();
+
 	Player* player = nullptr;
 private:
 
