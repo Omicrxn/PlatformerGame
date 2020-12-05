@@ -115,6 +115,9 @@ private:
 	char** args;
 	SString title;
 	SString organization;
+	SString vsyncStr;
+
+	bool framerateCap;
 
 	List<Module *> modules;
 
@@ -124,26 +127,25 @@ private:
 	//pugi::xml_node config;
 	//pugi::xml_node configApp;
 
-
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
 
-	// Calculate some timing measures
-	// required variables are provided:
+	// Calculate some timing measures:
 	PerfTimer ptimer;
 	uint64 frameCount = 0;
 
 	Timer startupTime;
 	Timer frameTime;
 	Timer lastSecFrameTime;
+	
 	uint32 lastSecFrameCount = 0;
 	uint32 prevLastSecFrameCount = 0;
+	
 	float dt = 0.0f;
+	
 	uint32 newMaxFramerate;
-	public:
+
 	int	cappedMs = -1;
-
-
 };
 
 extern App* app;

@@ -115,9 +115,6 @@ bool App::Awake()
 
         // Read from config file your framerate cap
 		newMaxFramerate = configApp.attribute("framerate_cap").as_int();
-
-		if (newMaxFramerate > 0)
-			cappedMs = (1000.0f / (float)newMaxFramerate);
 	}
 
 	if (ret == true)
@@ -171,6 +168,17 @@ bool App::Update()
 	if(ret == true) ret = PreUpdate();
 	if(ret == true) ret = DoUpdate();
 	if(ret == true) ret = PostUpdate();
+
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		framerateCap = !framerateCap;
+	}
+
+	if (framerateCap && newMaxFramerate > 0) cappedMs = (1000.0f / (float)newMaxFramerate);
+	else cappedMs = -1;
+
+	if (app->render->vsync) vsyncStr.Create("on");
+	else vsyncStr.Create("off");
 
 	FinishUpdate();
 
@@ -236,7 +244,7 @@ void App::FinishUpdate()
 	/*sprintf_s(title, 256, "FPS: %d / Av.FPS: %.2f / Last-frame MS: %02u / Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
 			  averageFps, lastFrameMs, framesOnLastSec, dt, secondsSinceStartup, frameCount);*/
 	sprintf_s(title, 256, "FPS: %d / Av.FPS: %.2f / Last-frame MS: %02u / Vsync: %s",
-		framesOnLastSec, averageFps, lastFrameMs, "ON");
+		framesOnLastSec, averageFps, lastFrameMs, vsyncStr.GetString());
 
 	app->win->SetTitle(title);
 

@@ -50,6 +50,7 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 
 public:
+	bool vsync = false;
 
 	SDL_Renderer* renderer;
 	SDL_Rect camera;
