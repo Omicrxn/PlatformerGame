@@ -170,10 +170,7 @@ bool App::Update()
 	if(ret == true) ret = DoUpdate();
 	if(ret == true) ret = PostUpdate();
 
-	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-	{
-		framerateCap = !framerateCap;
-	}
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) framerateCap = !framerateCap;
 
 	if (framerateCap && newMaxFramerate > 0) cappedMs = (1000.0f / (float)newMaxFramerate);
 	else cappedMs = -1;
@@ -253,9 +250,9 @@ void App::FinishUpdate()
 	if (cappedMs > lastFrameMs && cappedMs != -1)
 	{
 		// L08: TODO 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
-		PERF_START(ptimer);
+		delayTimer.Start();
 		SDL_Delay(cappedMs - lastFrameMs);
-		PERF_PEEK(ptimer);
+		LOG("We waited for %d milliseconds and got back in %.6f", cappedMs - lastFrameMs, delayTimer.ReadMs());
 	}
 }
 

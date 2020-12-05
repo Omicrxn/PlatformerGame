@@ -2,6 +2,7 @@
 <save>
 	<window />
 	<input />
+	<:anonymous />
 	<textures />
 	<audio>
 		<volume value="64" />
@@ -12,13 +13,7 @@
 	<pathfinding />
 	<scene />
 	<map />
-<<<<<<< Updated upstream
-	<player>
-		<player x="200" y="973" />
-	</player>
-=======
 	<entitymanager />
->>>>>>> Stashed changes
 	<fadetoblack />
 	<renderer>
 		<camera x="0" y="-613" />

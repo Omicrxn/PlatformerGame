@@ -132,6 +132,7 @@ private:
 
 	// Calculate some timing measures:
 	PerfTimer ptimer;
+	PerfTimer delayTimer;
 	uint64 frameCount = 0;
 
 	Timer startupTime;
