@@ -137,28 +137,6 @@ bool Player::Update(float dt)
 		godMode = !godMode;
 	}
 
-	// Update player position
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !dead)
-	{
-		isLeft = true;
-		if (godMode) position.x-=3;
-		else
-		{
-			
-			Run();
-		}
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !dead)
-	{
-		isLeft = false;
-		if (godMode) position.x+=3;
-		else
-		{
-			
-			Run();
-		}
-	}
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !dead && godMode)
 	{
@@ -237,18 +215,8 @@ bool Player::Update(float dt)
 		layer = layer->next;
 	}
 
-	if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && !dead)
-	{
-		if (godMode) position.y -=3;
-		else
-		{
-			Jump();
-		}
-	}
-	else if ((app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP || app->input->GetKey(SDL_SCANCODE_W) == KEY_UP) && !dead)
-	{
-		if (!godMode) SmallJump();
-	}
+	
+
 
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
@@ -278,29 +246,43 @@ bool Player::Update(float dt)
 //	return true;
 //}
 
-void Player::Run()
+void Player::Run(bool isLeft)
 {
-	if (current_anim != &playerRunning && onGround)
-	{
-		current_anim = &playerRunning;
-		playerJumping.Reset();
+	this->isLeft = isLeft;
+	
+	if (godMode) {
+		isLeft ? position.y -= 3 : position.y += 3;
 	}
-	velocity.x = 4;
+	else {
+		if (current_anim != &playerRunning && onGround)
+		{
+			current_anim = &playerRunning;
+			playerJumping.Reset();
+		}
+		velocity.x = 4;
+	}
+	
 }
 
 void Player::Jump()
 {
-	if (onGround)
+	if (godMode) {
+		position.y -= 3;
+	}else
 	{
-		velocity.y = -15.0f;
-		onGround = false;
+		if (onGround)
+		{
+			velocity.y = -15.0f;
+			onGround = false;
+		}
 	}
+	
 }
 
 // Add acceleration to Y speed
 void Player::SmallJump()
 {
-	if (velocity.y < -9.0f) velocity.y = -9.0f;
+	if (velocity.y < -9.0f && !godMode) velocity.y = -9.0f;
 }
 
 void Player::Fall()

@@ -25,6 +25,7 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
       <Filter>External</Filter>
     </ClCompile>
+    <ClCompile Include="Source\InputHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation.h" />
@@ -71,6 +72,8 @@
     <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp">
       <Filter>External</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Command.h" />
+    <ClInclude Include="Source\InputHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

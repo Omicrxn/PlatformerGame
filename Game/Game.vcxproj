@@ -92,6 +92,7 @@
     <ClCompile Include="Source\EndingScreen.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
+    <ClCompile Include="Source\InputHandler.cpp" />
     <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
@@ -108,10 +109,12 @@
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Command.h" />
     <ClInclude Include="Source\EndingScreen.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\FadeToBlack.h" />
+    <ClInclude Include="Source\InputHandler.h" />
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Pathfinding.h" />

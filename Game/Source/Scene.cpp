@@ -11,6 +11,8 @@
 #include "TitleScreen.h"
 #include "EndingScreen.h"
 #include "EntityManager.h"
+#include "Command.h"
+#include "InputHandler.h"
 #include "Player.h"
 #include "PathFinding.h"
 
@@ -105,9 +107,12 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	// F5 Save the current game state
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
-
+	ListItem<Command*>* command = app->inputHandler->commandList.start;
+	while (command != NULL) {
+		command->data->Execute(player);
+		command = command->next;
+	}
+	
 	// F6 Load the previous state (even across levels)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 

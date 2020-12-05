@@ -27,6 +27,7 @@ class EndingScreen;
 class Screen;
 class PathFinding;
 class EntityManager;
+class InputHandler;
 
 
 class App
@@ -105,6 +106,7 @@ public:
 	TitleScreen* titleScreen;
 	EndingScreen* endingScreen;
 	EntityManager* entityman;
+	InputHandler* inputHandler;
 
 
 private:

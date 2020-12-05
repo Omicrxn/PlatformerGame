@@ -23,7 +23,7 @@ public:
 	/*bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;*/
 	
-	void Run();
+	void Run(bool isLeft);
 	void Jump();
 	void SmallJump();
 

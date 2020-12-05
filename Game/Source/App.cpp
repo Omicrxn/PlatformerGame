@@ -12,6 +12,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "EntityManager.h"
+#include "InputHandler.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -41,11 +42,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	endingScreen = new EndingScreen(false);
 	pathfinding = new PathFinding(false);
 	entityman = new EntityManager(false);
+	inputHandler = new InputHandler(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(win);
 	AddModule(input);
+	AddModule(inputHandler);
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(logoScreen);
@@ -55,6 +58,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(map);
 	AddModule(entityman);
+	
 
 	AddModule(fade);
 
