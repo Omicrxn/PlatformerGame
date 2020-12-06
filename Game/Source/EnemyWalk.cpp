@@ -7,6 +7,8 @@
 #include "EntityManager.h"
 #include "Player.h"
 #include "Scene.h"
+#include "Audio.h"
+#include <math.h>
 
 EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 {
@@ -19,6 +21,7 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 	movingAnim.speed = 0.09f;
 
 	texture = app->tex->Load("Assets/enemies/crab.png");
+	fx = app->audio->LoadFx("Assets/audio/fx/enemy_explotion.wav");
 
 	isLeft = true;
 
@@ -70,7 +73,7 @@ bool EnemyWalk::Update(float dt)
 		ret = false;
 	}
 
-	if (counter >= 0.5f)
+	if (counter >= 0.27f)
 	{
 		counter = 0.0f;
 		UpdatePath();
@@ -128,12 +131,15 @@ void EnemyWalk::UpdatePath()
 	origin = app->map->WorldToMap(position.x, position.y);
 	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
 
-	app->pathfinding->lastPath.Clear();
-	if (app->pathfinding->CreatePath(origin, goal) != -1)
+	if (abs(origin.x - goal.x) < 10 && abs(origin.y - goal.y) < 10)
 	{
-		for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+		app->pathfinding->lastPath.Clear();
+		if (app->pathfinding->CreatePath(origin, goal) != -1)
 		{
-			path.PushBack(*app->pathfinding->lastPath.At(i));
+			for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+			{
+				path.PushBack(*app->pathfinding->lastPath.At(i));
+			}
 		}
 	}
 
@@ -142,6 +148,7 @@ void EnemyWalk::UpdatePath()
 
 void EnemyWalk::OnCollision(Collider* collider)
 {
+	app->audio->PlayFx(fx);
 	app->scene->player->score += 300;
 	app->scene->player->PrintData();
 	app->entityman->DestroyEntity(this);

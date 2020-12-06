@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "EntityManager.h"
 #include "Scene.h"
+#include "Audio.h"
 
 EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 {
@@ -19,10 +20,11 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 	movingAnim.speed = 0.09f;
 
 	texture = app->tex->Load("Assets/enemies/bat.png");
+	fx = app->audio->LoadFx("Assets/audio/fx/enemy_explotion.wav");
 
 	isLeft = true;
 
-	initialPosition = { 100, 700 };
+	initialPosition = { 200, 800 };
 	position = initialPosition;
 
 	gravity = 1;
@@ -33,8 +35,6 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 	collider = app->collisions->AddCollider({ position.x,position.y,13,11 }, Collider::Type::ENEMY, (Module*)app->entityman);
 
 	counter = 0;
-
-	
 }
 
 bool EnemyFly::Update(float dt) 
@@ -106,20 +106,24 @@ void EnemyFly::UpdatePath()
 	origin = app->map->WorldToMap(position.x, position.y);
 	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
 
-	app->pathfinding->lastPath.Clear();
-	if (app->pathfinding->CreatePath(origin, goal) != -1)
+	if (abs(origin.x - goal.x) < 10 && abs(origin.y - goal.y) < 10)
 	{
-		for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+		app->pathfinding->lastPath.Clear();
+		if (app->pathfinding->CreatePath(origin, goal) != -1)
 		{
-			path.PushBack(*app->pathfinding->lastPath.At(i));
+			for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+			{
+				path.PushBack(*app->pathfinding->lastPath.At(i));
+			}
+			path.Flip();
 		}
-		path.Flip();
 	}
 }
 
 void EnemyFly::OnCollision(Collider* collider)
 {
 		//app->scene->player->score += scoreGiven;
+		app->audio->PlayFx(fx);
 		app->scene->player->score += 500;
 		app->scene->player->PrintData();
 		app->entityman->DestroyEntity(this);

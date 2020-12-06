@@ -30,6 +30,6 @@ public:
 	iPoint origin;
 	iPoint goal;
 	float counter;
-
 	bool onGround;
+	int fx;
 };

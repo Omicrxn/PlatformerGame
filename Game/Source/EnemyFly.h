@@ -27,4 +27,5 @@ public:
 	iPoint origin;
 	iPoint goal;
 	float counter;
+	int fx;
 };

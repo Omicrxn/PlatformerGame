@@ -41,7 +41,6 @@ bool Heart::Update(float dt)
 {
 	bool ret = true;
 
-
 	if (current_anim != &movingAnim)
 	{
 		current_anim = &movingAnim;
@@ -53,7 +52,6 @@ bool Heart::Update(float dt)
 		ret = false;
 	}
 
-	
 	// Update collider position
 	if (collider != nullptr) {
 		collider->SetPos(position.x, position.y);
@@ -62,12 +60,9 @@ bool Heart::Update(float dt)
 }
 void Heart::OnCollision(Collider* collider)
 {
-
-
 	app->audio->PlayFx(fx);
 	if(app->scene->player->lifes < 10)
 	app->scene->player->lifes++;
 	app->scene->player->PrintData();
 	app->entityman->DestroyEntity(this);
-
 }

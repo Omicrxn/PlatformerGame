@@ -58,6 +58,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	playerDeath.speed = 0.12f;
 
 	texture = app->tex->Load("Assets/player/Player.png");
+	fx = app->audio->LoadFx("Assets/audio/fx/shoot.wav");
 
 	// Physics variables
 	isLeft = false;
@@ -136,6 +137,7 @@ bool Player::Update(float dt)
 	// Shoot
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
+		app->audio->PlayFx(fx);
 		if (isLeft && app->particles->playerBullet.speed.x > 0)
 		{
 			app->particles->playerBullet.speed.x = -app->particles->playerBullet.speed.x;
@@ -167,7 +169,6 @@ bool Player::Update(float dt)
 
 	rectAnim = current_anim->GetCurrentFrame();
 
-	
 	GroundCollisions();
 
 	// Update collider position

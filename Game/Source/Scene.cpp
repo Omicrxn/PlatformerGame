@@ -53,6 +53,7 @@ bool Scene::Start()
 	app->collisions->Enable();
 	app->map->Enable();
 	app->map->Load("level1.tmx");
+	app->audio->Enable();
 	app->entityman->Enable();
 
 	// Create walkability map on map loading
@@ -71,6 +72,8 @@ bool Scene::Start()
 	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
 	walkingEnemy1 = (EnemyWalk*)app->entityman->CreateEntity(EntityType::ENEMY_WALK);
 	flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
+	flyingEnemy2 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
+	flyingEnemy2->position = { 700, 900 };
 	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
 	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);
 	checkpoint = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
@@ -201,12 +204,12 @@ bool Scene::CleanUp()
 	app->collisions->Disable();
 	app->entityman->Disable();
 	app->map->Disable();
+	app->audio->StopMusic();
+	app->audio->Disable();
 	app->tex->Unload(background1);
 	app->tex->Unload(background2);
 	app->tex->Unload(background3);
 	app->tex->Unload(background4);
-
-	app->audio->StopMusic();
 	
 	debugDraw = false;
 	player = nullptr;

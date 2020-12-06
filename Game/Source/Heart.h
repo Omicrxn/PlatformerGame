@@ -8,10 +8,9 @@ public:
 
 	bool Update(float dt) override;
 	void OnCollision(Collider* collider) override;
-public:
 
+public:
 	bool collision;
 	int fx;
 	Animation movingAnim;
-
 };

@@ -55,6 +55,7 @@ private:
 	SDL_Rect backgroundRect;
 
 	EnemyFly* flyingEnemy1 = nullptr;
+	EnemyFly* flyingEnemy2 = nullptr;
 	EnemyWalk* walkingEnemy1 = nullptr;
 
 	Coin* coin = nullptr;

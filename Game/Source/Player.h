@@ -68,6 +68,7 @@ public:
 	int score;
 	int lifes;
 	bool hasCheckpoint;
+	int fx;
 };
 
 #endif // __PLAYER_H__
