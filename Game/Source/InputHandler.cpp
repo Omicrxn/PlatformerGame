@@ -6,6 +6,7 @@
 
 InputHandler::InputHandler(bool startEnabled) : Module(startEnabled)
 {
+	name.Create("inputhandler");
 	BindCommands();
 }
 

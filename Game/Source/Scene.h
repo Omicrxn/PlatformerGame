@@ -42,6 +42,12 @@ public:
 	void VolumeDown();
 
 	Player* player = nullptr;
+
+	//iPoint checkpoints[4];
+	iPoint lastCheckpoint;
+
+	bool hasCheckpoint;
+
 private:
 
 	SDL_Texture* background1;
@@ -50,10 +56,16 @@ private:
 	SDL_Texture* background4;
 	SDL_Texture* debugTex;
 	SDL_Rect backgroundRect;
+
+	SDL_Texture* checkpointTex;
+	SDL_Rect checkpointRect;
+
 	EnemyFly* flyingEnemy1 = nullptr;
 	EnemyWalk* walkingEnemy1 = nullptr;
+
 	Coin* coin = nullptr;
 	Heart* heart = nullptr;
+
 	bool debugDraw = 0;
 };
 

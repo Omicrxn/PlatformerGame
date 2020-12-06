@@ -7,13 +7,13 @@
 #include "FadeToBlack.h"
 #include "Audio.h"
 #include "Map.h"
+#include "Scene.h"
 
 #include <stdio.h>
 #include <math.h>
 
 Player::Player() : Entity(EntityType::PLAYER) 
 {
-
 	// Loading Idle Anim
 	playerIdle.PushBack({ 25,23,17,25 });
 	playerIdle.PushBack({ 89,23,17,25 });
@@ -57,6 +57,8 @@ Player::Player() : Entity(EntityType::PLAYER)
 	playerDeath.speed = 0.12f;
 
 	texture = app->tex->Load("Assets/player/Player.png");
+
+	checkpointFx = app->audio->LoadFx("Assets/audio/fx/checkpoint.wav");
 
 	// Physics variables
 	isLeft = false;
@@ -143,6 +145,12 @@ bool Player::Update(float dt)
 		position.y+=3;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && app->scene->hasCheckpoint)
+	{
+		position.x = app->scene->lastCheckpoint.x;
+		position.y = app->scene->lastCheckpoint.y;
+	}
+
 	rectAnim = current_anim->GetCurrentFrame();
 
 	// Map collisions detection (platforms)
@@ -206,7 +214,21 @@ bool Player::Update(float dt)
 					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
-						if(!godMode)Die();
+						if (!godMode && !app->scene->hasCheckpoint) Die();
+						else 
+						{
+							position.x = app->scene->lastCheckpoint.x;
+							position.y = app->scene->lastCheckpoint.y;
+						}
+						break;
+					}
+
+					// Pink Collider
+					if (layer->data->Get(x, y) == 4101 && CheckCollision(tileRect, playerRect))
+					{
+						collision = true;
+						app->scene->hasCheckpoint = true;
+						app->audio->PlayFx(checkpointFx);
 						break;
 					}
 				}

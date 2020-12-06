@@ -2,11 +2,12 @@
 <save>
 	<window />
 	<input />
-	<:anonymous />
+	<inputhandler />
 	<textures />
 	<audio>
 		<volume value="64" />
 	</audio>
+	<Collisions />
 	<logoscreen />
 	<titlescreen />
 	<endingscreen />

@@ -61,8 +61,9 @@ private:
 	// Death Animation
 	Animation playerDeath;
 
-
 	bool godMode = false;
+
+	int checkpointFx;
 };
 
 #endif // __MODULEPLAYER_H__

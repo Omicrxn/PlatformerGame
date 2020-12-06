@@ -73,6 +73,14 @@ bool Scene::Start()
 	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
 	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);
 
+	checkpointTex = app->tex->Load("Assets/textures/checkpoints.png");
+	//checkpoints[0] = { 56, 53 };
+	//checkpoints[1] = { 53, 83 };
+	//checkpoints[2] = { 96, 76 };
+	//checkpoints[3] = { 121, 14 };
+	lastCheckpoint = { 56,53 };
+	lastCheckpoint = app->map->MapToWorld(lastCheckpoint.x, lastCheckpoint.y);
+
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
@@ -145,6 +153,10 @@ bool Scene::Update(float dt)
 	{
 		app->fade->Fade(this, (Module*)app->endingScreen, 180);		
 	}
+
+	if (!hasCheckpoint) checkpointRect = { 0,16,16,16 };
+	else checkpointRect = { 0,32,16,16 };
+	app->render->DrawTexture(checkpointTex, lastCheckpoint.x, lastCheckpoint.y, &checkpointRect);
 
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
