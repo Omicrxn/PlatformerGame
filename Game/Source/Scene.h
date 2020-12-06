@@ -10,6 +10,7 @@ struct EnemyWalk;
 struct Coin;
 struct Heart;
 struct Checkpoint;
+
 class Scene : public Module
 {
 public:
