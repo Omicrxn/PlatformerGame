@@ -22,10 +22,10 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 
 	isLeft = true;
 
-	initialPosition = { 760, 975 };
+	initialPosition = { 760, 800 };
 	position = initialPosition;
 
-	gravity = 1.0f;
+	gravity = 600.0f;
 	velocity = { 0,0 };
 
 	dead = false;
@@ -37,13 +37,26 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 bool EnemyWalk::Update(float dt)
 {
 	bool ret = true;
-		if (!dead)
-		{
-			position.x = position.x + velocity.x * dt;
-			position.y = position.y + velocity.y * dt + (gravity * dt * dt * 0.5);
-			velocity.y = velocity.y + gravity * dt;
-		}
+	iPoint tempPlayerPosition = position;
+	if (!dead)
+	{
+		position.x = position.x + velocity.x * dt;
+		position.y = position.y + velocity.y * dt + (gravity * dt * dt * 0.5);
+		velocity.y = velocity.y + gravity * dt;
+	}
 
+	if (collision == true)
+	{
+		if (onGround || dead) {
+			velocity.y = 0.0;
+			position.y = tempPlayerPosition.y;
+			collision = false;
+		}
+	}
+	else
+	{
+		Fall();
+	}
 
 	if (current_anim != &movingAnim)
 	{
@@ -83,14 +96,16 @@ void EnemyWalk::Move()
 
 		iPoint mapPos = app->map->WorldToMap(position.x, position.y);
 		if (mapPos.x < nextTile.x)
-			this->velocity.x = 1;
+			this->velocity.x = 150;
 		else
-			this->velocity.x = -1;
+			this->velocity.x = -100;
 
-		if (mapPos.y < nextTile.y)
+		/*if (mapPos.y < nextTile.y)
 			Fall();
 		else
-			Jump();
+			Jump();*/
+
+		Fall();
 	}
 	else
 	{
@@ -100,7 +115,7 @@ void EnemyWalk::Move()
 
 void EnemyWalk::Fall()
 {
-	if (velocity.y > 0) velocity.y = 1.0f;
+	/*if (velocity.y > 0)*/ velocity.y = 200.0f;
 }
 
 void EnemyWalk::Jump()
@@ -142,4 +157,80 @@ void EnemyWalk::DrawPath()
 			app->render->DrawTexture(app->scene->debugTex, pos.x, pos.y);
 		}
 	}
+}
+
+void EnemyWalk::GroundCollisions()
+{
+	// Map collisions detection (platforms)
+	SDL_Rect playerRect = { position.x, position.y, rectAnim.w, rectAnim.h };
+	iPoint tilePosition;
+	SDL_Rect tileRect;
+
+	ListItem<MapLayer*>* layer = app->map->data.layers.start;
+	while (layer != NULL)
+	{
+		if (layer->data->name == "Collisions")
+		{
+			for (int y = 0; y < app->map->data.height; y++)
+			{
+				for (int x = 0; x < app->map->data.width; x++)
+				{
+					tilePosition = app->map->MapToWorld(x, y);
+					tileRect = { tilePosition.x, tilePosition.y, app->map->data.tileWidth, app->map->data.tileHeight };
+
+					// Red Collider
+					if (layer->data->Get(x, y) == 4097 && CheckCollision(tileRect, playerRect))
+					{
+						collision = true;
+						if (playerRect.y < tileRect.y)
+						{
+							onGround = true;
+						}
+						else if (playerRect.y > tileRect.y)
+						{
+							velocity.y = 0;
+						}
+
+						break;
+					}
+
+					// Blue Collider
+					if (layer->data->Get(x, y) == 4099 && CheckCollision(tileRect, playerRect))
+					{
+						collision = true;
+
+						velocity.x *= -1;
+
+						if (isLeft)
+						{
+							position.x += 3;
+						}
+						else
+						{
+							position.x -= 3;
+						}
+						break;
+					}
+
+					// Yellow Collider
+					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
+					{
+						app->entityman->DestroyEntity(this);
+						break;
+					}
+				}
+			}
+		}
+
+		layer = layer->next;
+	}
+}
+
+bool EnemyWalk::CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect)
+{
+	// Check if there is an overlap between two rects
+	return (tileRect.x < playerRect.x + playerRect.w &&
+		tileRect.x + tileRect.w > playerRect.x &&
+		tileRect.y < playerRect.y + playerRect.h &&
+		tileRect.y + tileRect.h > playerRect.y);
 }

@@ -13,6 +13,9 @@ public:
 	void OnCollision(Collider* collider) override;
 	void DrawPath();
 
+	void GroundCollisions();
+	bool CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect);
+
 private:
 	void Move();
 
@@ -27,4 +30,6 @@ public:
 	iPoint origin;
 	iPoint goal;
 	float counter;
+
+	bool onGround;
 };

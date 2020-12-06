@@ -169,7 +169,7 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	if (origin.x == destination.x && origin.y == destination.y)
+	if (origin == destination)
 		return -1;
 
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
