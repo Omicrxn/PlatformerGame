@@ -26,8 +26,6 @@ Collisions::Collisions(bool startEnabled) : Module(startEnabled) {
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY_SHOT] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WEAPON] = false;
 
-
-
 	matrix[Collider::Type::ENEMY][Collider::Type::WALL] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
@@ -58,15 +56,8 @@ Collisions::Collisions(bool startEnabled) : Module(startEnabled) {
 	matrix[Collider::Type::WEAPON][Collider::Type::WEAPON] = false;
 
 	matrix[Collider::Type::ITEM_COIN][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::ITEM_COIN][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::ITEM_COIN][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::ITEM_COIN][Collider::Type::PLAYER_BULLET] = true;
-	matrix[Collider::Type::ITEM_COIN][Collider::Type::WALL] = false;
-	matrix[Collider::Type::ITEM_COIN][Collider::Type::WEAPON] = false;
-
-
-	matrix[Collider::Type::ITEM_COIN][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::ITEM_HEART][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::PLAYER] = true;
 }
 
 Collisions::~Collisions() {}
@@ -152,13 +143,15 @@ void Collisions::DebugDraw() {
 		case Collider::Type::WEAPON: // GREY
 			app->render->DrawRectangle(colliders[i]->rect, 128, 128, 128, alpha);
 			break;
-		case Collider::Type::ITEM_COIN: // GREY
+		case Collider::Type::ITEM_COIN: // DARK BLUE
 			app->render->DrawRectangle(colliders[i]->rect, 0, 100, 128, alpha);
 			break;
-		case Collider::Type::ITEM_HEART: // GREY
+		case Collider::Type::ITEM_HEART: // DARK RED
 			app->render->DrawRectangle(colliders[i]->rect, 128, 0, 0, alpha);
 			break;
-
+		case Collider::Type::CHECKPOINT: // DARK GREEN
+			app->render->DrawRectangle(colliders[i]->rect, 0, 128, 0, alpha);
+			break;
 		}
 	}
 }

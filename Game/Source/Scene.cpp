@@ -55,7 +55,6 @@ bool Scene::Start()
 	app->map->Load("level1.tmx");
 	app->entityman->Enable();
 
-
 	// Create walkability map on map loading
 	if(app->map->Load("level1.tmx") == true)
 	{
@@ -71,17 +70,10 @@ bool Scene::Start()
 
 	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
 	walkingEnemy1 = (EnemyWalk*)app->entityman->CreateEntity(EntityType::ENEMY_WALK);
-	//flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
+	flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
 	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
 	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);
-
-	checkpointTex = app->tex->Load("Assets/textures/checkpoints.png");
-	//checkpoints[0] = { 56, 53 };
-	//checkpoints[1] = { 53, 83 };
-	//checkpoints[2] = { 96, 76 };
-	//checkpoints[3] = { 121, 14 };
-	lastCheckpoint = { 56,53 };
-	lastCheckpoint = app->map->MapToWorld(lastCheckpoint.x, lastCheckpoint.y);
+	checkpoint = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
 
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -155,10 +147,6 @@ bool Scene::Update(float dt)
 	{
 		app->fade->Fade(this, (Module*)app->endingScreen, 180);		
 	}
-
-	if (!hasCheckpoint) checkpointRect = { 0,16,16,16 };
-	else checkpointRect = { 0,32,16,16 };
-	app->render->DrawTexture(checkpointTex, lastCheckpoint.x, lastCheckpoint.y, &checkpointRect);
 
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);

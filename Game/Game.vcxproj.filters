@@ -32,6 +32,7 @@
     <ClCompile Include="Source\Heart.cpp" />
     <ClCompile Include="Source\Collisions.cpp" />
     <ClCompile Include="Source\Particles.cpp" />
+    <ClCompile Include="Source\Checkpoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation.h" />
@@ -86,6 +87,7 @@
     <ClInclude Include="Source\Heart.h" />
     <ClInclude Include="Source\Collisions.h" />
     <ClInclude Include="Source\Particles.h" />
+    <ClInclude Include="Source\Checkpoint.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utilities">

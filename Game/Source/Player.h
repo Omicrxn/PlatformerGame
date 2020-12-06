@@ -64,10 +64,10 @@ private:
 	// Death Animation
 	Animation playerDeath;
 
-	int checkpointFx;
 public:
 	int score;
 	int lifes;
+	bool hasCheckpoint;
 };
 
 #endif // __PLAYER_H__

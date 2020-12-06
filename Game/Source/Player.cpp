@@ -59,9 +59,6 @@ Player::Player() : Entity(EntityType::PLAYER)
 
 	texture = app->tex->Load("Assets/player/Player.png");
 
-	checkpointFx = app->audio->LoadFx("Assets/audio/fx/checkpoint.wav");
-
-
 	// Physics variables
 	isLeft = false;
 
@@ -81,6 +78,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	onGround = true;
 	dead = false;
 	collision = false;
+	hasCheckpoint = false;
 
 	collider = app->collisions->AddCollider({ position.x,position.y,17,25 }, Collider::Type::PLAYER, (Module*)app->entityman);
 
@@ -93,8 +91,6 @@ Player::~Player() {}
 bool Player::Update(float dt)
 {
 	bool ret = true;
-
-	
 
 	iPoint tempPlayerPosition = position;
 	if (!dead && !godMode)
@@ -163,11 +159,11 @@ bool Player::Update(float dt)
 		position.y+=3;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && app->scene->hasCheckpoint)
-	{
-		position.x = app->scene->lastCheckpoint.x;
-		position.y = app->scene->lastCheckpoint.y;
-	}
+	//if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && app->scene->hasCheckpoint)
+	//{
+	//	position.x = app->scene->lastCheckpoint.x;
+	//	position.y = app->scene->lastCheckpoint.y;
+	//}
 
 	rectAnim = current_anim->GetCurrentFrame();
 
@@ -330,13 +326,8 @@ void Player::GroundCollisions()
 						collision = true;
 						
 
-						if (!godMode && !app->scene->hasCheckpoint) Die();
-						else
-						{
-							position.x = app->scene->lastCheckpoint.x;
-							position.y = app->scene->lastCheckpoint.y;
-							
-						}
+						if (!godMode) Die();
+
 						if (lifes > 0)
 						{
 							lifes--;
@@ -346,15 +337,6 @@ void Player::GroundCollisions()
 						{
 							Die();
 						}
-						break;
-					}
-
-					// Pink Collider
-					if (layer->data->Get(x, y) == 4101 && CheckCollision(tileRect, playerRect))
-					{
-						collision = true;
-						app->scene->hasCheckpoint = true;
-						app->audio->PlayFx(checkpointFx);
 						break;
 					}
 				}

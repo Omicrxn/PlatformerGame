@@ -9,6 +9,7 @@ struct EnemyFly;
 struct EnemyWalk;
 struct Coin;
 struct Heart;
+struct Checkpoint;
 class Scene : public Module
 {
 public:
@@ -43,11 +44,6 @@ public:
 
 	Player* player = nullptr;
 
-	//iPoint checkpoints[4];
-	iPoint lastCheckpoint;
-
-	bool hasCheckpoint;
-
 	SDL_Texture* debugTex;
 
 private:
@@ -58,14 +54,14 @@ private:
 	SDL_Texture* background4;
 	SDL_Rect backgroundRect;
 
-	SDL_Texture* checkpointTex;
-	SDL_Rect checkpointRect;
-
 	EnemyFly* flyingEnemy1 = nullptr;
 	EnemyWalk* walkingEnemy1 = nullptr;
 
 	Coin* coin = nullptr;
 	Heart* heart = nullptr;
+	Checkpoint* checkpoint = nullptr;
+
+public:
 
 	bool debugDraw = 0;
 };

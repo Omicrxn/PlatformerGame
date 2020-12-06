@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "DynArray.h"
 #include "Collisions.h"
+
 struct SDL_Texture;
 enum class EntityType
 {
@@ -12,6 +13,7 @@ enum class EntityType
 	ENEMY_FLY,
 	ITEM_COIN,
 	ITEM_HEART,
+	CHECKPOINT,
 	UNKNOWN
 };
 
@@ -19,15 +21,20 @@ class Entity
 {
 public:
 	Entity(EntityType type) : type(type) {}
+
 	~Entity()
 	{
 		if (collider != nullptr)
 			collider->pendingToDelete = true;
 	}
+
 	virtual bool Update(float dt) { return true; }
+
 	// Returns the enemy's collider
 	const Collider* GetCollider() const {return collider;}
+
 	virtual void OnCollision(Collider* collider) {};
+
 	// Get the current player position
 	iPoint GetPlayerPosition()
 	{
@@ -40,8 +47,10 @@ public:
 	iPoint position;
 	fPoint velocity;
 	float gravity;
+
 	// The enemy's collider
 	Collider* collider = nullptr;
+
 	bool dead;
 	bool isLeft;
 	Animation* current_anim = nullptr;

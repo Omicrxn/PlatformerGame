@@ -5,9 +5,9 @@
 #include "EnemyWalk.h"
 #include "Coin.h"
 #include "Heart.h"
+#include "Checkpoint.h"
 #include "Textures.h"
 #include "Collisions.h"
-
 
 EntityManager::EntityManager(bool startEnable) : Module(startEnable) 
 {
@@ -34,6 +34,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::ITEM_HEART:
 		ret = new Heart();
+		break;
+	case EntityType::CHECKPOINT:
+		ret = new Checkpoint();
 		break;
 	case EntityType::UNKNOWN:
 		break;
