@@ -76,7 +76,7 @@ bool EntityManager::UpdateAll(float dt, bool doLogic)
 
 void EntityManager::DestroyEntity(Entity* entity)
 {
-	ListItem<Entity*>* item = entities.At(entities.find(entity));
+	ListItem<Entity*>* item = entities.At(entities.Find(entity));
 	app->tex->Unload(entity->texture);
 	entity->texture = nullptr;
 	RELEASE(entity);

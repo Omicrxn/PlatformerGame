@@ -46,21 +46,21 @@ bool Checkpoint::Update(float dt)
 
 	if (!passedCheckpoint)
 	{
-		if (current_anim != &redAnim)
+		if (currentAnim != &redAnim)
 		{
-			current_anim = &redAnim;
+			currentAnim = &redAnim;
 			redAnim.Reset();
 		}
 	}
 	else
 	{
-		if (current_anim != &blueAnim)
+		if (currentAnim != &blueAnim)
 		{
-			current_anim = &blueAnim;
+			currentAnim = &blueAnim;
 			blueAnim.Reset();
 		}
 	}
-	rectAnim = current_anim->GetCurrentFrame();
+	rectAnim = currentAnim->GetCurrentFrame();
 
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{

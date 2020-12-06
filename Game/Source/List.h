@@ -267,7 +267,7 @@ public:
 	/**
 	* returns the first apperance of data as index (-1 if not found)
 	*/
-	int find(const tdata& data)
+	int Find(const tdata& data)
 	{
 		ListItem<tdata>* tmp = start;
 		int index = 0;

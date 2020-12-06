@@ -32,7 +32,7 @@ public:
 		}
 	}
 
-	bool isEnabled() { return active; }
+	bool IsEnabled() { return active; }
 
 	// Called before render is available
 	// L01: DONE 5: Sending config file to all modules

@@ -75,7 +75,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	velocity = { 0,0 };
 
 	score = 0;
-	lifes = 3;
+	lifes = 5;
 	hasCheckpoint = false;
 
 	onGround = true;
@@ -120,18 +120,18 @@ bool Player::Update(float dt)
 
 	if (onGround && !dead)
 	{
-		if (current_anim != &playerIdle)
+		if (currentAnim != &playerIdle)
 		{
-			current_anim = &playerIdle;
+			currentAnim = &playerIdle;
 			playerIdle.Reset();
 		}
 		velocity.x = 0;
 	}
 	else if (!dead)
 	{
-		if (current_anim != &playerJumping)
+		if (currentAnim != &playerJumping)
 		{
-			current_anim = &playerJumping;
+			currentAnim = &playerJumping;
 			playerJumping.Reset();
 		}
 	}
@@ -171,7 +171,7 @@ bool Player::Update(float dt)
 		position.y = currentCheckpoint.y - 5;
 	}
 
-	rectAnim = current_anim->GetCurrentFrame();
+	rectAnim = currentAnim->GetCurrentFrame();
 
 	GroundCollisions();
 
@@ -198,9 +198,9 @@ void Player::Run(bool isLeft)
 	}
 	else
 	{
-		if (current_anim != &playerRunning && onGround)
+		if (currentAnim != &playerRunning && onGround)
 		{
-			current_anim = &playerRunning;
+			currentAnim = &playerRunning;
 			playerRunning.Reset();
 		}
 		isLeft ? velocity.x = -200.0f : velocity.x = 250.0f;
@@ -237,9 +237,9 @@ void Player::Fall()
 void Player::Die()
 {
 	dead = true;
-	if (current_anim != &playerDeath && onGround)
+	if (currentAnim != &playerDeath && onGround)
 	{
-		current_anim = &playerDeath;
+		currentAnim = &playerDeath;
 		playerDeath.Reset();
 	}
 }
@@ -313,27 +313,19 @@ void Player::GroundCollisions()
 					{
 						collision = true;
 
-						if (!godMode)
-						{
-							Die();
-						}
-
 						if (lifes > 0)
 						{
 							lifes--;
 							PrintData();
+							if (hasCheckpoint && lifes > 1)
+							{
+								position.x = currentCheckpoint.x;
+								position.y = currentCheckpoint.y - 15;
+							}
 						}
 						else
 						{
-							if (hasCheckpoint)
-							{
-								position.x = currentCheckpoint.x;
-								position.y = currentCheckpoint.y - 5;
-							}
-							else
-							{
-								Die();
-							}
+							if(!godMode) Die();
 						}
 						break;
 					}
@@ -391,11 +383,18 @@ void Player::OnCollision(Collider* collider)
 {
 	if (collider->type == Collider::Type::ENEMY)
 	{
-		dead = true;
 		app->audio->PlayFx(fx);
-		app->scene->player->lifes--;
-		app->scene->player->PrintData();
-		app->entityman->DestroyEntity(this);
-		app->fade->Fade((Module*)app->scene, (Module*)app->endingScreen, 180);
+		
+		if (lifes > 0) 
+		{
+			app->scene->player->lifes--;
+			app->scene->player->PrintData();
+		}
+		else 
+		{
+			Die();
+			app->entityman->DestroyEntity(this);
+			app->fade->Fade((Module*)app->scene, (Module*)app->endingScreen, 180);
+		}
 	}
 }

@@ -53,7 +53,7 @@ public:
 
 	bool dead;
 	bool isLeft;
-	Animation* current_anim = nullptr;
+	Animation* currentAnim = nullptr;
 	SDL_Texture* texture;
 	SDL_Rect rectAnim;
 };

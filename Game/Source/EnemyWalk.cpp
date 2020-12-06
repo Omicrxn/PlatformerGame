@@ -63,12 +63,12 @@ bool EnemyWalk::Update(float dt)
 		Fall();
 	}
 
-	if (current_anim != &movingAnim)
+	if (currentAnim != &movingAnim)
 	{
-		current_anim = &movingAnim;
+		currentAnim = &movingAnim;
 		movingAnim.Reset();
 	}
-	rectAnim = current_anim->GetCurrentFrame();
+	rectAnim = currentAnim->GetCurrentFrame();
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;

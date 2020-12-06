@@ -155,7 +155,7 @@ bool App::Start()
 
 	while (item != NULL && ret == true)
 	{
-		ret = item->data->isEnabled() ? item->data->Start() : true;
+		ret = item->data->IsEnabled() ? item->data->Start() : true;
 		item = item->next;
 	}
 	
@@ -275,7 +275,7 @@ bool App::PreUpdate()
 	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->isEnabled() ? pModule->PreUpdate() : true;
+		ret = pModule->IsEnabled() ? pModule->PreUpdate() : true;
 	}
 
 	return ret;
@@ -292,7 +292,7 @@ bool App::DoUpdate()
 	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->isEnabled() ? pModule->Update(dt) : true;
+		ret = pModule->IsEnabled() ? pModule->Update(dt) : true;
 	}
 
 	return ret;
@@ -308,7 +308,7 @@ bool App::PostUpdate()
 	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->isEnabled() ? pModule->PostUpdate() : true;
+		ret = pModule->IsEnabled() ? pModule->PostUpdate() : true;
 	}
 
 	return ret;

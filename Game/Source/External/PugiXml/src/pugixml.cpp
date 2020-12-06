@@ -11231,7 +11231,7 @@ namespace pugi
         }
     }
 
-    PUGI__FN xpath_variable* xpath_variable_set::find(const char_t* name) const
+    PUGI__FN xpath_variable* xpath_variable_set::Find(const char_t* name) const
     {
         const size_t hash_size = sizeof(_data) / sizeof(_data[0]);
         size_t hash = impl::hash_string(name) % hash_size;
@@ -11294,12 +11294,12 @@ namespace pugi
 
     PUGI__FN xpath_variable* xpath_variable_set::get(const char_t* name)
     {
-        return find(name);
+        return Find(name);
     }
 
     PUGI__FN const xpath_variable* xpath_variable_set::get(const char_t* name) const
     {
-        return find(name);
+        return Find(name);
     }
 
     PUGI__FN xpath_query::xpath_query(const char_t* query, xpath_variable_set* variables): _impl(0)
