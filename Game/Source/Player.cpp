@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Scene.h"
 #include "Particles.h"
+#include "EntityManager.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -395,5 +396,10 @@ void Player::OnCollision(Collider* collider)
 	if (collider->type == Collider::Type::ENEMY)
 	{
 		dead = true;
+		app->audio->PlayFx(fx);
+		app->scene->player->lifes--;
+		app->scene->player->PrintData();
+		app->entityman->DestroyEntity(this);
+		app->fade->Fade((Module*)app->scene, (Module*)app->endingScreen, 180);
 	}
 }
