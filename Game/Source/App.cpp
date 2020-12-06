@@ -405,6 +405,16 @@ bool App::LoadGame()
 			ret = item->data->LoadState(node.child(item->data->name.GetString()));
 			item = item->next;
 		}
+
+		pugi::xml_node nodeEntity = node.child("entitymanager");
+		for (int i = 0; i < app->entityman->entities.Count(); i++)
+		{
+			SString entityName;
+			entityName.Create("Entity%d", i + 1);
+			pugi::xml_node currentEntity = nodeEntity.child(entityName.GetString());
+			app->entityman->entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
+			app->entityman->entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
+		}
 	}
 
 	return ret;
@@ -431,7 +441,15 @@ bool App::SaveGame() const
 		item = item->next;
 	}
 
-	for(int i =0; ; )
+	pugi::xml_node nodeEntity = node.child("entitymanager");
+	for (int i = 0; i < app->entityman->entities.Count(); i++)
+	{
+		SString entityName;
+		entityName.Create("Entity%d", i + 1);
+		pugi::xml_node currentEntity = nodeEntity.append_child(entityName.GetString());
+		currentEntity.append_attribute("x").set_value(app->entityman->entities.At(i)->data->position.x);
+		currentEntity.append_attribute("y").set_value(app->entityman->entities.At(i)->data->position.y);
+	}
 
 	doc.save_file("savegame.xml");
 

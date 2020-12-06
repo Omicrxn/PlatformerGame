@@ -14,9 +14,16 @@
 	<pathfinding />
 	<scene />
 	<map />
-	<entitymanager />
+	<entitymanager>
+		<Entity1 x="456" y="971" />
+		<Entity2 x="383" y="933" />
+		<Entity3 x="281" y="975" />
+		<Entity4 x="1476" y="907" />
+		<Entity5 x="1056" y="813" />
+	</entitymanager>
+	<particles />
 	<fadetoblack />
 	<renderer>
-		<camera x="-108" y="-609" />
+		<camera x="0" y="-611" />
 	</renderer>
 </save>
