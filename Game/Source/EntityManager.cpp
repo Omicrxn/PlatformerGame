@@ -101,7 +101,7 @@ void EntityManager::OnCollision(Collider* c1, Collider* c2)
 {
 	for (ListItem<Entity*>* i = entities.start; i != NULL; i = i->next)
 	{
-		if (i->data->GetCollider() == c1 && ((c2->type == Collider::Type::PLAYER_BULLET) || (c2->type == Collider::Type::PLAYER)/* || (c2->type == Collider::Type::ENEMY)*/))
+		if (i->data->GetCollider() == c1 && ((c2->type == Collider::Type::PLAYER_BULLET) || (c2->type == Collider::Type::PLAYER) || (c2->type == Collider::Type::ENEMY)))
 		{
 			i->data->OnCollision(c2);
 		}

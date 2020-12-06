@@ -249,7 +249,7 @@ void App::FinishUpdate()
 	static char title[256];
 	/*sprintf_s(title, 256, "FPS: %d / Av.FPS: %.2f / Last-frame MS: %02u / Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
 			  averageFps, lastFrameMs, framesOnLastSec, dt, secondsSinceStartup, frameCount);*/
-	sprintf_s(title, 256, "FPS: %d / Av.FPS: %.2f / Last-frame MS: %02u / Vsync: %s",
+	sprintf_s(title, 256, "FPS: %d / Avg.FPS: %.2f / Last-frame MS: %02u / Vsync: %s",
 		framesOnLastSec, averageFps, lastFrameMs, vsyncStr.GetString());
 
 	app->win->SetTitle(title);
