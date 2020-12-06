@@ -11,7 +11,7 @@ public:
 public:
 
 	bool collision;
-
+	int fx;
 	Animation movingAnim;
 
 };

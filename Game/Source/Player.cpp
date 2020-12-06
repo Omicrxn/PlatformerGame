@@ -61,6 +61,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 
 	checkpointFx = app->audio->LoadFx("Assets/audio/fx/checkpoint.wav");
 
+
 	// Physics variables
 	isLeft = false;
 
@@ -218,7 +219,7 @@ void Player::Run(bool isLeft)
 			current_anim = &playerRunning;
 			playerRunning.Reset();
 		}
-		isLeft ? velocity.x = -250.0f :velocity.x = 250.0f;
+		isLeft ? velocity.x = -200.0f :velocity.x = 250.0f;
 	}
 }
 
@@ -232,7 +233,7 @@ void Player::Jump()
 	{
 		if (onGround)
 		{
-			velocity.y = -400.0f;
+			velocity.y = -300.0f;
 			onGround = false;
 		}
 	}
@@ -293,7 +294,7 @@ void Player::GroundCollisions()
 						}
 						else if (playerRect.y > tileRect.y)
 						{
-							velocity.y = 0;
+							velocity.y = 100.0f;
 						}
 
 						break;
@@ -327,11 +328,23 @@ void Player::GroundCollisions()
 					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
+						
+
 						if (!godMode && !app->scene->hasCheckpoint) Die();
 						else
 						{
 							position.x = app->scene->lastCheckpoint.x;
 							position.y = app->scene->lastCheckpoint.y;
+							
+						}
+						if (lifes > 0)
+						{
+							lifes--;
+							PrintData();
+						}
+						else
+						{
+							Die();
 						}
 						break;
 					}
@@ -396,5 +409,8 @@ bool Player::CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect)
 
 void Player::OnCollision(Collider* collider)
 {
-
+	if (collider->type == Collider::Type::ENEMY)
+	{
+		dead = true;
+	}
 }

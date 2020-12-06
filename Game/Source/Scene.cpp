@@ -70,8 +70,8 @@ bool Scene::Start()
 	debugTex = app->tex->Load("Assets/maps/pathfinding_debug.png");
 
 	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
-	walkingEnemy1 = (EnemyWalk*)app->entityman->CreateEntity(EntityType::ENEMY_WALK);
-	flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
+	//walkingEnemy1 = (EnemyWalk*)app->entityman->CreateEntity(EntityType::ENEMY_WALK);
+	//flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
 	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
 	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);
 
