@@ -38,6 +38,8 @@ Fantasy 2D platformer game developed by 3 students at CITM. In the game you are 
 |F6|Load the previous state (even across levels)|
 |F9|View colliders / logic|
 |F10|God Mode (fly around, cannot be killed)|
+|F11|Enable/Disable FPS cap to 60|
+|C|Start from the last completed checkpoint|
 
 ## Developers
 
