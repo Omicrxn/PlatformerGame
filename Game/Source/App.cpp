@@ -36,7 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(true);
 	tex = new Textures(true);
 	audio = new Audio(true);
-	collisions = new Collisions(true);
+	collisions = new Collisions(false);
 	scene = new Scene(true);
 	map = new Map(false);
 	fade = new FadeToBlack(true);

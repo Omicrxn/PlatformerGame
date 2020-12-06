@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Map.h"
 #include "Pathfinding.h"
+#include "EntityManager.h"
 #include "Player.h"
 #include "Scene.h"
 
@@ -29,7 +30,7 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 
 	dead = false;
 	collision = false;
-
+	collider = app->collisions->AddCollider({ position.x,position.y,18,16 }, Collider::Type::ENEMY, (Module*)app->entityman);
 	counter = 0;
 
 	origin = app->map->WorldToMap(position.x, position.y);
@@ -72,7 +73,10 @@ bool EnemyWalk::Update(float dt)
 		Move();
 	}
 	counter += dt;
-
+	// Update collider position
+	if (collider != nullptr) {
+		collider->SetPos(position.x, position.y);
+	}
 	return ret;
 }
 
@@ -98,4 +102,14 @@ void EnemyWalk::Move()
 	{
 		velocity = { 0,0 };
 	}
+}
+void EnemyWalk::OnCollision(Collider* collider)
+{
+
+
+	//app->scene->player->score += scoreGiven;
+
+	app->entityman->DestroyEntity(this);
+
+
 }

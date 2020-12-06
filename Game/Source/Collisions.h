@@ -53,7 +53,7 @@ public:
 
 	// Called at the middle of the application loop
 	// Switches the debug mode on/off
-	bool Update();
+	bool Update(float dt);
 
 	// Called at the end of the application loop
 	// Draw all colliders (if debug mode is enabled)
@@ -81,9 +81,11 @@ private:
 	// If set two false, collider 1 will ignore collider 2
 	bool matrix[Collider::Type::MAX][Collider::Type::MAX];
 
-	// Simple debugging flag to draw all colliders
-	bool debug = false;
+
 
 	// The amount of colliders loaded into the array
 	uint colliderCount = 0;
+public:
+	// Simple debugging flag to draw all colliders
+	bool debug = false;
 };

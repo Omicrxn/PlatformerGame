@@ -50,9 +50,11 @@ bool Scene::Start()
 	backgroundRect = { 0,0,2880,1440 };
 
 	// Load map
+	app->collisions->Enable();
 	app->map->Enable();
 	app->map->Load("level1.tmx");
 	app->entityman->Enable();
+
 
 	// Create walkability map on map loading
 	if(app->map->Load("level1.tmx") == true)
@@ -208,6 +210,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
+	app->collisions->Disable();
 	app->entityman->Disable();
 	app->map->Disable();
 	app->tex->Unload(background1);

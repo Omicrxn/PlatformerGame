@@ -22,10 +22,10 @@ Collisions::Collisions(bool startEnabled) : Module(startEnabled) {
 	matrix[Collider::Type::PLAYER][Collider::Type::WALL] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
-
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER_BULLET] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY_SHOT] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WEAPON] = false;
+
 
 
 	matrix[Collider::Type::ENEMY][Collider::Type::WALL] = true;
@@ -50,20 +50,31 @@ Collisions::Collisions(bool startEnabled) : Module(startEnabled) {
 	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::ENEMY_SHOT] = false;
 	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::WEAPON] = false;
 
-
-
-
-
-
-
 	matrix[Collider::Type::WEAPON][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::WEAPON][Collider::Type::ENEMY] = true;
 	matrix[Collider::Type::WEAPON][Collider::Type::ENEMY_SHOT] = false;
 	matrix[Collider::Type::WEAPON][Collider::Type::PLAYER_BULLET] = false;
-
 	matrix[Collider::Type::WEAPON][Collider::Type::WALL] = true;
-
 	matrix[Collider::Type::WEAPON][Collider::Type::WEAPON] = false;
+
+	matrix[Collider::Type::ITEM_COIN][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::ITEM_COIN][Collider::Type::ENEMY] = false;
+	matrix[Collider::Type::ITEM_COIN][Collider::Type::ENEMY_SHOT] = false;
+	matrix[Collider::Type::ITEM_COIN][Collider::Type::PLAYER_BULLET] = true;
+	matrix[Collider::Type::ITEM_COIN][Collider::Type::WALL] = false;
+	matrix[Collider::Type::ITEM_COIN][Collider::Type::WEAPON] = false;
+
+
+
+	matrix[Collider::Type::ITEM_HEART][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::ITEM_HEART][Collider::Type::ENEMY] = false;
+	matrix[Collider::Type::ITEM_HEART][Collider::Type::ENEMY_SHOT] = false;
+	matrix[Collider::Type::ITEM_HEART][Collider::Type::PLAYER_BULLET] = false;
+	matrix[Collider::Type::ITEM_HEART][Collider::Type::WALL] = false;
+	matrix[Collider::Type::ITEM_HEART][Collider::Type::WEAPON] = false;
+
+	matrix[Collider::Type::ITEM_COIN][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::ITEM_HEART][Collider::Type::PLAYER] = true;
 }
 
 Collisions::~Collisions() {}
@@ -109,9 +120,7 @@ bool Collisions::PreUpdate() {
 	return true;
 }
 
-bool Collisions::Update() {
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
+bool Collisions::Update(float dt) {
 
 	return true;
 }
@@ -151,6 +160,12 @@ void Collisions::DebugDraw() {
 
 		case Collider::Type::WEAPON: // GREY
 			app->render->DrawRectangle(colliders[i]->rect, 128, 128, 128, alpha);
+			break;
+		case Collider::Type::ITEM_COIN: // GREY
+			app->render->DrawRectangle(colliders[i]->rect, 0, 100, 128, alpha);
+			break;
+		case Collider::Type::ITEM_HEART: // GREY
+			app->render->DrawRectangle(colliders[i]->rect, 128, 0, 0, alpha);
 			break;
 
 		}

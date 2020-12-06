@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Player.h"
+#include "EntityManager.h"
 #include "Scene.h"
 
 EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
@@ -34,6 +35,8 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 
 	origin = app->map->WorldToMap(position.x, position.y);
 	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+
+	collider = app->collisions->AddCollider({ position.x,position.y,13,11 }, Collider::Type::ENEMY, (Module*)app->entityman);
 
 	app->pathfinding->lastPath.Clear();
 	app->pathfinding->CreatePath(origin, goal);
@@ -72,7 +75,10 @@ bool EnemyFly::Update(float dt)
 		Move();
 	}
 	counter += dt;
-
+	// Update collider position
+	if (collider != nullptr) {
+		collider->SetPos(position.x, position.y);
+	}
 	return ret;
 }
 
@@ -98,4 +104,15 @@ void EnemyFly::Move()
 	{
 		velocity = { 0,0 };
 	}
+}
+
+void EnemyFly::OnCollision(Collider* collider)
+{
+	
+
+		//app->scene->player->score += scoreGiven;
+
+		app->entityman->DestroyEntity(this);
+
+
 }

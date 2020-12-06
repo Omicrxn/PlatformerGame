@@ -7,7 +7,7 @@ public:
 	~Coin();
 
 	bool Update(float dt) override;
-
+	void OnCollision(Collider* collider) override;
 public:
 
 	bool collision;

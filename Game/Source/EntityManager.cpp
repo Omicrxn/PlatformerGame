@@ -6,6 +6,7 @@
 #include "Coin.h"
 #include "Heart.h"
 #include "Textures.h"
+#include "Collisions.h"
 
 
 EntityManager::EntityManager(bool startEnable) : Module(startEnable) 
@@ -73,9 +74,12 @@ bool EntityManager::UpdateAll(float dt, bool doLogic)
 
 void EntityManager::DestroyEntity(Entity* entity)
 {
+	ListItem<Entity*>* item = entities.At(entities.find(entity));
 	app->tex->Unload(entity->texture);
 	entity->texture = nullptr;
-	delete entity;
+	RELEASE(entity);
+	
+	entities.Del(item);
 }
 
 bool EntityManager::CleanUp()
@@ -89,4 +93,13 @@ bool EntityManager::CleanUp()
 	entities.Clear();
 
 	return ret;
+}
+void EntityManager::OnCollision(Collider* c1, Collider* c2)
+{
+	for (ListItem<Entity*>* i = entities.start; i != NULL; i = i->next)
+	{
+		if (i->data->GetCollider() == c1 && ((c2->type == Collider::Type::PLAYER_BULLET) || (c2->type == Collider::Type::PLAYER))) {
+			i->data->OnCollision(c2);
+		}
+	}
 }

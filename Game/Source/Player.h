@@ -19,7 +19,7 @@ public:
 	
 	
 	bool Update(float dt) override;
-	
+	void OnCollision(Collider* collider) override;
 	/*bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;*/
 	

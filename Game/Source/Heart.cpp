@@ -1,6 +1,7 @@
 #include "Heart.h"
 #include "App.h"
 #include "Textures.h"
+#include "EntityManager.h"
 #include "Render.h"
 
 
@@ -30,7 +31,7 @@ Heart::Heart() : Entity(EntityType::ENEMY_FLY)
 
 	dead = false;
 	collision = false;
-
+	collider = app->collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_HEART, (Module*)app->entityman);
 }
 
 bool Heart::Update(float dt)
@@ -50,7 +51,19 @@ bool Heart::Update(float dt)
 	}
 
 	
-
+	// Update collider position
+	if (collider != nullptr) {
+		collider->SetPos(position.x, position.y);
+	}
 	return ret;
 }
+void Heart::OnCollision(Collider* collider)
+{
 
+
+	//app->scene->player->score += scoreGiven;
+
+	app->entityman->DestroyEntity(this);
+
+
+}

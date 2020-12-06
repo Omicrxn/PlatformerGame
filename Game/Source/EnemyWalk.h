@@ -7,6 +7,7 @@ public:
 	~EnemyWalk();
 
 	bool Update(float dt) override;
+	void OnCollision(Collider* collider) override;
 private:
 	void Move();
 

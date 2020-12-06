@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Textures.h"
 #include "Render.h"
+#include "EntityManager.h"
 
 Coin::Coin() : Entity(EntityType::ENEMY_FLY)
 {
@@ -26,7 +27,7 @@ Coin::Coin() : Entity(EntityType::ENEMY_FLY)
 
 	dead = false;
 	collision = false;
-
+	collider = app->collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_COIN, (Module*)app->entityman);
 }
 
 bool Coin::Update(float dt)
@@ -45,8 +46,21 @@ bool Coin::Update(float dt)
 		ret = false;
 	}
 
-	
+	// Update collider position
+	if (collider != nullptr) {
+		collider->SetPos(position.x, position.y);
+	}
 
 	return ret;
 }
 
+void Coin::OnCollision(Collider* collider)
+{
+
+
+	//app->scene->player->score += scoreGiven;
+
+  	app->entityman->DestroyEntity(this);
+
+
+}

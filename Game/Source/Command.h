@@ -79,6 +79,7 @@ public:
 	{
 		app->scene->DrawDebug();
 		app->pathfinding->debug = !app->pathfinding->debug;
+		app->collisions->debug = !app->collisions->debug;
 	}
 };
 
