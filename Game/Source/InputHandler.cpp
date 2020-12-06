@@ -18,6 +18,7 @@ void InputHandler::BindCommands()
 	keyF5 = new SaveCommand();
 	keyF6 = new LoadCommand();
 	keyF9 = new ViewLogicCommand();
+	keyF11 = new FPSCapTo30();
 	
 	keyPlus = new VolumeUpCommand();
 	keyMinus = new VolumeDownCommand();
@@ -68,6 +69,12 @@ void InputHandler::HandleInput()
 		keyF9->state = CommandState::DOWN;
 		commandList.Add(keyF9);
 	}
+	// F11 Enable/Disable FPS cap to 30
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		keyF11->state = CommandState::DOWN;
+		commandList.Add(keyF11);
+	}
 
 	// Change volume with +/- from the numeric keyboard
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
@@ -101,6 +108,7 @@ bool InputHandler::CleanUp()
 	delete keyF5;
 	delete keyF6;
 	delete keyF9;
+	delete keyF11;
 	delete keyPlus;
 	delete keyMinus;
 

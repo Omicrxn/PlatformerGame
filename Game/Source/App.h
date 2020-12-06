@@ -110,6 +110,7 @@ public:
 	EntityManager* entityman;
 	InputHandler* inputHandler;
 
+	bool framerateCap = false;
 
 private:
 
@@ -118,8 +119,6 @@ private:
 	SString title;
 	SString organization;
 	SString vsyncStr;
-
-	bool framerateCap = true;
 
 	List<Module *> modules;
 

@@ -21,7 +21,6 @@ public:
 class JumpCommand : public Command
 {
 public:
-	
 	void Execute(Player* player = nullptr) 
 	{ 
 		if(state == CommandState::REPEAT)
@@ -39,7 +38,6 @@ public:
 class RunLeftCommand : public Command
 {
 public:
-
 	void Execute(Player* player = nullptr) 
 	{
 		player->Run(true);
@@ -49,7 +47,6 @@ public:
 class RunRightCommand : public Command
 {
 public:
-
 	void Execute(Player* player = nullptr)
 	{
 		player->Run(false);
@@ -59,7 +56,6 @@ public:
 class SaveCommand : public Command
 {
 public:
-
 	void Execute(Player* player = nullptr)
 	{
 		app->SaveGameRequest();
@@ -69,7 +65,6 @@ public:
 class LoadCommand : public Command
 {
 public:
-
 	void Execute(Player* player = nullptr)
 	{
 		app->LoadGameRequest();
@@ -79,7 +74,6 @@ public:
 class ViewLogicCommand : public Command
 {
 public:
-
 	void Execute(Player* player = nullptr)
 	{
 		app->scene->DrawDebug();
@@ -89,7 +83,6 @@ public:
 class VolumeUpCommand : public Command
 {
 public:
-
 	void Execute(Player* player = nullptr)
 	{
 		app->scene->VolumeUp();
@@ -99,9 +92,17 @@ public:
 class VolumeDownCommand : public Command
 {
 public:
-
 	void Execute(Player* player = nullptr)
 	{
 		app->scene->VolumeDown();
+	}
+};
+
+class FPSCapTo30 : public Command
+{
+public:
+	void Execute()
+	{
+		app->framerateCap = !app->framerateCap;
 	}
 };

@@ -26,6 +26,7 @@ private:
 	Command* keyF5;
 	Command* keyF6;
 	Command* keyF9;
+	Command* keyF11;
 
 	Command* keyPlus;
 	Command* keyMinus;
