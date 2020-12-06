@@ -431,6 +431,8 @@ bool App::SaveGame() const
 		item = item->next;
 	}
 
+	for(int i =0; ; )
+
 	doc.save_file("savegame.xml");
 
 	return ret;

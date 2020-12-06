@@ -9,7 +9,6 @@
 #include "Map.h"
 #include "Scene.h"
 #include "Particles.h"
-#include "EntityManager.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -78,7 +77,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	onGround = true;
 	dead = false;
 	collision = false;
-	collider = app->collisions->AddCollider({ position.x,position.y,17,25 }, Collider::Type::PLAYER, (Module*)app->entityman);
+
 	scale = app->win->GetScale();
 }
 
@@ -90,7 +89,7 @@ bool Player::Update(float dt)
 	iPoint tempPlayerPosition = position;
 	if (!dead && !godMode)
 	{
-		velocity.y += gravity * dt;
+		velocity.y += gravity;
 		position.y += velocity.y;
 		isLeft ? position.x -= velocity.x : position.x += velocity.x;
 	}
@@ -237,10 +236,7 @@ bool Player::Update(float dt)
 		}
 		layer = layer->next;
 	}
-	// Update collider position to player position
-	if (collider != nullptr) {
-		collider->SetPos(position.x, position.y);
-	}
+
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;
@@ -366,11 +362,5 @@ bool Player::CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect)
 
 void Player::OnCollision(Collider* collider)
 {
-
-
-	//app->scene->player->score += scoreGiven;
-
-	//app->entityman->DestroyEntity(this);
-
 
 }
