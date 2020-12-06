@@ -51,6 +51,7 @@ bool EnemyFly::Update(float dt)
 		current_anim = &movingAnim;
 		movingAnim.Reset();
 	}
+
 	rectAnim = current_anim->GetCurrentFrame();
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
@@ -64,10 +65,14 @@ bool EnemyFly::Update(float dt)
 		Move();
 	}
 	counter += dt;
+
 	// Update collider position
 	if (collider != nullptr) {
 		collider->SetPos(position.x, position.y);
 	}
+
+	DrawPath();
+
 	return ret;
 }
 
@@ -101,24 +106,35 @@ void EnemyFly::UpdatePath()
 	origin = app->map->WorldToMap(position.x, position.y);
 	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
 
-
 	app->pathfinding->lastPath.Clear();
-	app->pathfinding->CreatePath(origin, goal);
-	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+	if (app->pathfinding->CreatePath(origin, goal) != -1)
 	{
-		path.PushBack(*app->pathfinding->lastPath.At(i));
+		for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+		{
+			path.PushBack(*app->pathfinding->lastPath.At(i));
+		}
+		path.Flip();
 	}
-	path.Flip();
 }
 
 void EnemyFly::OnCollision(Collider* collider)
 {
-	
-
 		//app->scene->player->score += scoreGiven;
 		app->scene->player->score += 500;
 		app->scene->player->PrintData();
 		app->entityman->DestroyEntity(this);
+}
 
+void EnemyFly::DrawPath()
+{
+	if (app->pathfinding->debug == true)
+	{
+		const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
 
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			app->render->DrawTexture(app->scene->debugTex, pos.x, pos.y);
+		}
+	}
 }

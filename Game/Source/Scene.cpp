@@ -174,7 +174,7 @@ bool Scene::Update(float dt)
 	app->win->SetTitle(title.GetString());*/
 
 	// L12b: Debug pathfinding
-	if (app->pathfinding->debug == true)
+	/*if (app->pathfinding->debug == true)
 	{
 		app->input->GetMousePosition(mouseX, mouseY);
 		iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
@@ -190,7 +190,7 @@ bool Scene::Update(float dt)
 			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 			app->render->DrawTexture(debugTex, pos.x, pos.y);
 		}
-	}
+	}*/
 
 	return true;
 }

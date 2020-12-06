@@ -11,6 +11,8 @@ public:
 	void Fall();
 	void Jump();
 	void OnCollision(Collider* collider) override;
+	void DrawPath();
+
 private:
 	void Move();
 

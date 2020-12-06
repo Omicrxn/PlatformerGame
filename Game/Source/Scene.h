@@ -48,13 +48,14 @@ public:
 
 	bool hasCheckpoint;
 
+	SDL_Texture* debugTex;
+
 private:
 
 	SDL_Texture* background1;
 	SDL_Texture* background2;
 	SDL_Texture* background3;
 	SDL_Texture* background4;
-	SDL_Texture* debugTex;
 	SDL_Rect backgroundRect;
 
 	SDL_Texture* checkpointTex;

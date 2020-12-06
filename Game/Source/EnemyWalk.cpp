@@ -56,17 +56,21 @@ bool EnemyWalk::Update(float dt)
 		ret = false;
 	}
 
-	if (counter >= 1.0f)
+	if (counter >= 0.5f)
 	{
 		counter = 0.0f;
 		UpdatePath();
 		Move();
 	}
 	counter += dt;
+
 	// Update collider position
 	if (collider != nullptr) {
 		collider->SetPos(position.x, position.y);
 	}
+
+	/*DrawPath();*/
+
 	return ret;
 }
 
@@ -109,23 +113,33 @@ void EnemyWalk::UpdatePath()
 	origin = app->map->WorldToMap(position.x, position.y);
 	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
 
-
 	app->pathfinding->lastPath.Clear();
-	app->pathfinding->CreatePath(origin, goal);
-	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+	if (app->pathfinding->CreatePath(origin, goal) != -1)
 	{
-		path.PushBack(*app->pathfinding->lastPath.At(i));
+		for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+		{
+			path.PushBack(*app->pathfinding->lastPath.At(i));
+		}
 	}
+
 	path.Flip();
 }
 
 void EnemyWalk::OnCollision(Collider* collider)
 {
-
-
 	app->scene->player->score += 300;
 	app->scene->player->PrintData();
 	app->entityman->DestroyEntity(this);
+}
 
-
+void EnemyWalk::DrawPath()
+{
+	if (app->pathfinding->debug == true)
+	{
+		for (uint i = 0; i < path.Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path.At(i)->x, path.At(i)->y);
+			app->render->DrawTexture(app->scene->debugTex, pos.x, pos.y);
+		}
+	}
 }
