@@ -27,7 +27,7 @@ Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 	fx = app->audio->LoadFx("Assets/audio/fx/checkpoint.wav");
 	isLeft = true;
 
-	initialPosition = { 944, 848 };
+	initialPosition = { 944, 1328 };
 	position = initialPosition;
 
 	//checkpoints[1] = { 59, 83 };
