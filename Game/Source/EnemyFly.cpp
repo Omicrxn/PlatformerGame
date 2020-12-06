@@ -22,7 +22,7 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 
 	isLeft = true;
 
-	initialPosition = { 100, 800 };
+	initialPosition = { 100, 700 };
 	position = initialPosition;
 
 	gravity = 1;
@@ -30,21 +30,11 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 
 	dead = false;
 	collision = false;
-
 	collider = app->collisions->AddCollider({ position.x,position.y,13,11 }, Collider::Type::ENEMY, (Module*)app->entityman);
 
 	counter = 0;
 
-	origin = app->map->WorldToMap(position.x, position.y);
-	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
-
-	app->pathfinding->lastPath.Clear();
-	app->pathfinding->CreatePath(origin, goal);
-	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
-	{
-		path.PushBack(*app->pathfinding->lastPath.At(i));
-	}
-	path.Flip();
+	
 }
 
 bool EnemyFly::Update(float dt) 
@@ -52,10 +42,8 @@ bool EnemyFly::Update(float dt)
 	bool ret = true;
 	if (!dead)
 	{
-		velocity.y += gravity;
-		/*position.y += velocity.y*dt;*/
-		isLeft ? position.x -= velocity.x : position.x += velocity.x;
-		/*position.x += velocity.x*dt;*/
+		position.x = position.x + velocity.x;
+		position.y = position.y + velocity.y;
 	}
 
 	if (current_anim != &movingAnim)
@@ -72,6 +60,7 @@ bool EnemyFly::Update(float dt)
 	if (counter >= 0.27f)
 	{
 		counter = 0.0f;
+		UpdatePath();
 		Move();
 	}
 	counter += dt;
@@ -88,8 +77,8 @@ void EnemyFly::Move()
 	{
 		iPoint nextTile;
 		path.Pop(nextTile);
-		iPoint mapPos = app->map->WorldToMap(position.x, position.y);
 
+		iPoint mapPos = app->map->WorldToMap(position.x, position.y);
 		if (mapPos.x < nextTile.x)
 			this->velocity.x = 1;
 		else
@@ -106,9 +95,29 @@ void EnemyFly::Move()
 	}
 }
 
+
+void EnemyFly::UpdatePath()
+{
+	origin = app->map->WorldToMap(position.x, position.y);
+	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+
+
+	app->pathfinding->lastPath.Clear();
+	app->pathfinding->CreatePath(origin, goal);
+	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+	{
+		path.PushBack(*app->pathfinding->lastPath.At(i));
+	}
+	path.Flip();
+}
+
 void EnemyFly::OnCollision(Collider* collider)
 {
-	//app->scene->player->score += scoreGiven;
+	
 
-	app->entityman->DestroyEntity(this);
+		//app->scene->player->score += scoreGiven;
+
+		app->entityman->DestroyEntity(this);
+
+
 }

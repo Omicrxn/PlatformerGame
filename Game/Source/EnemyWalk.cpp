@@ -25,36 +25,25 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 	initialPosition = { 760, 975 };
 	position = initialPosition;
 
-	gravity = 1;
+	gravity = 1.0f;
 	velocity = { 0,0 };
 
 	dead = false;
 	collision = false;
 	collider = app->collisions->AddCollider({ position.x,position.y,18,16 }, Collider::Type::ENEMY, (Module*)app->entityman);
 	counter = 0;
-
-	origin = app->map->WorldToMap(position.x, position.y);
-	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
-
-	app->pathfinding->lastPath.Clear();
-	app->pathfinding->CreatePath(origin, goal);
-	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
-	{
-		path.PushBack(*app->pathfinding->lastPath.At(i));
-	}
-	path.Flip();
 }
 
 bool EnemyWalk::Update(float dt)
 {
 	bool ret = true;
-	if (!dead)
-	{
-		/*velocity.y += gravity;*/
-		position.y += velocity.y * dt;
-		/*isLeft ? position.x -= velocity.x : position.x += velocity.x;*/
-		position.x += velocity.x * dt;
-	}
+		if (!dead)
+		{
+			position.x = position.x + velocity.x * dt;
+			position.y = position.y + velocity.y * dt + (gravity * dt * dt * 0.5);
+			velocity.y = velocity.y + gravity * dt;
+		}
+
 
 	if (current_anim != &movingAnim)
 	{
@@ -70,6 +59,7 @@ bool EnemyWalk::Update(float dt)
 	if (counter >= 1.0f)
 	{
 		counter = 0.0f;
+		UpdatePath();
 		Move();
 	}
 	counter += dt;
@@ -94,15 +84,41 @@ void EnemyWalk::Move()
 			this->velocity.x = -1;
 
 		if (mapPos.y < nextTile.y)
-			this->velocity.y = gravity;
+			Fall();
 		else
-			this->velocity.y = 0;
+			Jump();
 	}
 	else
 	{
 		velocity = { 0,0 };
 	}
 }
+
+void EnemyWalk::Fall()
+{
+	if (velocity.y > 0) velocity.y = 1.0f;
+}
+
+void EnemyWalk::Jump()
+{
+	velocity.y = -1;
+}
+
+void EnemyWalk::UpdatePath()
+{
+	origin = app->map->WorldToMap(position.x, position.y);
+	goal = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+
+
+	app->pathfinding->lastPath.Clear();
+	app->pathfinding->CreatePath(origin, goal);
+	for (int i = 0; i < app->pathfinding->lastPath.Count(); i++)
+	{
+		path.PushBack(*app->pathfinding->lastPath.At(i));
+	}
+	path.Flip();
+}
+
 void EnemyWalk::OnCollision(Collider* collider)
 {
 

@@ -38,7 +38,7 @@ public:
 	EntityType type;
 	iPoint initialPosition;
 	iPoint position;
-	iPoint velocity;
+	fPoint velocity;
 	float gravity;
 	// The enemy's collider
 	Collider* collider = nullptr;

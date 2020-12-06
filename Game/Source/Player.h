@@ -31,6 +31,7 @@ public:
 
 	void Die();
 	bool Died();
+	void GroundCollisions();
 	
 	void UpdateCamera();
 

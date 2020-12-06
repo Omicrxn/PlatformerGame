@@ -37,11 +37,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	collisions = new Collisions(false);
-	scene = new Scene(true);
+	scene = new Scene(false);
 	map = new Map(false);
 	fade = new FadeToBlack(true);
 	logoScreen = new LogoScreen(false);
-	titleScreen = new TitleScreen(false);
+	titleScreen = new TitleScreen(true);
 	endingScreen = new EndingScreen(false);
 	pathfinding = new PathFinding(false);
 	entityman = new EntityManager(false);
@@ -58,10 +58,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(logoScreen);
 	AddModule(titleScreen);
-	AddModule(endingScreen);
-	AddModule(pathfinding);
 	AddModule(scene);
 	AddModule(map);
+	AddModule(endingScreen);
+	AddModule(pathfinding);
+
 	AddModule(entityman);
 	AddModule(particles);
 

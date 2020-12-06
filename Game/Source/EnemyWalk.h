@@ -7,6 +7,9 @@ public:
 	~EnemyWalk();
 
 	bool Update(float dt) override;
+	void UpdatePath();
+	void Fall();
+	void Jump();
 	void OnCollision(Collider* collider) override;
 private:
 	void Move();
