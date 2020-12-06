@@ -17,7 +17,15 @@ Fantasy 2D platformer game developed by 3 students at CITM. In the game you are 
  - Ending screen (on dying)
  - Background with parallax
  - DEBUG keys
- 
+ - Walking and Flying enemy types that can pathfind the player.
+ - Load/Save includes enemy states.
+ - Game is capped to stable 60 frames per second without vsync.
+ - Game has all its movement normalized using dt (deltaTime).
+ - The player can destroy enemies shooting to them.
+ - Game item (heart) to recover lifes.
+ - Game collectable item (coin) to accumulate points.
+ - Map Checkpoints autosave with feedback and on passing and teleportation.
+
 ## Controls
 
 ### Player movement
@@ -54,4 +62,3 @@ This project is licensed under an unmodified MIT license, which is an OSI-certif
 ### Additional Licenses
 The assets' work of this project is licensed under the Creative Commons Attribution 4.0 International License.
 For map assets license, check [LICENSE_MAP](/Output/Assets/maps/LICENSE_MAP) for the artists' work link.
-For character assets license, check [LICENSE_CHARACTER](/Output/Assets/player/LICENSE_CHARACTER) for the artists' work link.
