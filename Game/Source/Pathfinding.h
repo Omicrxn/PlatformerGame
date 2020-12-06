@@ -48,21 +48,21 @@ public:
 
 private:
 
-	// size of the map
+	// Size of the map
 	uint width;
 	uint height;
 
-	// all map walkability values [0..255]
+	// All map walkability values [0..255]
 	uchar* map;
 
 public:
-	// we store the created path here
+	// We store the created path here
 	DynArray<iPoint> lastPath;
 
 	bool debug = false;
 };
 
-// forward declaration
+// Forward declaration
 struct PathList;
 
 // ---------------------------------------------------------------------
@@ -82,8 +82,10 @@ struct PathNode
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
 	uint FindWalkableAdjacents(PathList& list_to_fill) const;
+
 	// Calculates this tile score
 	int Score() const;
+
 	// Calculate the F for a specific destination tile
 	int CalculateF(const iPoint& destination);
 };
