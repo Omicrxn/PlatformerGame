@@ -130,7 +130,7 @@ bool Player::Update(float dt)
 	// Shoot
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		app->particles->AddParticle(app->particles->playerBullet, position.x + 32, position.y, Collider::Type::PLAYER_SHOT);
+		app->particles->AddParticle(app->particles->playerBullet, position.x + 32, position.y, Collider::Type::PLAYER_BULLET);
 	}
 
 	// F3 Start from the beginning of the current level

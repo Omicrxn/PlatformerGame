@@ -13,7 +13,7 @@ struct Collider
 		WALL,
 		PLAYER,
 		ENEMY,
-		PLAYER_SHOT,
+		PLAYER_BULLET,
 		ENEMY_SHOT,
 		ITEM_COIN,
 		ITEM_HEART,

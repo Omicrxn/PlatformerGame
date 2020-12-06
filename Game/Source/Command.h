@@ -101,7 +101,7 @@ public:
 class FPSCapTo30 : public Command
 {
 public:
-	void Execute()
+	void Execute(Player* player = nullptr)
 	{
 		app->framerateCap = !app->framerateCap;
 	}
