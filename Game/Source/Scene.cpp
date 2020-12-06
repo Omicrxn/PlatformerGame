@@ -74,6 +74,7 @@ bool Scene::Start()
 	walkingEnemy1 = (EnemyWalk*)app->entityman->CreateEntity(EntityType::ENEMY_WALK);
 	flyingEnemy1 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
 	flyingEnemy2 = (EnemyFly*)app->entityman->CreateEntity(EntityType::ENEMY_FLY);
+	flyingEnemy1->position = { 200, 800 };
 	flyingEnemy2->position = { 700, 900 };
 	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
 	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);

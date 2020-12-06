@@ -24,7 +24,7 @@ EnemyFly::EnemyFly() : Entity(EntityType::ENEMY_FLY)
 
 	isLeft = true;
 
-	initialPosition = { 200, 800 };
+	initialPosition = { 0, 0 };
 	position = initialPosition;
 
 	gravity = 1;
