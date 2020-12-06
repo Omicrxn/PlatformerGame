@@ -25,7 +25,7 @@ bool EndingScreen::Start()
 	app->render->camera.y = 0;
 	// Screen rect
 	screen = { 0, 0, (int)windowSizeX * windowScale , (int)windowSizeY * windowScale };
-	tex = app->tex->Load("Assets/textures/Ending Screen.jpg");
+	tex = app->tex->Load("Assets/Textures/ending_screen.jpg");
 
 	if (tex == nullptr)
 	{

@@ -44,10 +44,10 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// Load Backgrounds
-	background1 = app->tex->Load("Assets/maps/background1.png");
-	background2 = app->tex->Load("Assets/maps/background2.png");
-	background3 = app->tex->Load("Assets/maps/background3.png");
-	background4 = app->tex->Load("Assets/maps/background4a.png");
+	background1 = app->tex->Load("Assets/Maps/background1.png");
+	background2 = app->tex->Load("Assets/Maps/background2.png");
+	background3 = app->tex->Load("Assets/Maps/background3.png");
+	background4 = app->tex->Load("Assets/Maps/background4a.png");
 	backgroundRect = { 0,0,2880,1440 };
 
 	// Load map
@@ -68,7 +68,7 @@ bool Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	debugTex = app->tex->Load("Assets/maps/pathfinding_debug.png");
+	debugTex = app->tex->Load("Assets/Maps/pathfinding_debug.png");
 
 	player = (Player*)app->entityman->CreateEntity(EntityType::PLAYER);
 	walkingEnemy1 = (EnemyWalk*)app->entityman->CreateEntity(EntityType::ENEMY_WALK);
@@ -87,7 +87,7 @@ bool Scene::Start()
 	checkpoint3->position = { 1936,224 };
 
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
 	return true;
 }

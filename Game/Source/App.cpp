@@ -385,11 +385,11 @@ bool App::LoadGame()
 	loadGameRequested = false;
 
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file("savegame.xml");
+	pugi::xml_parse_result result = doc.load_file("save_game.xml");
 
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
 		ret = false;
 	}
 	else

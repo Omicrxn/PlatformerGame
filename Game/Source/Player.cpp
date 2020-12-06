@@ -58,8 +58,8 @@ Player::Player() : Entity(EntityType::PLAYER)
 	playerDeath.loop = false;
 	playerDeath.speed = 0.12f;
 
-	texture = app->tex->Load("Assets/player/Player.png");
-	fx = app->audio->LoadFx("Assets/audio/fx/shoot.wav");
+	texture = app->tex->Load("Assets/Player/player.png");
+	fx = app->audio->LoadFx("Assets/Audio/Fx/shoot.wav");
 
 	// Physics variables
 	isLeft = false;
@@ -327,12 +327,9 @@ void Player::GroundCollisions()
 					{
 						collision = true;
 
-						if (!godMode && !hasCheckpoint)
-							Die();
-						else if (hasCheckpoint)
+						if (!godMode)
 						{
-							position.x = currentCheckpoint.x;
-							position.y = currentCheckpoint.y - 5;
+							Die();
 						}
 
 						if (lifes > 0)
@@ -342,7 +339,15 @@ void Player::GroundCollisions()
 						}
 						else
 						{
-							Die();
+							if (hasCheckpoint)
+							{
+								position.x = currentCheckpoint.x;
+								position.y = currentCheckpoint.y - 5;
+							}
+							else
+							{
+								Die();
+							}
 						}
 						break;
 					}

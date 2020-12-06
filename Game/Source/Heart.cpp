@@ -22,8 +22,8 @@ Heart::Heart() : Entity(EntityType::ENEMY_FLY)
 	movingAnim.loop = true;
 	movingAnim.speed = 0.09f;
 
-	texture = app->tex->Load("Assets/items/heart.png");
-	fx = app->audio->LoadFx("Assets/audio/fx/itemPick.wav");
+	texture = app->tex->Load("Assets/Items/heart.png");
+	fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
 	isLeft = true;
 
 	initialPosition = { 1056, 813 };

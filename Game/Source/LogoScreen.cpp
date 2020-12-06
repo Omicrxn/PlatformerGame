@@ -30,7 +30,7 @@ bool LogoScreen::Start()
 	// Screen rect
 	logo = { 0,0,(int)windowSizeX * windowScale,(int)windowSizeY * windowScale };
 	screen = { 0, 0, (int)windowSizeX * windowScale , (int)windowSizeY * windowScale };
-	logoTex = app->tex->Load("Assets/textures/Logo Screen.png");
+	logoTex = app->tex->Load("Assets/Textures/logo_screen.png");
 
 	return ret;
 }

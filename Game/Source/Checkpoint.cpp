@@ -23,8 +23,8 @@ Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 	redAnim.loop = blueAnim.loop = true;
 	redAnim.speed = blueAnim.speed = 0.05f;
 
-	texture = app->tex->Load("Assets/items/checkpoints.png");
-	fx = app->audio->LoadFx("Assets/audio/fx/checkpoint.wav");
+	texture = app->tex->Load("Assets/Items/checkpoints.png");
+	fx = app->audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 	isLeft = true;
 
 	initialPosition = { 0, 0 };

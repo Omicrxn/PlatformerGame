@@ -26,7 +26,7 @@ bool TitleScreen::Start()
 
 	// Screen rect
 	screen = { 0, 0, (int)windowSizeX * windowScale , (int)windowSizeY * windowScale };
-	tex = app->tex->Load("Assets/textures/Title Screen.jpg");
+	tex = app->tex->Load("Assets/Textures/title_screen.jpg");
 
 	if (tex == nullptr)
 	{

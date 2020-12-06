@@ -25,7 +25,7 @@ Particles::~Particles()
 bool Particles::Start()
 {
 	LOG("Loading bullet");
-	bulletTexture = app->tex->Load("Assets/player/bullet.png");
+	bulletTexture = app->tex->Load("Assets/Player/bullet.png");
 
 	// Enemy Bullet Animaton
 	playerBullet.anim.PushBack({ 0, 0, 16, 16 });
