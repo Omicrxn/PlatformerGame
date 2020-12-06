@@ -53,6 +53,7 @@ bool EnemyFly::Update(float dt)
 	}
 
 	rectAnim = current_anim->GetCurrentFrame();
+
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;

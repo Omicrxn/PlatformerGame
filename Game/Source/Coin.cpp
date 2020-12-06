@@ -37,20 +37,22 @@ bool Coin::Update(float dt)
 {
 	bool ret = true;
 
-
 	if (current_anim != &movingAnim)
 	{
 		current_anim = &movingAnim;
 		movingAnim.Reset();
 	}
+
 	rectAnim = current_anim->GetCurrentFrame();
+
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;
 	}
 
 	// Update collider position
-	if (collider != nullptr) {
+	if (collider != nullptr) 
+	{
 		collider->SetPos(position.x, position.y);
 	}
 
@@ -59,11 +61,8 @@ bool Coin::Update(float dt)
 
 void Coin::OnCollision(Collider* collider)
 {
-
 	app->audio->PlayFx(fx);
 	app->scene->player->score += 100;
 	app->scene->player->PrintData();
   	app->entityman->DestroyEntity(this);
-	
-
 }

@@ -121,7 +121,7 @@ private:
 	SString organization;
 	SString vsyncStr;
 
-	List<Module *> modules;
+	List<Module*> modules;
 
 	// Create new variables from pugui namespace
 	// NOTE: Redesigned LoadConfig() to avoid storing this variables

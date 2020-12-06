@@ -51,7 +51,8 @@ bool EnemyWalk::Update(float dt)
 
 	if (collision == true)
 	{
-		if (onGround || dead) {
+		if (onGround || dead) 
+		{
 			velocity.y = 0.0;
 			position.y = tempPlayerPosition.y;
 			collision = false;
@@ -82,7 +83,8 @@ bool EnemyWalk::Update(float dt)
 	counter += dt;
 
 	// Update collider position
-	if (collider != nullptr) {
+	if (collider != nullptr) 
+	{
 		collider->SetPos(position.x, position.y);
 	}
 
@@ -102,11 +104,6 @@ void EnemyWalk::Move()
 			this->velocity.x = 150;
 		else
 			this->velocity.x = -100;
-
-		/*if (mapPos.y < nextTile.y)
-			Fall();
-		else
-			Jump();*/
 
 		Fall();
 	}
