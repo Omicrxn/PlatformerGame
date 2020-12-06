@@ -85,6 +85,7 @@ bool Scene::Start()
 	checkpoint3->position = { 1936,224 };
 
 
+
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
