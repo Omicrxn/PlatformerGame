@@ -70,7 +70,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
 	app->render->camera.y = (-position.y) + (app->win->GetWindowHeight() / 2);
 
-	gravity = 10;
+	gravity = 1;
 
 	velocity = { 0,0 };
 
