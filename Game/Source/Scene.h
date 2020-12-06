@@ -42,9 +42,17 @@ public:
 	void VolumeUp();
 	void VolumeDown();
 
+	void UpdateCheckpoint();
+
 	Player* player = nullptr;
 
+	Checkpoint* checkpoint1;
+	Checkpoint* checkpoint2;
+	Checkpoint* checkpoint3;
+
 	SDL_Texture* debugTex;
+
+	bool debugDraw = 0;
 
 private:
 
@@ -60,11 +68,6 @@ private:
 
 	Coin* coin = nullptr;
 	Heart* heart = nullptr;
-	Checkpoint* checkpoint = nullptr;
-
-public:
-
-	bool debugDraw = 0;
 };
 
 #endif // __SCENE_H__

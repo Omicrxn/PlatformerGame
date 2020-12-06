@@ -15,6 +15,8 @@ public:
 	bool collision;
 	int fx;
 
+	bool passedCheckpoint;
+
 	Animation redAnim;
 	Animation blueAnim;
 };

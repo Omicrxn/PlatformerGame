@@ -76,11 +76,11 @@ Player::Player() : Entity(EntityType::PLAYER)
 
 	score = 0;
 	lifes = 3;
+	hasCheckpoint = false;
 
 	onGround = true;
 	dead = false;
 	collision = false;
-	hasCheckpoint = false;
 
 	collider = app->collisions->AddCollider({ position.x,position.y,17,25 }, Collider::Type::PLAYER, (Module*)app->entityman);
 
@@ -162,11 +162,10 @@ bool Player::Update(float dt)
 		position.y+=3;
 	}
 
-	//if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && app->scene->hasCheckpoint)
-	//{
-	//	position.x = app->scene->lastCheckpoint.x;
-	//	position.y = app->scene->lastCheckpoint.y;
-	//}
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && hasCheckpoint)
+	{
+		position = currentCheckpoint;
+	}
 
 	rectAnim = current_anim->GetCurrentFrame();
 

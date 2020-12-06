@@ -67,7 +67,10 @@ private:
 public:
 	int score;
 	int lifes;
+
 	bool hasCheckpoint;
+	iPoint currentCheckpoint;
+
 	int fx;
 };
 

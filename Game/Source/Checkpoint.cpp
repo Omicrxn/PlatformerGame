@@ -30,9 +30,7 @@ Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 	initialPosition = { 944, 1328 };
 	position = initialPosition;
 
-	//checkpoints[1] = { 59, 83 };
-	//checkpoints[2] = { 83, 59 };
-	//checkpoints[3] = { 121, 14 };
+	passedCheckpoint = false;
 
 	gravity = 1;
 	velocity = { 0,0 };
@@ -52,7 +50,7 @@ bool Checkpoint::Update(float dt)
 {
 	bool ret = true;
 
-	if (!app->scene->player->hasCheckpoint)
+	if (!passedCheckpoint)
 	{
 		if (current_anim != &redAnim)
 		{
@@ -80,9 +78,11 @@ bool Checkpoint::Update(float dt)
 
 void Checkpoint::OnCollision(Collider* collider)
 {
-	if (!app->scene->player->hasCheckpoint)
+	if (!passedCheckpoint)
 	{
+		passedCheckpoint = true;
 		app->scene->player->hasCheckpoint = true;
+		app->scene->UpdateCheckpoint();
 		app->audio->PlayFx(fx);
 	}
 }

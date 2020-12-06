@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "EnemyFly.h"
 #include "Coin.h"
+#include "Checkpoint.h"
 #include "PathFinding.h"
 
 #include "Defs.h"
@@ -76,7 +77,14 @@ bool Scene::Start()
 	flyingEnemy2->position = { 700, 900 };
 	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
 	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);
-	checkpoint = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
+	
+
+	checkpoint1 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
+	checkpoint2 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
+	checkpoint3 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
+
+	checkpoint1->position = { 1328,944 };
+	checkpoint2->position = { 1936,224 };
 
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -241,4 +249,14 @@ void Scene::VolumeDown()
 {
 	app->audio->volume -= 16;
 	app->audio->VolumeChange(app->audio->volume);
+}
+
+void Scene::UpdateCheckpoint()
+{
+	if (!checkpoint3->passedCheckpoint)
+		player->currentCheckpoint = checkpoint3->position;
+	else if (!checkpoint2->passedCheckpoint)
+		player->currentCheckpoint = checkpoint2->position;
+	else if (!checkpoint1->passedCheckpoint)
+		player->currentCheckpoint = checkpoint1->position;
 }
