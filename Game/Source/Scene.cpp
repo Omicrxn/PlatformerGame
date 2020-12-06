@@ -89,6 +89,8 @@ bool Scene::Start()
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
+	app->pathfinding->debug = false;
+
 	return true;
 }
 
@@ -162,18 +164,8 @@ bool Scene::Update(float dt)
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
 
-	// L03: DONE 7: Set the window title with map/tileset info
-	/*iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x, mouseY - app->render->camera.y);
-
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:[%d,%d]",
-		app->map->data.width, app->map->data.height,
-		app->map->data.tileWidth, app->map->data.tileHeight,
-		app->map->data.tilesets.Count(), mouseTile.x, mouseTile.y);
-
-	app->win->SetTitle(title.GetString());*/
-
 	// L12b: Debug pathfinding
-	/*if (app->pathfinding->debug == true)
+	if (app->pathfinding->debug == true)
 	{
 		app->input->GetMousePosition(mouseX, mouseY);
 		iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
@@ -189,7 +181,7 @@ bool Scene::Update(float dt)
 			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 			app->render->DrawTexture(debugTex, pos.x, pos.y);
 		}
-	}*/
+	}
 
 	return true;
 }
