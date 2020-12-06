@@ -2,6 +2,8 @@
 #include "App.h"
 #include "Textures.h"
 #include "EntityManager.h"
+#include "Scene.h"
+#include "Player.h"
 #include "Render.h"
 
 
@@ -62,8 +64,9 @@ void Heart::OnCollision(Collider* collider)
 
 
 	//app->scene->player->score += scoreGiven;
-
+	if(app->scene->player->lifes < 10)
+	app->scene->player->lifes++;
+	app->scene->player->PrintData();
 	app->entityman->DestroyEntity(this);
-
 
 }

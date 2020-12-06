@@ -74,6 +74,9 @@ Player::Player() : Entity(EntityType::PLAYER)
 
 	velocity = { 0,0 };
 
+	score = 0;
+	lifes = 3;
+
 	onGround = true;
 	dead = false;
 	collision = false;
@@ -81,6 +84,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	collider = app->collisions->AddCollider({ position.x,position.y,17,25 }, Collider::Type::PLAYER, (Module*)app->entityman);
 
 	scale = app->win->GetScale();
+	PrintData();
 }
 
 Player::~Player() {}
@@ -362,6 +366,13 @@ void Player::UpdateCamera()
 	{
 		app->render->camera.y = -720;
 	}
+}
+
+void Player::PrintData()
+{
+	system("CLS");
+	printf("Lifes: %d\n", lifes);
+	printf("Score: %d\n", score);
 }
 
 bool Player::CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect)

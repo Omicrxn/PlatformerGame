@@ -35,6 +35,7 @@ public:
 	void UpdateCamera();
 
 	bool CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect);
+	void PrintData();
 
 	bool godMode = false;
 
@@ -63,6 +64,9 @@ private:
 	Animation playerDeath;
 
 	int checkpointFx;
+public:
+	int score;
+	int lifes;
 };
 
 #endif // __PLAYER_H__
