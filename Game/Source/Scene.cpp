@@ -78,13 +78,12 @@ bool Scene::Start()
 	coin = (Coin*)app->entityman->CreateEntity(EntityType::ITEM_COIN);
 	heart = (Heart*)app->entityman->CreateEntity(EntityType::ITEM_HEART);
 	
-
 	checkpoint1 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
 	checkpoint2 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
 	checkpoint3 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
 
-	checkpoint1->position = { 1328,944 };
-	checkpoint2->position = { 1936,224 };
+	checkpoint2->position = { 1328,944 };
+	checkpoint3->position = { 1936,224 };
 
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
