@@ -275,7 +275,7 @@ void Player::Run(bool isLeft)
 	
 	if (godMode)
 	{
-		isLeft ? position.y -= 3 : position.y += 3;
+		isLeft ? position.x -= 3 : position.x += 3;
 	}
 	else
 	{
