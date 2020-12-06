@@ -65,14 +65,6 @@ Collisions::Collisions(bool startEnabled) : Module(startEnabled) {
 	matrix[Collider::Type::ITEM_COIN][Collider::Type::WEAPON] = false;
 
 
-
-	matrix[Collider::Type::ITEM_HEART][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::ITEM_HEART][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::ITEM_HEART][Collider::Type::ENEMY_SHOT] = false;
-	matrix[Collider::Type::ITEM_HEART][Collider::Type::PLAYER_BULLET] = false;
-	matrix[Collider::Type::ITEM_HEART][Collider::Type::WALL] = false;
-	matrix[Collider::Type::ITEM_HEART][Collider::Type::WEAPON] = false;
-
 	matrix[Collider::Type::ITEM_COIN][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::ITEM_HEART][Collider::Type::PLAYER] = true;
 }
@@ -157,7 +149,6 @@ void Collisions::DebugDraw() {
 		case Collider::Type::ENEMY_SHOT: // Magenta
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
-
 		case Collider::Type::WEAPON: // GREY
 			app->render->DrawRectangle(colliders[i]->rect, 128, 128, 128, alpha);
 			break;

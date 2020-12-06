@@ -78,6 +78,8 @@ Player::Player() : Entity(EntityType::PLAYER)
 	dead = false;
 	collision = false;
 
+	collider = app->collisions->AddCollider({ position.x,position.y,17,25 }, Collider::Type::PLAYER, (Module*)app->entityman);
+
 	scale = app->win->GetScale();
 }
 
@@ -130,7 +132,14 @@ bool Player::Update(float dt)
 	// Shoot
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		if (isLeft && app->particles->playerBullet.speed.x > 0) app->particles->playerBullet.speed.x = - app->particles->playerBullet.speed.x;
+		if (isLeft && app->particles->playerBullet.speed.x > 0)
+		{
+			app->particles->playerBullet.speed.x = -app->particles->playerBullet.speed.x;
+		}
+		else if (!isLeft && app->particles->playerBullet.speed.x < 0) 
+		{
+			app->particles->playerBullet.speed.x = -app->particles->playerBullet.speed.x;
+		}
 		app->particles->AddParticle(app->particles->playerBullet, position.x + 32, position.y, Collider::Type::PLAYER_BULLET);
 	}
 
@@ -237,7 +246,10 @@ bool Player::Update(float dt)
 		}
 		layer = layer->next;
 	}
-
+	// Update collider position
+	if (collider != nullptr) {
+		collider->SetPos(position.x, position.y);
+	}
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
 	{
 		ret = false;
