@@ -18,6 +18,7 @@ void InputHandler::BindCommands()
 	keyF5 = new SaveCommand();
 	keyF6 = new LoadCommand();
 	keyF9 = new ViewLogicCommand();
+	keyF10 = new GodMode();
 	keyF11 = new FPSCapTo30();
 	
 	keyPlus = new VolumeUpCommand();
@@ -69,6 +70,12 @@ void InputHandler::HandleInput()
 		keyF9->state = CommandState::DOWN;
 		commandList.Add(keyF9);
 	}
+	// F10 God Mode (fly around, cannot be killed)
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		keyF10->state = CommandState::DOWN;
+		commandList.Add(keyF10);
+	}
 	// F11 Enable/Disable FPS cap to 30
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
@@ -108,6 +115,7 @@ bool InputHandler::CleanUp()
 	delete keyF5;
 	delete keyF6;
 	delete keyF9;
+	delete keyF10;
 	delete keyF11;
 	delete keyPlus;
 	delete keyMinus;

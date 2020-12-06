@@ -36,8 +36,9 @@ public:
 
 	bool CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect);
 
-private:
+	bool godMode = false;
 
+private:
 	// Physics variables
 
 	bool onGround;
@@ -60,8 +61,6 @@ private:
 
 	// Death Animation
 	Animation playerDeath;
-
-	bool godMode = false;
 
 	int checkpointFx;
 };

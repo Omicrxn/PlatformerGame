@@ -58,6 +58,8 @@ private:
 public:
 	// we store the created path here
 	DynArray<iPoint> lastPath;
+
+	bool debug = false;
 };
 
 // forward declaration

@@ -99,7 +99,7 @@ bool Scene::PreUpdate()
 	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
 	p = app->map->WorldToMap(p.x, p.y);
 
-	if(app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if(originSelected == true)
 		{
@@ -172,19 +172,22 @@ bool Scene::Update(float dt)
 	app->win->SetTitle(title.GetString());*/
 
 	// L12b: Debug pathfinding
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
-	p = app->map->MapToWorld(p.x, p.y);
-
-	app->render->DrawTexture(debugTex, p.x, p.y);
-
-	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-
-	for (uint i = 0; i < path->Count(); ++i)
+	if (app->pathfinding->debug == true)
 	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(debugTex, pos.x, pos.y);
+		app->input->GetMousePosition(mouseX, mouseY);
+		iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
+		p = app->map->WorldToMap(p.x, p.y);
+		p = app->map->MapToWorld(p.x, p.y);
+
+		app->render->DrawTexture(debugTex, p.x, p.y);
+
+		const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			app->render->DrawTexture(debugTex, pos.x, pos.y);
+		}
 	}
 
 	return true;

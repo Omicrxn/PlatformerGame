@@ -70,7 +70,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
 	app->render->camera.y = (-position.y) + (app->win->GetWindowHeight() / 2);
 
-	gravity = 1;
+	gravity = 10;
 
 	velocity = { 0,0 };
 
@@ -89,7 +89,7 @@ bool Player::Update(float dt)
 	iPoint tempPlayerPosition = position;
 	if (!dead && !godMode)
 	{
-		velocity.y += gravity;
+		velocity.y += gravity * dt;
 		position.y += velocity.y;
 		isLeft ? position.x -= velocity.x : position.x += velocity.x;
 	}
@@ -138,12 +138,6 @@ bool Player::Update(float dt)
 	{
 		position.x = initialPosition.x;
 		position.y = initialPosition.y;
-	}
-
-	// F10 God Mode (fly around, cannot be killed)
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		godMode = !godMode;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !dead && godMode)

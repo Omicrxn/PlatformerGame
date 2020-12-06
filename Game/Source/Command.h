@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "App.h"
 #include "Scene.h"
+#include "Pathfinding.h"
 
 enum class CommandState
 {
@@ -77,6 +78,7 @@ public:
 	void Execute(Player* player = nullptr)
 	{
 		app->scene->DrawDebug();
+		app->pathfinding->debug = !app->pathfinding->debug;
 	}
 };
 
@@ -95,6 +97,15 @@ public:
 	void Execute(Player* player = nullptr)
 	{
 		app->scene->VolumeDown();
+	}
+};
+
+class GodMode : public Command
+{
+public:
+	void Execute(Player* player = nullptr)
+	{
+		app->scene->player->godMode = !app->scene->player->godMode;
 	}
 };
 
