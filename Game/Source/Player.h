@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __MODULEPLAYER_H__
-#define __MODULEPLAYER_H__
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -66,4 +66,4 @@ private:
 	int checkpointFx;
 };
 
-#endif // __MODULEPLAYER_H__
+#endif // __PLAYER_H__

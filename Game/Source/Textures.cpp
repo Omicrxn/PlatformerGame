@@ -82,7 +82,7 @@ SDL_Texture* const Textures::Load(const char* path)
 }
 
 // Unload texture
-bool Textures::UnLoad(SDL_Texture* texture)
+bool Textures::Unload(SDL_Texture* texture)
 {
 	ListItem<SDL_Texture*>* item;
 

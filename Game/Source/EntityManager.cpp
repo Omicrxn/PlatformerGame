@@ -73,7 +73,7 @@ bool EntityManager::UpdateAll(float dt, bool doLogic)
 
 void EntityManager::DestroyEntity(Entity* entity)
 {
-	app->tex->UnLoad(entity->texture);
+	app->tex->Unload(entity->texture);
 	entity->texture = nullptr;
 	delete entity;
 }

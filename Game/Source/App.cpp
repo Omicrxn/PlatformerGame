@@ -14,6 +14,7 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "InputHandler.h"
+#include "Particles.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -45,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new PathFinding(false);
 	entityman = new EntityManager(false);
 	inputHandler = new InputHandler(true);
+	particles = new Particles(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -61,7 +63,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(map);
 	AddModule(entityman);
-	
+	AddModule(particles);
 
 	AddModule(fade);
 

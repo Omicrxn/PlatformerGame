@@ -29,7 +29,7 @@ class Screen;
 class PathFinding;
 class EntityManager;
 class InputHandler;
-
+class Particles;
 
 class App
 {
@@ -109,6 +109,7 @@ public:
 	EndingScreen* endingScreen;
 	EntityManager* entityman;
 	InputHandler* inputHandler;
+	Particles* particles;
 
 	bool framerateCap = false;
 

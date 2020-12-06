@@ -99,7 +99,7 @@ bool Scene::PreUpdate()
 	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
 	p = app->map->WorldToMap(p.x, p.y);
 
-	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if(app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		if(originSelected == true)
 		{
@@ -207,10 +207,10 @@ bool Scene::CleanUp()
 
 	app->entityman->Disable();
 	app->map->Disable();
-	app->tex->UnLoad(background1);
-	app->tex->UnLoad(background2);
-	app->tex->UnLoad(background3);
-	app->tex->UnLoad(background4);
+	app->tex->Unload(background1);
+	app->tex->Unload(background2);
+	app->tex->Unload(background3);
+	app->tex->Unload(background4);
 
 	app->audio->StopMusic();
 	

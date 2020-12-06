@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include "Map.h"
 #include "Scene.h"
+#include "Particles.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -126,6 +127,12 @@ bool Player::Update(float dt)
 		}
 	}
 
+	// Shoot
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		app->particles->AddParticle(app->particles->playerBullet, position.x + 32, position.y, Collider::Type::PLAYER_SHOT);
+	}
+
 	// F3 Start from the beginning of the current level
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
@@ -138,7 +145,6 @@ bool Player::Update(float dt)
 	{
 		godMode = !godMode;
 	}
-
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !dead && godMode)
 	{
@@ -296,7 +302,6 @@ void Player::Jump()
 			onGround = false;
 		}
 	}
-	
 }
 
 // Add acceleration to Y speed

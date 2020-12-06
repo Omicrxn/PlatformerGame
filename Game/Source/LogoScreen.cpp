@@ -76,7 +76,7 @@ bool LogoScreen::CleanUp()
 	actualTime = 0;
 	endTime = 0;
 
-	if (!app->tex->UnLoad(logoTex))
+	if (!app->tex->Unload(logoTex))
 	{
 		LOG("Logo Screen -> Error unloading the texture.");
 		ret = false;

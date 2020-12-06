@@ -70,7 +70,7 @@ bool EndingScreen::CleanUp()
 {
 	bool ret = true;
 
-	if (!app->tex->UnLoad(tex))
+	if (!app->tex->Unload(tex))
 	{
 		LOG("%s", "Ending Screen -> Error unloading the texture.");
 		ret = false;
