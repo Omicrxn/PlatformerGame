@@ -6,7 +6,6 @@
 #include "Point.h"
 #include "SDL/include/SDL_rect.h"
 
-
 struct SDL_Texture;
 
 class Player : public Entity 
@@ -17,11 +16,8 @@ public:
 	
 	~Player();
 	
-	
 	bool Update(float dt) override;
 	void OnCollision(Collider* collider) override;
-	/*bool LoadState(pugi::xml_node&);
-	bool SaveState(pugi::xml_node&) const;*/
 	
 	void Run(bool isLeft);
 	void Jump();

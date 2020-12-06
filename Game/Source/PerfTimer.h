@@ -6,7 +6,6 @@
 class PerfTimer
 {
 public:
-
 	// Constructor
 	PerfTimer();
 

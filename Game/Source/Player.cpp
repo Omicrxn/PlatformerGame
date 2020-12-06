@@ -64,7 +64,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	// Physics variables
 	isLeft = false;
 
-	initialPosition = { 200, 800 };
+	initialPosition = { 200,800 };
 	position = initialPosition;
 
 	app->render->camera.x = (-initialPosition.x) + (app->win->GetWindowWidth() / 2);
@@ -104,7 +104,8 @@ bool Player::Update(float dt)
 
 	if (collision == true)
 	{
-		if (onGround || dead) {
+		if (onGround || dead) 
+		{
 			velocity.y = 0.0;
 			position.y = tempPlayerPosition.y;
 			collision = false;
@@ -139,6 +140,7 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		app->audio->PlayFx(fx);
+
 		if (isLeft && app->particles->playerBullet.speed.x > 0)
 		{
 			app->particles->playerBullet.speed.x = -app->particles->playerBullet.speed.x;
@@ -147,6 +149,7 @@ bool Player::Update(float dt)
 		{
 			app->particles->playerBullet.speed.x = -app->particles->playerBullet.speed.x;
 		}
+
 		app->particles->AddParticle(app->particles->playerBullet, position.x + 32, position.y, Collider::Type::PLAYER_BULLET);
 	}
 
@@ -159,7 +162,7 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !dead && godMode)
 	{
-		position.y+=3;
+		position.y += 3;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && hasCheckpoint)
@@ -173,7 +176,8 @@ bool Player::Update(float dt)
 	GroundCollisions();
 
 	// Update collider position
-	if (collider != nullptr) {
+	if (collider != nullptr)
+	{
 		collider->SetPos(position.x, position.y);
 	}
 	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
@@ -183,24 +187,6 @@ bool Player::Update(float dt)
 
 	return ret;
 }
-
-//bool Player::LoadState(pugi::xml_node& data)
-//{
-//	position.x = data.child("player").attribute("x").as_int();
-//	position.y = data.child("player").attribute("y").as_int();
-//
-//	return true;
-//}
-//
-//bool Player::SaveState(pugi::xml_node& data) const
-//{
-//	pugi::xml_node player = data.append_child("player");
-//
-//	player.append_attribute("x") = position.x;
-//	player.append_attribute("y") = position.y;
-//
-//	return true;
-//}
 
 void Player::Run(bool isLeft)
 {
@@ -217,7 +203,7 @@ void Player::Run(bool isLeft)
 			current_anim = &playerRunning;
 			playerRunning.Reset();
 		}
-		isLeft ? velocity.x = -200.0f :velocity.x = 250.0f;
+		isLeft ? velocity.x = -200.0f : velocity.x = 250.0f;
 	}
 }
 
@@ -356,8 +342,8 @@ void Player::GroundCollisions()
 		}
 		layer = layer->next;
 	}
-
 }
+
 void Player::UpdateCamera()
 {
 	int xAxis = (-position.x * scale) + (app->win->GetWindowWidth() / 2);

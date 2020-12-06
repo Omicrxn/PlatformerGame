@@ -14,13 +14,12 @@ Particles::Particles(bool startEnabled) : Module(startEnabled)
 	name = "particles";
 
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
 		particles[i] = nullptr;
+	}
 }
 
-Particles::~Particles()
-{
-
-}
+Particles::~Particles() {}
 
 bool Particles::Start()
 {
@@ -79,7 +78,7 @@ bool Particles::Update(float dt)
 	{
 		Particle* particle = particles[i];
 
-		if (particle == nullptr)	continue;
+		if (particle == nullptr) continue;
 
 		// Call particle Update. If it has reached its lifetime, destroy it
 		if (particle->Update() == false)
@@ -95,7 +94,7 @@ bool Particles::Update(float dt)
 
 bool Particles::PostUpdate()
 {
-	//Iterating all particle array and drawing any active particles
+	// Iterating all particle array and drawing any active particles
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		Particle* particle = particles[i];
@@ -103,15 +102,6 @@ bool Particles::PostUpdate()
 		if (particle != nullptr && particle->isAlive)
 		{
 			app->render->DrawTexture(bulletTexture, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
-			/*if (particle->isWeapon)
-			{
-				app->render->DrawTexture(weaponsParticlesTexture, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
-
-			}
-			else
-			{
-				app->render->DrawTexture(particlesTexture, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
-			}*/
 		}
 	}
 
@@ -122,17 +112,20 @@ void Particles::AddParticle(const Particle& particle, int x, int y, Collider::Ty
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
-		//Finding an empty slot for a new particle
+		// Finding an empty slot for a new particle
 		if (particles[i] == nullptr)
 		{
 			Particle* p = new Particle(particle);
 
-			p->frameCount = -(int)delay;			// We start the frameCount as the negative delay
-			p->position.x = x;						// so when frameCount reaches 0 the particle will be activated
+			// We start the frameCount as the negative delay
+			// so when frameCount reaches 0 the particle will be activated
+			p->frameCount = -(int)delay;
+			p->position.x = x;
 			p->position.y = y;
 
-			//Adding the particle's collider
-			if (colliderType != Collider::Type::NONE) {
+			// Adding the particle's collider
+			if (colliderType != Collider::Type::NONE)
+			{
 				p->collider = app->collisions->AddCollider(p->anim.GetCurrentFrame(), colliderType, this);
 			}
 
@@ -150,23 +143,24 @@ Particle::Particle()
 }
 
 Particle::Particle(const Particle& p) : anim(p.anim), position(p.position), speed(p.speed),
-frameCount(p.frameCount), lifetime(p.lifetime),isWeapon(p.isWeapon)
-{
+frameCount(p.frameCount), lifetime(p.lifetime) {}
 
-}
 Particle::~Particle()
 {
 	if (collider != nullptr)
+	{
 		collider->pendingToDelete = true;
+	}
 }
+
 bool Particle::Update()
 {
 	bool ret = true;
+
 	frameCount++;
 
 	// The particle is set to 'alive' when the spawnTime is reached
-	if (!isAlive && frameCount >= 0)
-		isAlive = true;
+	if (!isAlive && frameCount >= 0) isAlive = true;
 
 	if (isAlive)
 	{
@@ -175,19 +169,16 @@ bool Particle::Update()
 		// If the particle has a specific lifetime, check when it has to be destroyed
 		if (lifetime > 0)
 		{
-			if (frameCount >= lifetime)
-				ret = false;
+			if (frameCount >= lifetime) ret = false;
 		}
 		// Otherwise the particle is destroyed when the animation is finished
-		else if (anim.Finished())
-			ret = false;
+		else if (anim.Finished()) ret = false;
 
 		// Update the position in the screen
 		position.x += speed.x;
 		position.y += speed.y;
 
-		if (collider != nullptr)
-			collider->SetPos(position.x, position.y);
+		if (collider != nullptr) collider->SetPos(position.x, position.y);
 	}
 
 	return ret;

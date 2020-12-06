@@ -50,9 +50,9 @@ public:
 
 	// Defines the total amount of time during which the particle will be active (in miliseconds)
 	Uint32 lifetime = 0;
+
 	// The particle's collider
 	Collider* collider = nullptr;
-	bool isWeapon = false;
 };
 
 class Particles : public Module
@@ -94,8 +94,6 @@ public:
 	inline uint GetParticlesCount() const { return particlesCount; };
 
 private:
-	// Particles spritesheet loaded into an SDL Texture
-	SDL_Texture* particlesTexture = nullptr;
 
 	// Bullet spritesheet loaded into an SDL Texture
 	SDL_Texture* bulletTexture = nullptr;
@@ -108,9 +106,6 @@ private:
 
 	// Total amount of particles loaded into the array
 	uint particlesCount = 0;
-
-	// Weapons particles spritesheet loaded into an SDL Texture
-	SDL_Texture* weaponsParticlesTexture = nullptr;
 
 public:
 	// Template particle for an explosion
