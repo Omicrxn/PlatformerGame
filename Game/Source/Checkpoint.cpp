@@ -27,7 +27,7 @@ Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 	fx = app->audio->LoadFx("Assets/audio/fx/checkpoint.wav");
 	isLeft = true;
 
-	initialPosition = { 944, 1328 };
+	initialPosition = { 0, 0 };
 	position = initialPosition;
 
 	passedCheckpoint = false;
@@ -39,11 +39,7 @@ Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 	collision = false;
 	collider = app->collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::CHECKPOINT, (Module*)app->entityman);
 
-	// Update collider position
-	if (collider != nullptr)
-	{
-		collider->SetPos(position.x, position.y);
-	}
+
 }
 
 bool Checkpoint::Update(float dt)
@@ -72,7 +68,11 @@ bool Checkpoint::Update(float dt)
 	{
 		ret = false;
 	}
-
+	// Update collider position
+	if (collider != nullptr)
+	{
+		collider->SetPos(position.x, position.y);
+	}
 	return ret;
 }
 
