@@ -37,6 +37,7 @@ EnemyWalk::EnemyWalk() : Entity(EntityType::ENEMY_FLY)
 bool EnemyWalk::Update(float dt)
 {
 	bool ret = true;
+	GroundCollisions();
 	iPoint tempPlayerPosition = position;
 	if (!dead)
 	{
@@ -83,7 +84,6 @@ bool EnemyWalk::Update(float dt)
 	}
 
 	/*DrawPath();*/
-
 	return ret;
 }
 
@@ -215,7 +215,15 @@ void EnemyWalk::GroundCollisions()
 					// Yellow Collider
 					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
 					{
-						app->entityman->DestroyEntity(this);
+						collision = true;
+						if (playerRect.y < tileRect.y)
+						{
+							onGround = true;
+						}
+						else if (playerRect.y > tileRect.y)
+						{
+							velocity.y = 0;
+						}
 						break;
 					}
 				}
