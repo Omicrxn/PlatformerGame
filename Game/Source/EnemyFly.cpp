@@ -116,7 +116,8 @@ void EnemyFly::OnCollision(Collider* collider)
 	
 
 		//app->scene->player->score += scoreGiven;
-
+		app->scene->player->score += 500;
+		app->scene->player->PrintData();
 		app->entityman->DestroyEntity(this);
 
 
