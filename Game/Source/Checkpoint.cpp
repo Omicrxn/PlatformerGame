@@ -38,8 +38,6 @@ Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 	dead = false;
 	collision = false;
 	collider = app->collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::CHECKPOINT, (Module*)app->entityman);
-
-
 }
 
 bool Checkpoint::Update(float dt)
@@ -82,7 +80,7 @@ void Checkpoint::OnCollision(Collider* collider)
 	{
 		passedCheckpoint = true;
 		app->scene->player->hasCheckpoint = true;
-		app->scene->UpdateCheckpoint();
+		app->scene->UpdateCheckpoint(position);
 		app->audio->PlayFx(fx);
 	}
 }

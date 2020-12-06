@@ -81,10 +81,9 @@ bool Scene::Start()
 	checkpoint1 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
 	checkpoint2 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
 	checkpoint3 = (Checkpoint*)app->entityman->CreateEntity(EntityType::CHECKPOINT);
+	checkpoint1->position = { 944,1328 };
 	checkpoint2->position = { 1328,944 };
 	checkpoint3->position = { 1936,224 };
-
-
 
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -251,12 +250,12 @@ void Scene::VolumeDown()
 	app->audio->VolumeChange(app->audio->volume);
 }
 
-void Scene::UpdateCheckpoint()
+void Scene::UpdateCheckpoint(iPoint newPosition)
 {
 	if (!checkpoint3->passedCheckpoint)
-		player->currentCheckpoint = checkpoint3->position;
+		player->currentCheckpoint = newPosition;
 	else if (!checkpoint2->passedCheckpoint)
-		player->currentCheckpoint = checkpoint2->position;
+		player->currentCheckpoint = newPosition;
 	else if (!checkpoint1->passedCheckpoint)
-		player->currentCheckpoint = checkpoint1->position;
+		player->currentCheckpoint = newPosition;
 }

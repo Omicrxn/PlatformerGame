@@ -164,7 +164,8 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && hasCheckpoint)
 	{
-		position = currentCheckpoint;
+		position.x = currentCheckpoint.x;
+		position.y = currentCheckpoint.y - 5;
 	}
 
 	rectAnim = current_anim->GetCurrentFrame();
@@ -325,9 +326,14 @@ void Player::GroundCollisions()
 					if (layer->data->Get(x, y) == 4100 && CheckCollision(tileRect, playerRect))
 					{
 						collision = true;
-						
 
-						if (!godMode) Die();
+						if (!godMode && !hasCheckpoint)
+							Die();
+						else if (hasCheckpoint)
+						{
+							position.x = currentCheckpoint.x;
+							position.y = currentCheckpoint.y - 5;
+						}
 
 						if (lifes > 0)
 						{

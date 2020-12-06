@@ -42,7 +42,7 @@ public:
 	void VolumeUp();
 	void VolumeDown();
 
-	void UpdateCheckpoint();
+	void UpdateCheckpoint(iPoint newPosition);
 
 	Player* player = nullptr;
 
