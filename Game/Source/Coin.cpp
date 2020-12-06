@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "EntityManager.h"
 #include "Scene.h"
+#include "Audio.h"
 #include "Player.h"
 
 Coin::Coin() : Entity(EntityType::ENEMY_FLY)
@@ -18,7 +19,7 @@ Coin::Coin() : Entity(EntityType::ENEMY_FLY)
 	movingAnim.speed = 0.09f;
 
 	texture = app->tex->Load("Assets/items/coin.png");
-
+	fx = app->audio->LoadFx("Assets/audio/fx/itemPick.wav");
 	isLeft = true;
 
 	initialPosition = { 1476, 907 };
@@ -59,7 +60,7 @@ bool Coin::Update(float dt)
 void Coin::OnCollision(Collider* collider)
 {
 
-
+	app->audio->PlayFx(fx);
 	app->scene->player->score += 100;
 	app->scene->player->PrintData();
   	app->entityman->DestroyEntity(this);

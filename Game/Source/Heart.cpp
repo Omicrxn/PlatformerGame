@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "EntityManager.h"
 #include "Scene.h"
+#include "Audio.h"
 #include "Player.h"
 #include "Render.h"
 
@@ -22,7 +23,7 @@ Heart::Heart() : Entity(EntityType::ENEMY_FLY)
 	movingAnim.speed = 0.09f;
 
 	texture = app->tex->Load("Assets/items/heart.png");
-
+	fx = app->audio->LoadFx("Assets/audio/fx/itemPick.wav");
 	isLeft = true;
 
 	initialPosition = { 1056, 813 };
@@ -63,7 +64,7 @@ void Heart::OnCollision(Collider* collider)
 {
 
 
-	//app->scene->player->score += scoreGiven;
+	app->audio->PlayFx(fx);
 	if(app->scene->player->lifes < 10)
 	app->scene->player->lifes++;
 	app->scene->player->PrintData();
