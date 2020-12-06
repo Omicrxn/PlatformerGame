@@ -452,7 +452,7 @@ bool App::SaveGame() const
 		currentEntity.append_attribute("y").set_value(app->entityman->entities.At(i)->data->position.y);
 	}
 
-	doc.save_file("savegame.xml");
+	doc.save_file("save_game.xml");
 
 	return ret;
 }

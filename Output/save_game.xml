@@ -7,23 +7,27 @@
 	<audio>
 		<volume value="64" />
 	</audio>
-	<Collisions />
+	<collisions />
 	<logoscreen />
 	<titlescreen />
-	<endingscreen />
-	<pathfinding />
 	<scene />
 	<map />
+	<endingscreen />
+	<pathfinding />
 	<entitymanager>
-		<Entity1 x="456" y="971" />
-		<Entity2 x="383" y="933" />
-		<Entity3 x="281" y="975" />
-		<Entity4 x="1476" y="907" />
-		<Entity5 x="1056" y="813" />
+		<Entity1 x="1080" y="1240" />
+		<Entity2 x="760" y="978" />
+		<Entity3 x="226" y="914" />
+		<Entity4 x="548" y="852" />
+		<Entity5 x="1476" y="907" />
+		<Entity6 x="1056" y="813" />
+		<Entity7 x="944" y="1328" />
+		<Entity8 x="1328" y="944" />
+		<Entity9 x="1936" y="224" />
 	</entitymanager>
 	<particles />
 	<fadetoblack />
 	<renderer>
-		<camera x="0" y="-611" />
+		<camera x="-440" y="-720" />
 	</renderer>
 </save>
