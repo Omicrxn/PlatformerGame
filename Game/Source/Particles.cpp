@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Collisions.h"
 #include "Scene.h"
+#include "Player.h"
 #include "Log.h"
 
 #include "SDL/include/SDL_timer.h"
