@@ -93,7 +93,7 @@ bool FadeToBlack::Fade(Module* moduleToDisable, Module* moduleToEnable, float fr
 	return ret;
 }
 
-bool FadeToBlack::hasEnded() 
+bool FadeToBlack::HasEnded()
 {
 	bool ret = true;
 

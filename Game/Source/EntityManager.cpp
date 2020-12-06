@@ -12,7 +12,6 @@
 EntityManager::EntityManager(bool startEnable) : Module(startEnable) 
 {
 	name = "entitymanager";
-
 }
 
 Entity* EntityManager::CreateEntity(EntityType type) 
@@ -58,17 +57,17 @@ bool EntityManager::Update(float dt)
 		accumulatedTime = 0.0f;
 		doLogic = false;
 	}
+
 	return true;
 }
+
 bool EntityManager::UpdateAll(float dt, bool doLogic)
 {
 	bool ret = true;
 	ListItem<Entity*>* entity = entities.start;
-	while (entity != nullptr) {
-		if (doLogic)
-		{
-			entity->data->Update(dt);
-		}
+	while (entity != nullptr)
+	{
+		if (doLogic) entity->data->Update(dt);
 		entity = entity->next;
 	}
 	

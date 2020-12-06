@@ -27,7 +27,7 @@ public:
 	// After the first step, the modules should be switched
 	bool Fade(Module* toDisable, Module* toEnable, float frames = 60);
 
-	bool hasEnded();
+	bool HasEnded();
 
 private:
 
@@ -55,5 +55,5 @@ private:
 	Module* moduleToDisable = nullptr;
 };
 
-#endif //__MODULEFADETOBLACK_H__
+#endif // __FADETOBLACK_H__
 

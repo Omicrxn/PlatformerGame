@@ -5,7 +5,6 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
-
 struct Collider;
 
 class Module

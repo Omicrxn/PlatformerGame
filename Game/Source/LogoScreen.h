@@ -34,4 +34,4 @@ private:
 	Uint32 endTime = 0;
 	Uint32 actualTime = 0;
 };
-#endif
+#endif // __LOGOSCREEN_H__
