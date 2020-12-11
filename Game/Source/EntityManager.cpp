@@ -88,7 +88,8 @@ bool EntityManager::CleanUp()
 {
 	bool ret = true;
 	ListItem<Entity*>* entity = entities.end;
-	while (entity != nullptr) {
+	while (entity != nullptr) 
+	{
 		DestroyEntity(entity->data);
 		entity = entity->prev;
 	}

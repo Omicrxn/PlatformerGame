@@ -64,7 +64,8 @@ Collisions::Collisions(bool startEnabled) : Module(startEnabled)
 
 Collisions::~Collisions() {}
 
-bool Collisions::PreUpdate() {
+bool Collisions::PreUpdate() 
+{
 	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) 
 	{

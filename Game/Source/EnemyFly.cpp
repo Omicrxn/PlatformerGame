@@ -68,7 +68,8 @@ bool EnemyFly::Update(float dt)
 	counter += dt;
 
 	// Update collider position
-	if (collider != nullptr) {
+	if (collider != nullptr) 
+	{
 		collider->SetPos(position.x, position.y);
 	}
 
