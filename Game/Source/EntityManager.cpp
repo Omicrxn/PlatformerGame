@@ -49,7 +49,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	{
 		// L13: Create the corresponding type entity
 		case EntityType::PLAYER: ret = new Player(collisions,audio,this); break;
-		//case EntityType::ENEMY: ret = new Enemy(); break;
+		case EntityType::ENEMY: ret = new Enemy(collisions,audio,this); break;
 		case EntityType::COIN: ret = new Coin(collisions,audio,this); break;
 		case EntityType::HEART: ret = new Heart(collisions,audio,this); break;
 		case EntityType::CHECKPOINT: ret = new Checkpoint(collisions,audio,this); break;

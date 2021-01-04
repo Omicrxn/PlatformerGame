@@ -1,6 +1,7 @@
 #include "SceneGameplay.h"
 
 #include "EntityManager.h"
+#include "Pathfinding.h"
 
 SceneGameplay::SceneGameplay()
 {
@@ -28,7 +29,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		int w, h;
 		uchar* data = NULL;
 
-		//if (map->CreateWalkabilityMap(w, h, &data)) pathFinding->SetMap(w, h, data);
+		if (map->CreateWalkabilityMap(w, h, &data)) PathFinding::GetInstance()->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
 	}
@@ -62,6 +63,13 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	//checkpoint2 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
 	//checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
 	//checkpoint2->position = iPoint(37*64-14, 18*64+14);
+
+	// Enemy load
+	enemy = (Enemy*)entityManager->CreateEntity(EntityType::ENEMY);
+	enemy->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/Slime/Individual Sprites/slime-attack-0.png"));
+	enemy->SetPlayer(player);
+	enemy->SetMap(map);
+	enemy->position = iPoint(15*64,16*64);
 
     return false;
 }

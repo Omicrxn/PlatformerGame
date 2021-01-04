@@ -7,7 +7,7 @@
 #include "DynArray.h"
 #include "List.h"
 
-#define INVALID_WALK_CODE 255
+#define INVALID_WALK_CODE 86
 
 // --------------------------------------------------
 // Recommended reading:
