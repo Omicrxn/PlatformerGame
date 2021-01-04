@@ -5,34 +5,21 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
+class GuiControl;
+enum class GuiControlState;
 struct Collider;
 
 class Module
 {
 public:
 
-	Module(bool startActive) : active(startActive)
+	Module() : active(false)
 	{}
 
-	void Module::Enable()
+	void Init()
 	{
-		if (!active)
-		{
-			active = true;
-			Start();
-		}
+		active = true;
 	}
-
-	void Module::Disable()
-	{
-		if (active)
-		{
-			active = false;
-			CleanUp();
-		}
-	}
-
-	bool IsEnabled() { return active; }
 
 	// Called before render is available
 	// L01: DONE 5: Sending config file to all modules
@@ -81,7 +68,6 @@ public:
 	{
 		return true;
 	}
-
 	//Called when two colliders are intersecting
 	//and the module is registered as the listener
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
@@ -90,6 +76,7 @@ public:
 
 	SString name;
 	bool active;
+
 };
 
 #endif // __MODULE_H__

@@ -10,7 +10,7 @@ class Window : public Module
 {
 public:
 
-	Window(bool startEnabled);
+	Window();
 
 	// Destructor
 	virtual ~Window();
@@ -24,16 +24,14 @@ public:
 	// Changae title
 	void SetTitle(const char* title);
 
-	// Retrieve window size
+	// Retrive window size
 	void GetWindowSize(uint& width, uint& height) const;
-	int GetWindowWidth()const { return this->width; }
-	int GetWindowHeight()const { return this->height; }
-
+	uint GetWindowWidth();
+	uint GetWindowHeight();
 	// Retrieve window scale
 	uint GetScale() const;
 
 public:
-
 	// The window we'll be rendering to
 	SDL_Window* window;
 
@@ -41,11 +39,10 @@ public:
 	SDL_Surface* screenSurface;
 
 private:
-
 	SString title;
 	uint width;
 	uint height;
-	float scale;
+	uint scale;
 };
 
 #endif // __WINDOW_H__

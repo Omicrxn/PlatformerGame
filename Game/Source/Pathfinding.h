@@ -7,7 +7,6 @@
 #include "DynArray.h"
 #include "List.h"
 
-#define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
 
 // --------------------------------------------------
@@ -16,11 +15,14 @@
 // Details: http://theory.stanford.edu/~amitp/GameProgramming/
 // --------------------------------------------------
 
-class PathFinding : public Module
+class PathFinding
 {
 public:
 
-	PathFinding(bool startEnabled);
+	// NOTE: Constructor is private to avoid new instances creation
+
+	// Get unique instance of the class
+	static PathFinding* GetInstance();
 
 	// Destructor
 	~PathFinding();
@@ -32,10 +34,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination);
-
-	// To request all tiles involved in the last generated path
-	const DynArray<iPoint>* GetLastPath() const;
+	DynArray<iPoint>* CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -48,21 +47,26 @@ public:
 
 private:
 
+	// Singleton instance
+	static PathFinding* instance;
+
+	// Private constructor, alternatively: PathFinding()=delete;
+	PathFinding();
+
+	// Declare the copy constructor and the assignment operator as 
+	// private (or delete them explicitly) to prevent cloning your object
+	PathFinding(const PathFinding&);
+	PathFinding& operator=(const PathFinding&);
+
 	// Size of the map
 	uint width;
 	uint height;
 
-	// All map walkability values [0..255]
+	// Map walkability values [0..255]
 	uchar* map;
-
-public:
-	// We store the created path here
-	DynArray<iPoint> lastPath;
-
-	bool debug = false;
 };
 
-// Forward declaration
+// forward declaration
 struct PathList;
 
 // ---------------------------------------------------------------------
@@ -81,11 +85,10 @@ struct PathNode
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill) const;
+	uint FindWalkableAdjacents(PathFinding* pathf, PathList& list_to_fill) const;
 
 	// Calculates this tile score
 	int Score() const;
-
 	// Calculate the F for a specific destination tile
 	int CalculateF(const iPoint& destination);
 };

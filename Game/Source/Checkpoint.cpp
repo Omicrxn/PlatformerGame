@@ -1,86 +1,57 @@
 #include "Checkpoint.h"
-#include "App.h"
-#include "Textures.h"
-#include "Render.h"
-#include "EntityManager.h"
-#include "Map.h"
-#include "Scene.h"
-#include "Audio.h"
 #include "Player.h"
 
-Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
+
+Checkpoint::Checkpoint(Collisions* collisions, EntityManager* entityManager) : Entity(EntityType::CHECKPOINT)
 {
-	redAnim.PushBack({ 0,16,16,16 });
-	redAnim.PushBack({ 16,16,16,16 });
-	redAnim.PushBack({ 32,16,16,16 });
-	redAnim.PushBack({ 48,16,16,16 });
+	texture = NULL;
+	coinAnimation.PushBack({ 0,0,16,16 });
+	coinAnimation.PushBack({ 16,0,16,16 });
+	coinAnimation.PushBack({ 32,0,16,16 });
+	coinAnimation.PushBack({ 48,0,16,16 });
+	coinAnimation.PushBack({ 63,0,16,16 });
 
-	blueAnim.PushBack({ 0,32,16,16 });
-	blueAnim.PushBack({ 16,32,16,16 });
-	blueAnim.PushBack({ 32,32,16,16 });
-	blueAnim.PushBack({ 48,32,16,16 });
+	coinAnimation.loop = true;
+	coinAnimation.speed = 0.09f;
 
-	redAnim.loop = blueAnim.loop = true;
-	redAnim.speed = blueAnim.speed = 0.05f;
-
-	texture = app->tex->Load("Assets/Items/checkpoints.png");
-	fx = app->audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
-	isLeft = true;
-
-	initialPosition = { 0, 0 };
-	position = initialPosition;
-
-	passedCheckpoint = false;
-
-	gravity = 1;
+	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
+	position = iPoint(0, 0);
 	velocity = { 0,0 };
 
-	dead = false;
-	collision = false;
-	collider = app->collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::CHECKPOINT, (Module*)app->entityman);
+	collider = collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_COIN, (Module*)entityManager);
 }
 
 bool Checkpoint::Update(float dt)
 {
 	bool ret = true;
 
-	if (!passedCheckpoint)
-	{
-		if (currentAnim != &redAnim)
-		{
-			currentAnim = &redAnim;
-			redAnim.Reset();
-		}
-	}
-	else
-	{
-		if (currentAnim != &blueAnim)
-		{
-			currentAnim = &blueAnim;
-			blueAnim.Reset();
-		}
-	}
-	rectAnim = currentAnim->GetCurrentFrame();
-
-	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
-	{
-		ret = false;
-	}
 	// Update collider position
 	if (collider != nullptr)
 	{
 		collider->SetPos(position.x, position.y);
 	}
+
 	return ret;
 }
+void Checkpoint::Draw(Render* render)
+{
+	// TODO: Calculate the corresponding rectangle depending on the
+	// animation state and animation frame
+	SDL_Rect rec = coinAnimation.GetCurrentFrame();
 
+	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
+
+}
+void Checkpoint::SetPlayer(Player* player)
+{
+	this->player = player;
+}
+void Checkpoint::SetTexture(SDL_Texture* tex)
+{
+	texture = tex;
+}
 void Checkpoint::OnCollision(Collider* collider)
 {
-	if (!passedCheckpoint)
-	{
-		passedCheckpoint = true;
-		app->scene->player->hasCheckpoint = true;
-		app->scene->UpdateCheckpoint(position);
-		app->audio->PlayFx(fx);
-	}
+	//app->audio->PlayFx(fx);
+	player->lastCheckpointPos = this->position;
 }

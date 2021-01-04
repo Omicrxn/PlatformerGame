@@ -1,29 +1,49 @@
-#pragma once
-#include "Entity.h"
-#include "List.h"
+#ifndef __ENTITYMANAGER_H__
+#define __ENTITYMANAGER_H__
+
 #include "Module.h"
+#include "Entity.h"
+
+#include "List.h"
+class Collisions;
+class Render;
 
 class EntityManager : public Module
 {
 public:
-	EntityManager(bool startEnable);
-	
-	~EntityManager();
 
-	Entity* CreateEntity(EntityType type);
-	void DestroyEntity(Entity* entity);
-	
+	EntityManager(Render* render, Collisions* collisions);
+
+	// Destructor
+	virtual ~EntityManager();
+
+	// Called before render is available
+	bool Awake(pugi::xml_node&);
+
 	bool Update(float dt);
-	bool UpdateAll(float dt, bool doLogic);
+
+	// Called before quitting
 	bool CleanUp();
 
-	// Called when an enemi collider hits another collider
-	// The enemy is destroyed and an explosion particle is fired
+	// Additional methods
+	Entity* CreateEntity(EntityType type);
+	void DestroyEntity(Entity* entity);
+
+	void AddEntity(Entity* entity);
+
+	bool UpdateAll(float dt, bool doLogic);
+
 	void OnCollision(Collider* c1, Collider* c2);
+public:
 
 	List<Entity*> entities;
 
+	float accumulatedTime = 0.0f;
+	float updateMsCycle = 0.0f;
 	bool doLogic = false;
-
-	float accumulatedTime = 0;
+private:
+	Collisions* collisions;
+	Render* render;
 };
+
+#endif // __ENTITYMANAGER_H__

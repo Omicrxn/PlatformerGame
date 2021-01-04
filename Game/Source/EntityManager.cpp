@@ -1,55 +1,71 @@
 #include "EntityManager.h"
-#include "App.h"
-#include "Player.h"
-#include "EnemyFly.h"
-#include "EnemyWalk.h"
-#include "Coin.h"
-#include "Heart.h"
-#include "Checkpoint.h"
-#include "Textures.h"
 #include "Collisions.h"
 
-EntityManager::EntityManager(bool startEnable) : Module(startEnable) 
+#include "Player.h"
+#include "Enemy.h"
+#include "Checkpoint.h"
+#include "Coin.h"
+#include "Heart.h"
+#include "Map.h"
+#include "Collisions.h"
+
+#include "Defs.h"
+#include "Log.h"
+
+EntityManager::EntityManager(Render* render,Collisions* collisions) : Module()
 {
-	name = "entitymanager";
+	name.Create("entitymanager");
+	this->collisions = collisions;
+	this->render = render;
 }
 
-Entity* EntityManager::CreateEntity(EntityType type) 
+// Destructor
+EntityManager::~EntityManager()
+{}
+
+// Called before render is available
+bool EntityManager::Awake(pugi::xml_node& config)
+{
+	LOG("Loading Entity Manager");
+	bool ret = true;
+
+	return ret;
+}
+
+// Called before quitting
+bool EntityManager::CleanUp()
+{
+	if (!active) return true;
+
+	return true;
+}
+
+Entity* EntityManager::CreateEntity(EntityType type)
 {
 	Entity* ret = nullptr;
+
 	switch (type)
 	{
-	case EntityType::PLAYER:
-		ret = new Player();
-		break;
-	case EntityType::ENEMY_WALK:
-		ret = new EnemyWalk();
-		break;
-	case EntityType::ENEMY_FLY:
-		ret = new EnemyFly();
-		break;
-	case EntityType::ITEM_COIN:
-		ret = new Coin();
-		break;
-	case EntityType::ITEM_HEART:
-		ret = new Heart();
-		break;
-	case EntityType::CHECKPOINT:
-		ret = new Checkpoint();
-		break;
-	case EntityType::UNKNOWN:
-		break;
-	default:
-		break;
+		// L13: Create the corresponding type entity
+		case EntityType::PLAYER: ret = new Player(collisions,this);  break;
+		//case EntityType::ENEMY: ret = new Enemy();  break;
+		case EntityType::COIN: ret = new Coin(collisions,this);break;
+		case EntityType::HEART: ret = new Heart(collisions,this);break;
+		case EntityType::CHECKPOINT: ret = new Checkpoint(collisions,this);break;
+		default: break;
 	}
+
+	// Created entities are added to the list
 	if (ret != nullptr) entities.Add(ret);
+
 	return ret;
 }
 
 bool EntityManager::Update(float dt)
 {
 	accumulatedTime += dt;
-	if (accumulatedTime >= 0) doLogic = true;
+	if (accumulatedTime >= updateMsCycle) doLogic = true;
+
 	UpdateAll(dt, doLogic);
 
 	if (doLogic == true)
@@ -63,39 +79,26 @@ bool EntityManager::Update(float dt)
 
 bool EntityManager::UpdateAll(float dt, bool doLogic)
 {
-	bool ret = true;
 	ListItem<Entity*>* entity = entities.start;
 	while (entity != nullptr)
 	{
+		
 		if (doLogic) entity->data->Update(dt);
+		entity->data->Draw(render);
+		if (!entity->data->active)DestroyEntity(entity->data);
 		entity = entity->next;
 	}
-	
-	return ret;
-}
 
+	return true;
+}
 void EntityManager::DestroyEntity(Entity* entity)
 {
 	ListItem<Entity*>* item = entities.At(entities.Find(entity));
-	app->tex->Unload(entity->texture);
-	entity->texture = nullptr;
+	//app->tex->Unload(entity->texture);
+	//entity->texture = nullptr;
 	RELEASE(entity);
-	
+
 	entities.Del(item);
-}
-
-bool EntityManager::CleanUp()
-{
-	bool ret = true;
-	ListItem<Entity*>* entity = entities.end;
-	while (entity != nullptr) 
-	{
-		DestroyEntity(entity->data);
-		entity = entity->prev;
-	}
-	entities.Clear();
-
-	return ret;
 }
 void EntityManager::OnCollision(Collider* c1, Collider* c2)
 {

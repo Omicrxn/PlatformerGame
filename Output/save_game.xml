@@ -1,33 +1,12 @@
 <?xml version="1.0"?>
-<save>
-	<window />
+<!-- L02: TODO 4: Create a simulation xml file to read -->
+<game_state>
 	<input />
-	<inputhandler />
+	<window />
 	<textures />
-	<audio>
-		<volume value="64" />
-	</audio>
-	<collisions />
-	<logoscreen />
-	<titlescreen />
+	<audio />
 	<scene />
-	<map />
-	<endingscreen />
-	<pathfinding />
-	<entitymanager>
-		<Entity1 x="1080" y="1240" />
-		<Entity2 x="760" y="978" />
-		<Entity3 x="226" y="914" />
-		<Entity4 x="548" y="852" />
-		<Entity5 x="1476" y="907" />
-		<Entity6 x="1056" y="813" />
-		<Entity7 x="944" y="1328" />
-		<Entity8 x="1328" y="944" />
-		<Entity9 x="1936" y="224" />
-	</entitymanager>
-	<particles />
-	<fadetoblack />
 	<renderer>
-		<camera x="-440" y="-720" />
+		<camera x="0" y="0" />
 	</renderer>
-</save>
+</game_state>

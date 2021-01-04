@@ -1,13 +1,13 @@
 <!-- Config file for the game -->
 <!-- L01: DONE 1: Create configuration file-->
 <config>
-  <app framerate_cap ="60">
-    <title>Game Development Platformer Game</title>
+  <app>
+    <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
 
   <renderer>
-    <vsync value="false"/>
+    <vsync value="true"/>
   </renderer>
 
   <window>
@@ -17,11 +17,6 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
-
-  <!-- Add default volume in config.xml -->
-  <audio>
-    <volume value="64"/>
-  </audio>
 
   <!-- L03: Added maps folder as config option -->
   <map>

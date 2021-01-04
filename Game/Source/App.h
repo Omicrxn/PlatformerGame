@@ -17,19 +17,10 @@ class Window;
 class Input;
 class Render;
 class Textures;
-class Audio;
-class Collisions;
-class Scene;
-class Map;
-class FadeToBlack;
-class LogoScreen;
-class TitleScreen;
-class EndingScreen;
-class Screen;
-class PathFinding;
+class AudioManager;
 class EntityManager;
-class InputHandler;
-class Particles;
+class SceneManager;
+class Collisions;
 
 class App
 {
@@ -66,11 +57,11 @@ public:
 	void LoadGameRequest();
 	void SaveGameRequest() const;
 
-private:
-
 	// Load config file
 	// NOTE: It receives config document
 	pugi::xml_node LoadConfig(pugi::xml_document&) const;
+
+private:
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();
@@ -90,7 +81,6 @@ private:
 	// Load / Save
 	bool LoadGame();
 	bool SaveGame() const;
-
 public:
 
 	// Modules
@@ -98,32 +88,20 @@ public:
 	Input* input;
 	Render* render;
 	Textures* tex;
-	Audio* audio;
+	AudioManager* audio;
+	EntityManager* entityManager;
+	SceneManager* sceneManager;
 	Collisions* collisions;
-	PathFinding* pathfinding;
-	Scene* scene;
-	Map* map;
-	FadeToBlack* fade;
-	LogoScreen* logoScreen;
-	TitleScreen* titleScreen;
-	EndingScreen* endingScreen;
-	EntityManager* entityman;
-	InputHandler* inputHandler;
-	Particles* particles;
-
-	bool framerateCap = false;
-
 private:
 
 	int argc;
 	char** args;
 	SString title;
 	SString organization;
-	SString vsyncStr;
 
-	List<Module*> modules;
+	List<Module *> modules;
 
-	// Create new variables from pugui namespace
+	// L01: DONE 2: Create new variables from pugui namespace
 	// NOTE: Redesigned LoadConfig() to avoid storing this variables
 	//pugi::xml_document configFile;
 	//pugi::xml_node config;
@@ -132,25 +110,19 @@ private:
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
 
-	// Calculate some timing measures:
+	// L07: DONE 4: Calculate some timing measures
+	// required variables are provided:
 	PerfTimer ptimer;
-	PerfTimer delayTimer;
 	uint64 frameCount = 0;
 
 	Timer startupTime;
 	Timer frameTime;
 	Timer lastSecFrameTime;
-	
 	uint32 lastSecFrameCount = 0;
 	uint32 prevLastSecFrameCount = 0;
-	
 	float dt = 0.0f;
-	
-	uint32 newMaxFramerate;
-
+	bool capTo60fps = true;
 	int	cappedMs = -1;
 };
-
-extern App* app;
 
 #endif	// __APP_H__

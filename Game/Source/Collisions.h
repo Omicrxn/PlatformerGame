@@ -5,6 +5,8 @@
 #include "Module.h"
 #include "SDL/include/SDL_Rect.h"
 
+class Render;
+
 struct Collider
 {
 	enum Type
@@ -42,7 +44,7 @@ class Collisions : public Module
 public:
 	// Constructor
 	// Fills all collision matrix data
-	Collisions(bool startEnabled);
+	Collisions(Render* render);
 
 	// Destructor
 	~Collisions();
@@ -87,4 +89,6 @@ private:
 public:
 	// Simple debugging flag to draw all colliders
 	bool debug = false;
+private:
+	Render* render;
 };

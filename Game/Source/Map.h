@@ -1,13 +1,21 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
-#include "Module.h"
+#include "Entity.h"
+#include "Render.h"
+#include "Textures.h"
+
 #include "List.h"
+#include "PQueue.h"
 #include "Point.h"
+#include "DynArray.h"
 
-#include "PugiXml\src\pugixml.hpp"
+#include "SDL/include/SDL.h"
+#include "PugiXml/src/pugixml.hpp"
 
-// Create a struct to hold information for a TileSet
+#define COST_MAP_SIZE	100
+
+// L03: DONE 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
 struct TileSet
 {
@@ -26,11 +34,11 @@ struct TileSet
 	int	offsetX;
 	int	offsetY;
 
-	// Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
+	// L04: DONE 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
 };
 
-// We create an enum for map type, just for convenience,
+// L03: DONE 1: We create an enum for map type, just for convenience,
 // NOTE: Platformer game will be of type ORTHOGONAL
 enum MapTypes
 {
@@ -40,7 +48,7 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
-// Create a generic structure to hold properties
+// L06: DONE 5: Create a generic structure to hold properties
 struct Properties
 {
 	struct Property
@@ -63,16 +71,13 @@ struct Properties
 		list.Clear();
 	}
 
-	// Method to ask for the value of a custom property
+	// L06: DONE 7: Method to ask for the value of a custom property
 	int GetProperty(const char* name, int default_value = 0) const;
-
-	// Method to set the value of a custom property
-	void SetProperty(const char* name, int num);
 
 	List<Property*> list;
 };
 
-// Create a struct for the map layer
+// L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
 	SString	name;
@@ -80,7 +85,7 @@ struct MapLayer
 	int height;
 	uint* data;
 
-	// Support custom properties
+	// L06: DONE 1: Support custom properties
 	Properties properties;
 
 	MapLayer() : data(NULL)
@@ -91,14 +96,14 @@ struct MapLayer
 		RELEASE(data);
 	}
 
-	// Short function to get the value of x,y
+	// L04: DONE 6: Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
 		return data[(y * width) + x];
 	}
 };
 
-// Create a struct needed to hold the information to Map node
+// L03: DONE 1: Create a struct needed to hold the information to Map node
 struct MapData
 {
 	int width;
@@ -109,67 +114,114 @@ struct MapData
 	MapTypes type;
 	List<TileSet*> tilesets;
 
-	// Add a list/array of layers to the map
+	// L04: DONE 2: Add a list/array of layers to the map
 	List<MapLayer*> layers;
 };
 
-class Map : public Module
+class Map : public Entity
 {
 public:
 
-	Map(bool startEnabled);
+    Map(Textures* render);
 
-	// Destructor
-	virtual ~Map();
+    // Destructor
+    virtual ~Map();
 
-	// Called before render is available
-	bool Awake(pugi::xml_node& conf);
+    // Called before render is available
+    bool Awake(pugi::xml_node& conf);
 
-	// Called each loop iteration
-	void Draw();
+    // Called each loop iteration
+    void Draw(Render* render);
 
-	// Called before quitting
-	bool CleanUp();
+	void DrawLayer(Render* render, int num);
 
-	// Load new map
-	bool Load(const char* path);
+    // Called before quitting
+    bool CleanUp();
 
-	// Create a method that translates x,y coordinates from map positions to world positions
+    // Load new map
+    bool Load(const char* path);
+
+	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
-	// Add orthographic world to map coordinates
+	// L05: DONE 2: Add orthographic world to map coordinates
 	iPoint WorldToMap(int x, int y) const;
 
-	// Change a layer property value
-	void ChangeLayerProperty(SString layerName, SString propertyName, int value);
+	SDL_Rect GetTilemapRec(int x, int y) const;
 	
-	// Create walkability map for pathfinding
+	// BFS/Dijkstra methods not required any more: Using PathFinding class
+	/*
+    // L10: BFS Pathfinding methods
+	void ResetPath(iPoint start);
+	void DrawPath();
+
+    // L11: More pathfinding methods
+    int MovementCost(int x, int y) const;
+	void ComputePath(int x, int y);
+	
+	// L12a: AStar pathfinding
+	void ComputePathAStar(int x, int y);
+
+	// Propagation methods
+	void PropagateBFS();
+	void PropagateDijkstra();
+	// L12a: AStar propagation
+	void PropagateAStar(int heuristic);
+	*/
+	
+	// L12b: Create walkability map for pathfinding
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 private:
 
-	// Methods to load all required map data
+	// L03: Methods to load all required map data
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 
-	// Load a group of properties 
+	// L06: TODO 6: Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
-	// Pick the right Tileset based on a tile id
+	// L06: DONE 3: Pick the right Tileset based on a tile id
 	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
 
-	// Add your struct for map info
+    // L03: DONE 1: Add your struct for map info
 	MapData data;
+
+	bool drawColliders = false;
 
 private:
 
-	pugi::xml_document mapFile;
-	SString folder;
-	bool mapLoaded;
+	Textures* tex;
+
+    pugi::xml_document mapFile;
+    SString folder;
+    bool mapLoaded;
+
+	float scale;
+	iPoint camOffset;
+    
+	// BFS/Dijkstra variables not required any more: Using PathFinding class
+	/*
+	// L10: BFS Pathfinding variables
+	PQueue<iPoint> frontier;
+	List<iPoint> visited;
+    
+    // L11: Additional variables
+    List<iPoint> breadcrumbs;
+	DynArray<iPoint> path;
+	
+	// L11: Dijkstra cost
+	uint costSoFar[COST_MAP_SIZE][COST_MAP_SIZE];
+    
+	// L12a: AStar (A*) variables
+	iPoint goalAStar;			// Store goal target tile
+	bool finishAStar = false;	// Detect when reached goal
+	SDL_Texture* tileX = nullptr;
+	*/
 };
 
 #endif // __MAP_H__

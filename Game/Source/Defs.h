@@ -50,8 +50,8 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 
 // Standard string size
 #define SHORT_STR	 32
-#define MID_STR	  255
-#define HUGE_STR	8192
+#define MID_STR	    255
+#define HUGE_STR   8192
 
 // Joins a path and file
 inline const char* const PATH(const char* folder, const char* file)

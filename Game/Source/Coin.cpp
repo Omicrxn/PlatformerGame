@@ -1,68 +1,60 @@
 #include "Coin.h"
-#include "App.h"
-#include "Textures.h"
-#include "Render.h"
-#include "EntityManager.h"
-#include "Scene.h"
-#include "Audio.h"
 #include "Player.h"
 
-Coin::Coin() : Entity(EntityType::ENEMY_FLY)
+
+Coin::Coin(Collisions* collisions, EntityManager* entityManager) : Entity(EntityType::COIN)
 {
-	movingAnim.PushBack({ 0,0,16,16 });
-	movingAnim.PushBack({ 16,0,16,16 });
-	movingAnim.PushBack({ 32,0,16,16 });
-	movingAnim.PushBack({ 48,0,16,16 });
-	movingAnim.PushBack({ 63,0,16,16 });
+	texture = NULL;
+	coinAnimation.PushBack({ 0,0,16,16 });
+	coinAnimation.PushBack({ 16,0,16,16 });
+	coinAnimation.PushBack({ 32,0,16,16 });
+	coinAnimation.PushBack({ 48,0,16,16 });
+	coinAnimation.PushBack({ 63,0,16,16 });
 
-	movingAnim.loop = true;
-	movingAnim.speed = 0.09f;
+	coinAnimation.loop = true;
+	coinAnimation.speed = 0.09f;
 
-	texture = app->tex->Load("Assets/Items/coin.png");
-	fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
-	isLeft = true;
-
-	initialPosition = { 1476, 907 };
-	position = initialPosition;
-
-	gravity = 1;
+	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
+	position = iPoint(0, 0);
 	velocity = { 0,0 };
 
-	dead = false;
-	collision = false;
-	collider = app->collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_COIN, (Module*)app->entityman);
+	collider = collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_COIN, (Module*)entityManager);
 }
 
 bool Coin::Update(float dt)
 {
 	bool ret = true;
 
-	if (currentAnim != &movingAnim)
-	{
-		currentAnim = &movingAnim;
-		movingAnim.Reset();
-	}
-
-	rectAnim = currentAnim->GetCurrentFrame();
-
-	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
-	{
-		ret = false;
-	}
-
 	// Update collider position
-	if (collider != nullptr) 
+	if (collider != nullptr)
 	{
 		collider->SetPos(position.x, position.y);
 	}
 
 	return ret;
 }
+void Coin::Draw(Render* render)
+{
+	// TODO: Calculate the corresponding rectangle depending on the
+	// animation state and animation frame
+	SDL_Rect rec = coinAnimation.GetCurrentFrame();
 
+	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
+
+}
+void Coin::SetPlayer(Player* player)
+{
+	this->player = player;
+}
+void Coin::SetTexture(SDL_Texture* tex)
+{
+	texture = tex;
+}
 void Coin::OnCollision(Collider* collider)
 {
-	app->audio->PlayFx(fx);
-	app->scene->player->score += 100;
-	app->scene->player->PrintData();
-  	app->entityman->DestroyEntity(this);
+	//app->audio->PlayFx(fx);
+	player->score += 100;
+	printf("Score: %d \n", player->score);
+	this->collider->pendingToDelete = true;
+	active = false;
 }

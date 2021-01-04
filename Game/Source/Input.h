@@ -7,6 +7,8 @@
 #define NUM_MOUSE_BUTTONS 5
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
+class Window;
+
 struct SDL_Rect;
 
 enum EventWindow
@@ -27,9 +29,10 @@ enum KeyState
 
 class Input : public Module
 {
+
 public:
 
-	Input(bool startEnabled);
+	Input(Window* win);
 
 	// Destructor
 	virtual ~Input();
@@ -61,14 +64,17 @@ public:
 	bool GetWindowEvent(EventWindow ev);
 
 	// Get mouse / axis position
-	void GetMousePosition(int& x, int& y);
+	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
 private:
 
+	Window* win;
+
 	bool windowEvents[WE_COUNT];
 	KeyState* keyboard;
 	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
+
 	int	mouseMotionX;
 	int mouseMotionY;
 	int mouseX;

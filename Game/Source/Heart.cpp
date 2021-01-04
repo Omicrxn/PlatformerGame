@@ -1,68 +1,64 @@
 #include "Heart.h"
-#include "App.h"
-#include "Textures.h"
-#include "EntityManager.h"
-#include "Scene.h"
-#include "Audio.h"
 #include "Player.h"
-#include "Render.h"
 
-
-Heart::Heart() : Entity(EntityType::ENEMY_FLY)
+Heart::Heart(Collisions* collisions, EntityManager* entityManager) : Entity(EntityType::HEART)
 {
-	movingAnim.PushBack({ 0,0,16,16 });
-	movingAnim.PushBack({ 16,0,16,16 });
-	movingAnim.PushBack({ 32,0,16,16 });
-	movingAnim.PushBack({ 48,0,16,16 });
-	movingAnim.PushBack({ 64,0,16,16 });
-	movingAnim.PushBack({ 80,0,16,16 });
-	movingAnim.PushBack({ 96,0,16,16 });
-	movingAnim.PushBack({ 112,0,16,16 });
+	heartAnimation.PushBack({ 0,0,16,16 });
+	heartAnimation.PushBack({ 16,0,16,16 });
+	heartAnimation.PushBack({ 32,0,16,16 });
+	heartAnimation.PushBack({ 48,0,16,16 });
+	heartAnimation.PushBack({ 64,0,16,16 });
+	heartAnimation.PushBack({ 80,0,16,16 });
+	heartAnimation.PushBack({ 96,0,16,16 });
+	heartAnimation.PushBack({ 112,0,16,16 });
 
-	movingAnim.loop = true;
-	movingAnim.speed = 0.09f;
+	heartAnimation.loop = true;
+	heartAnimation.speed = 0.09f;
 
-	texture = app->tex->Load("Assets/Items/heart.png");
-	fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
-	isLeft = true;
+	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
 
-	initialPosition = { 1056, 813 };
-	position = initialPosition;
 
-	gravity = 1;
+	position = iPoint(0, 0);
 	velocity = { 0,0 };
 
-	dead = false;
-	collision = false;
-	collider = app->collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_HEART, (Module*)app->entityman);
+
+
+	collider = collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_HEART, (Module*)entityManager);
 }
 
 bool Heart::Update(float dt)
 {
 	bool ret = true;
 
-	if (currentAnim != &movingAnim)
-	{
-		currentAnim = &movingAnim;
-		movingAnim.Reset();
-	}
-	rectAnim = currentAnim->GetCurrentFrame();
-	if (!app->render->DrawTexture(texture, position.x, position.y, &rectAnim, isLeft))
-	{
-		ret = false;
-	}
-
 	// Update collider position
-	if (collider != nullptr) {
+	if (collider != nullptr)
+	{
 		collider->SetPos(position.x, position.y);
 	}
 	return ret;
 }
+void Heart::Draw(Render* render)
+{
+	// TODO: Calculate the corresponding rectangle depending on the
+	// animation state and animation frame
+	SDL_Rect rec = heartAnimation.GetCurrentFrame();
+
+	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
+
+}
+void Heart::SetPlayer(Player* player)
+{
+	this->player = player;
+}
+void Heart::SetTexture(SDL_Texture* tex)
+{
+	texture = tex;
+}
 void Heart::OnCollision(Collider* collider)
 {
-	app->audio->PlayFx(fx);
-	if(app->scene->player->lifes < 10)
-	app->scene->player->lifes++;
-	app->scene->player->PrintData();
-	app->entityman->DestroyEntity(this);
+	//app->audio->PlayFx(fx);
+	player->lifes++;
+	printf("Lifes: %d \n", player->lifes);
+	this->collider->pendingToDelete = true;
+	active = false;
 }

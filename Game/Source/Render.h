@@ -4,14 +4,17 @@
 #include "Module.h"
 
 #include "Point.h"
+#include "Font.h"
 
 #include "SDL/include/SDL.h"
+
+class Window;
 
 class Render : public Module
 {
 public:
 
-	Render(bool startEnabled);
+	Render(Window* win);
 
 	// Destructor
 	virtual ~Render();
@@ -38,24 +41,27 @@ public:
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
 	iPoint ScreenToWorld(int x, int y) const;
-
+	void CameraUpdate(iPoint position);
 	// Drawing
-	bool DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL,bool isLeft = 0,float speed = 1.0f, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
-	bool DrawMapTexture(uint scale,SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL,float speed = 1.0f, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
-	bool DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool useCamera = true) const;
-	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool useCamera = true) const;
-	bool DrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool useCamera = true) const;
+	bool DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f,bool isLeft = false, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
+	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled = true) const;
+	bool DrawLine(int x1, int y1, int x2, int y2, SDL_Color color) const;
+	bool DrawCircle(int x1, int y1, int redius, SDL_Color color) const;
+
+	bool DrawText(Font font, const char* text, int x, int y, int size, int spacing, SDL_Color tint);
 
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
 public:
-	bool vsync = false;
 
 	SDL_Renderer* renderer;
 	SDL_Rect camera;
 	SDL_Rect viewport;
 	SDL_Color background;
+
+	Window* win;
+	float scale=1;
 };
 
 #endif // __RENDER_H__

@@ -1,14 +1,12 @@
 #include "Collisions.h"
-#include "App.h"
 
 #include "Render.h"
-#include "Input.h"
 #include "SDL/include/SDL_scancode.h"
 
-Collisions::Collisions(bool startEnabled) : Module(startEnabled) 
+Collisions::Collisions(Render* render) : Module()
 {
 	name = "collisions";
-
+	this->render = render;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		colliders[i] = nullptr;
@@ -64,12 +62,12 @@ Collisions::Collisions(bool startEnabled) : Module(startEnabled)
 
 Collisions::~Collisions() {}
 
-bool Collisions::PreUpdate() 
+bool Collisions::PreUpdate()
 {
 	// Remove all colliders scheduled for deletion
-	for (uint i = 0; i < MAX_COLLIDERS; ++i) 
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-		if (colliders[i] != nullptr && colliders[i]->pendingToDelete == true) 
+		if (colliders[i] != nullptr && colliders[i]->pendingToDelete == true)
 		{
 			delete colliders[i];
 			colliders[i] = nullptr;
@@ -80,24 +78,24 @@ bool Collisions::PreUpdate()
 	Collider* c1;
 	Collider* c2;
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i) 
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		// Skip empty colliders
-		if (colliders[i] == nullptr) 
+		if (colliders[i] == nullptr)
 			continue;
 
 		c1 = colliders[i];
 
 		// Avoid checking collisions already checked
-		for (uint k = i + 1; k < MAX_COLLIDERS; ++k) 
+		for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
 		{
 			// Skip empty colliders
-			if (colliders[k] == nullptr) 
+			if (colliders[k] == nullptr)
 				continue;
 
 			c2 = colliders[k];
 
-			if (c1->Intersects(c2->rect)) 
+			if (c1->Intersects(c2->rect))
 			{
 				if (matrix[c1->type][c2->type] && c1->listener)
 					c1->listener->OnCollision(c1, c2);
@@ -111,13 +109,13 @@ bool Collisions::PreUpdate()
 	return true;
 }
 
-bool Collisions::Update(float dt) 
+bool Collisions::Update(float dt)
 {
 
 	return true;
 }
 
-bool Collisions::PostUpdate() 
+bool Collisions::PostUpdate()
 {
 	if (debug)
 		DebugDraw();
@@ -125,57 +123,57 @@ bool Collisions::PostUpdate()
 	return true;
 }
 
-void Collisions::DebugDraw() 
+void Collisions::DebugDraw()
 {
 	Uint8 alpha = 80;
-	for (uint i = 0; i < MAX_COLLIDERS; ++i) 
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
 			continue;
 
-		switch (colliders[i]->type) 
+		switch (colliders[i]->type)
 		{
 		case Collider::Type::NONE: // White
-			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 255, 255, 255,alpha });
 			break;
 		case Collider::Type::WALL: // Blue
-			app->render->DrawRectangle(colliders[i]->rect, 0, 0, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 0, 0, 255, alpha });
 			break;
 		case Collider::Type::PLAYER: // Green
-			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 0, 255, 0, alpha });
 			break;
 		case Collider::Type::ENEMY: // Red
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 255, 0, 0, alpha });
 			break;
 		case Collider::Type::PLAYER_BULLET: // Yellow
-			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 255, 255, 0, alpha });
 			break;
 		case Collider::Type::ENEMY_SHOT: // Magenta
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 255, 0, 255, alpha });
 			break;
 		case Collider::Type::WEAPON: // GREY
-			app->render->DrawRectangle(colliders[i]->rect, 128, 128, 128, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 128, 128, 128, alpha });
 			break;
 		case Collider::Type::ITEM_COIN: // DARK BLUE
-			app->render->DrawRectangle(colliders[i]->rect, 0, 100, 128, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 0, 100, 128, alpha });
 			break;
 		case Collider::Type::ITEM_HEART: // DARK RED
-			app->render->DrawRectangle(colliders[i]->rect, 128, 0, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 128, 0, 0, alpha });
 			break;
 		case Collider::Type::CHECKPOINT: // DARK GREEN
-			app->render->DrawRectangle(colliders[i]->rect, 0, 128, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, { 0, 128, 0, alpha });
 			break;
 		}
 	}
 }
 
-bool Collisions::CleanUp() 
+bool Collisions::CleanUp()
 {
 
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i) 
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-		if (colliders[i] != nullptr) 
+		if (colliders[i] != nullptr)
 		{
 			delete colliders[i];
 			colliders[i] = nullptr;
@@ -186,13 +184,13 @@ bool Collisions::CleanUp()
 	return true;
 }
 
-Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* listener) 
+Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* listener)
 {
 	Collider* ret = nullptr;
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i) 
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-		if (colliders[i] == nullptr) 
+		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, listener);
 			++colliderCount;
@@ -203,13 +201,13 @@ Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* li
 	return ret;
 }
 
-bool Collisions::DeleteCollider(Collider* collider) 
+bool Collisions::DeleteCollider(Collider* collider)
 {
-	if (collider != nullptr) 
+	if (collider != nullptr)
 	{
-		for (uint i = 0; i < MAX_COLLIDERS; ++i) 
+		for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		{
-			if (colliders[i] == collider) 
+			if (colliders[i] == collider)
 			{
 				collider->pendingToDelete = true;
 				break;
@@ -223,13 +221,13 @@ bool Collisions::DeleteCollider(Collider* collider)
 // Collider class
 Collider::Collider(SDL_Rect rectangle, Type type, Module* listener) : rect(rectangle), type(type), listener(listener) {}
 
-void Collider::SetPos(int x, int y) 
+void Collider::SetPos(int x, int y)
 {
 	rect.x = x;
 	rect.y = y;
 }
 
-bool Collider::Intersects(const SDL_Rect& r) const 
+bool Collider::Intersects(const SDL_Rect& r) const
 {
 	// Return true if there is an overlap
 	// between argument "r" and property "rect"

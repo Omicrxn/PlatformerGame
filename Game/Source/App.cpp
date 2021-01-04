@@ -1,20 +1,14 @@
 #include "App.h"
+
 #include "Window.h"
 #include "Input.h"
-#include "FadeToBlack.h"
-#include "LogoScreen.h"
-#include "TitleScreen.h"
-#include "EndingScreen.h"
 #include "Render.h"
 #include "Textures.h"
-#include "Pathfinding.h"
 #include "Audio.h"
-#include "Collisions.h"
-#include "Scene.h"
-#include "Map.h"
 #include "EntityManager.h"
-#include "InputHandler.h"
-#include "Particles.h"
+#include "SceneManager.h"
+#include "Collisions.h"
+
 
 #include "Defs.h"
 #include "Log.h"
@@ -22,7 +16,7 @@
 #include <iostream>
 #include <sstream>
 
-// Measure the amount of ms that takes to execute:
+// L07: DONE 3: Measure the amount of ms that takes to execute:
 // App constructor, Awake, Start and CleanUp
 // LOG the result
 
@@ -31,47 +25,28 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	PERF_START(ptimer);
 
-	win = new Window(true);
-	input = new Input(true);
-	render = new Render(true);
-	tex = new Textures(true);
-	audio = new Audio(false);
-	collisions = new Collisions(false);
-	scene = new Scene(false);
-	map = new Map(false);
-	fade = new FadeToBlack(true);
-	logoScreen = new LogoScreen(false);
-	titleScreen = new TitleScreen(true);
-	endingScreen = new EndingScreen(false);
-	pathfinding = new PathFinding(false);
-	entityman = new EntityManager(false);
-	inputHandler = new InputHandler(true);
-	particles = new Particles(true);
+	win = new Window();
+	input = new Input(win);
+	render = new Render(win);
+	tex = new Textures(render);
+	audio = new AudioManager();
+	collisions = new Collisions(render);
+	entityManager = new EntityManager(render, collisions);
+	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(win);
 	AddModule(input);
-	AddModule(inputHandler);
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(collisions);
-	AddModule(logoScreen);
-	AddModule(titleScreen);
-	AddModule(scene);
-	AddModule(map);
-	AddModule(endingScreen);
-	AddModule(pathfinding);
 
-	AddModule(entityman);
-	AddModule(particles);
-
-	AddModule(fade);
+	AddModule(sceneManager);
+	AddModule(entityManager);
 
 	// Render last to swap buffer
 	AddModule(render);
-
-	
 	PERF_PEEK(ptimer);
 }
 
@@ -81,7 +56,7 @@ App::~App()
 	// Release modules
 	ListItem<Module*>* item = modules.end;
 
-	while (item != NULL)
+	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
@@ -92,7 +67,7 @@ App::~App()
 
 void App::AddModule(Module* module)
 {
-	//module->Enable();
+	module->Init();
 	modules.Add(module);
 }
 
@@ -107,7 +82,7 @@ bool App::Awake()
 
 	bool ret = false;
 
-	// Load config from XML
+	// L01: DONE 3: Load config from XML
 	config = LoadConfig(configFile);
 
 	if (config.empty() == false)
@@ -115,12 +90,13 @@ bool App::Awake()
 		ret = true;
 		configApp = config.child("app");
 
-		// Read the title from the config file
+		// L01: DONE 4: Read the title from the config file
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
 
-        // Read from config file your framerate cap
-		newMaxFramerate = configApp.attribute("framerate_cap").as_int();
+        // L08: DONE 1: Read from config file your framerate cap
+		int cap = configApp.attribute("framerate_cap").as_int(-1);
+		if (cap > 0) cappedMs = 1000 / cap;
 	}
 
 	if (ret == true)
@@ -130,7 +106,7 @@ bool App::Awake()
 
 		while ((item != NULL) && (ret == true))
 		{
-			// Add a new argument to the Awake method to receive a pointer to an xml node.
+			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 			// that can be used to read all variables for that module.
 			// Send nullptr if the node does not exist in config.xml
@@ -153,9 +129,9 @@ bool App::Start()
 	ListItem<Module*>* item;
 	item = modules.start;
 
-	while (item != NULL && ret == true)
+	while(item != NULL && ret == true)
 	{
-		ret = item->data->IsEnabled() ? item->data->Start() : true;
+		ret = item->data->Start();
 		item = item->next;
 	}
 	
@@ -170,24 +146,19 @@ bool App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true) ret = false;
-	if(ret == true) ret = PreUpdate();
-	if(ret == true) ret = DoUpdate();
-	if(ret == true) ret = PostUpdate();
+	if(input->GetWindowEvent(WE_QUIT) == true)
+		ret = false;
 
-	if (framerateCap == false)
-	{
-		if (newMaxFramerate > 0) cappedMs = (1000.0f / (float)newMaxFramerate);
-		else cappedMs = -1;
-	}
-	else
-		cappedMs = (1000.0f / 30.0f);
+	if(ret == true)
+		ret = PreUpdate();
 
-	if (app->render->vsync) vsyncStr.Create("on");
-	else vsyncStr.Create("off");
+	if(ret == true)
+		ret = DoUpdate();
+
+	if(ret == true)
+		ret = PostUpdate();
 
 	FinishUpdate();
-
 	return ret;
 }
 
@@ -211,56 +182,61 @@ void App::PrepareUpdate()
     frameCount++;
     lastSecFrameCount++;
 
-    // Calculate the dt: differential time since last frame
+    // L08: DONE 4: Calculate the dt: differential time since last frame
 	dt = frameTime.ReadSec();
 	frameTime.Start();
+	if (input->GetKey(SDL_SCANCODE_F11) == KeyState::KEY_DOWN)
+	{
+		capTo60fps = !capTo60fps;
+	}
+	if (capTo60fps)
+	{
+		cappedMs = 1000 / 60;
+	}
+	else
+	{
+		cappedMs = 1000 / 30;
+	}
 }
 
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// This is a good place to call Load / Save methods
+	// L02: DONE 1: This is a good place to call Load / Save methods
 	if (loadGameRequested == true) LoadGame();
 	if (saveGameRequested == true) SaveGame();
     
-    // Framerate calculations
+    // L07: DONE 4: Now calculate:
 	// Amount of frames since startup
 	// Amount of time since game start (use a low resolution timer)
 	// Average FPS for the whole game life
 	// Amount of ms took the last update
 	// Amount of frames during the last second
-    
-	float averageFps = 0.0f;
-	float secondsSinceStartup = 0.0f;
-	uint32 lastFrameMs = 0;
-	uint32 framesOnLastSec = 0;
-
-	secondsSinceStartup = startupTime.ReadSec();
-	averageFps = (float)frameCount / startupTime.ReadSec();
-	lastFrameMs = frameTime.Read();
 	if (lastSecFrameTime.Read() > 1000)
 	{
 		lastSecFrameTime.Start();
 		prevLastSecFrameCount = lastSecFrameCount;
 		lastSecFrameCount = 0;
 	}
-	framesOnLastSec = prevLastSecFrameCount;
+
+	float averageFps = float(frameCount) / startupTime.ReadSec();
+	float secondsSinceStartup = startupTime.ReadSec();
+	uint32 lastFrameMs = frameTime.Read();
+	uint32 framesOnLastUpdate = prevLastSecFrameCount;
 
 	static char title[256];
-	/*sprintf_s(title, 256, "FPS: %d / Av.FPS: %.2f / Last-frame MS: %02u / Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
-			  averageFps, lastFrameMs, framesOnLastSec, dt, secondsSinceStartup, frameCount);*/
-	sprintf_s(title, 256, "FPS: %d / Avg.FPS: %.2f / Last-frame MS: %02u / Vsync: %s",
-		framesOnLastSec, averageFps, lastFrameMs, vsyncStr.GetString());
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
+			  averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
 
-	app->win->SetTitle(title);
+	//app->win->SetTitle(title);
 
-    // L08: TODO 2: Use SDL_Delay to make sure you get your capped framerate
-	if (cappedMs > lastFrameMs && cappedMs != -1)
+    // L08: DONE 2: Use SDL_Delay to make sure you get your capped framerate
+	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
 	{
-		// L08: TODO 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
-		delayTimer.Start();
+		// L08: DONE 3: Measure accurately the amount of time SDL_Delay actually waits compared to what was expected
+		PerfTimer pt;
 		SDL_Delay(cappedMs - lastFrameMs);
-		LOG("We waited for %d milliseconds and got back in %.6f", cappedMs - lastFrameMs, delayTimer.ReadMs());
+		LOG("We waited for %d milliseconds and got back in %f", cappedMs - lastFrameMs, pt.ReadMs());
 	}
 }
 
@@ -272,10 +248,15 @@ bool App::PreUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for (item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->IsEnabled() ? pModule->PreUpdate() : true;
+
+		if(pModule->active == false) {
+			continue;
+		}
+
+		ret = item->data->PreUpdate();
 	}
 
 	return ret;
@@ -289,10 +270,17 @@ bool App::DoUpdate()
 	item = modules.start;
 	Module* pModule = NULL;
 
-	for (item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->IsEnabled() ? pModule->Update(dt) : true;
+
+		if(pModule->active == false) {
+			continue;
+		}
+
+        // L08: DONE 5: Send dt as an argument to all updates, you need
+        // to update module parent class and all modules that use update
+		ret = item->data->Update(dt);
 	}
 
 	return ret;
@@ -305,10 +293,15 @@ bool App::PostUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for (item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-		ret = pModule->IsEnabled() ? pModule->PostUpdate() : true;
+
+		if(pModule->active == false) {
+			continue;
+		}
+
+		ret = item->data->PostUpdate();
 	}
 
 	return ret;
@@ -317,19 +310,15 @@ bool App::PostUpdate()
 // Called before quitting
 bool App::CleanUp()
 {
-	PERF_START(ptimer);
-
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.end;
 
-	while (item != NULL && ret == true)
+	while(item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
-
-	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -376,47 +365,15 @@ void App::SaveGameRequest() const
 }
 
 // ---------------------------------------
-// Create a method to actually load an xml file
+// L02: TODO 5: Create a method to actually load an xml file
 // then call all the modules to load themselves
 bool App::LoadGame()
 {
 	bool ret = false;
 
+	//...
+
 	loadGameRequested = false;
-
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file("save_game.xml");
-
-	if (result == NULL)
-	{
-		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
-		ret = false;
-	}
-	else
-	{
-		bool ret = true;
-
-		pugi::xml_node node = doc.child("save");
-
-		ListItem<Module*>* item;
-		item = modules.start;
-
-		while (item != NULL && ret == true)
-		{
-			ret = item->data->LoadState(node.child(item->data->name.GetString()));
-			item = item->next;
-		}
-
-		pugi::xml_node nodeEntity = node.child("entitymanager");
-		for (int i = 0; i < app->entityman->entities.Count(); i++)
-		{
-			SString entityName;
-			entityName.Create("Entity%d", i + 1);
-			pugi::xml_node currentEntity = nodeEntity.child(entityName.GetString());
-			app->entityman->entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
-			app->entityman->entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
-		}
-	}
 
 	return ret;
 }
@@ -426,33 +383,10 @@ bool App::SaveGame() const
 {
 	bool ret = true;
 
+	//...
+
 	saveGameRequested = false;
-
-	pugi::xml_document doc;
-	pugi::xml_node node = doc.append_child("save");
-	pugi::xml_node newNode;
-
-	ListItem<Module*>* item;
-	item = modules.start;
-
-	while (item != NULL && ret == true)
-	{
-		newNode = node.append_child(item->data->name.GetString());
-		ret = item->data->SaveState(newNode);
-		item = item->next;
-	}
-
-	pugi::xml_node nodeEntity = node.child("entitymanager");
-	for (int i = 0; i < app->entityman->entities.Count(); i++)
-	{
-		SString entityName;
-		entityName.Create("Entity%d", i + 1);
-		pugi::xml_node currentEntity = nodeEntity.append_child(entityName.GetString());
-		currentEntity.append_attribute("x").set_value(app->entityman->entities.At(i)->data->position.x);
-		currentEntity.append_attribute("y").set_value(app->entityman->entities.At(i)->data->position.y);
-	}
-
-	doc.save_file("save_game.xml");
 
 	return ret;
 }
+

@@ -1076,7 +1076,7 @@ namespace pugi
         xpath_variable_set(const xpath_variable_set&);
         xpath_variable_set& operator=(const xpath_variable_set&);
 
-        xpath_variable* Find(const char_t* name) const;
+        xpath_variable* find(const char_t* name) const;
 
     public:
         // Default constructor/destructor

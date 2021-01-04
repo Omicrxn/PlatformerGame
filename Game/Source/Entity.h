@@ -1,59 +1,51 @@
-#pragma once
-#include "Point.h"
-#include "SDL/include/SDL_rect.h"
-#include "Animation.h"
-#include "DynArray.h"
-#include "Collisions.h"
+#ifndef __ENTITY_H__
+#define __ENTITY_H__
 
-struct SDL_Texture;
+#include "Point.h"
+#include "SString.h"
+#include "Animation.h"
+class Collider;
+class Render;
 enum class EntityType
 {
-	PLAYER,
-	ENEMY_WALK,
-	ENEMY_FLY,
-	ITEM_COIN,
-	ITEM_HEART,
-	CHECKPOINT,
-	UNKNOWN
+    PLAYER,
+    ENEMY,
+    COIN,
+    HEART,
+    MAP,
+    CHECKPOINT,
+    UNKNOWN
 };
 
 class Entity
 {
 public:
-	Entity(EntityType type) : type(type) {}
 
-	~Entity()
-	{
-		if (collider != nullptr)
-			collider->pendingToDelete = true;
-	}
+    Entity(EntityType type) : type(type), active(true) {}
 
-	virtual bool Update(float dt) { return true; }
+    virtual bool Update(float dt)
+    {
+        return true;
+    }
+    virtual void Draw(Render* render) {};
 
-	// Returns the enemy's collider
-	const Collider* GetCollider() const {return collider;}
+    const Collider* GetCollider() const { return collider; }
 
-	virtual void OnCollision(Collider* collider) {};
-
-	// Get the current player position
-	iPoint GetPlayerPosition()
-	{
-		return position;
-	}
+    virtual void OnCollision(Collider* collider) {};
 
 public:
-	EntityType type;
-	iPoint initialPosition;
-	iPoint position;
-	fPoint velocity;
-	float gravity;
 
-	// The enemy's collider
-	Collider* collider = nullptr;
-
-	bool dead;
-	bool isLeft;
-	Animation* currentAnim = nullptr;
-	SDL_Texture* texture;
-	SDL_Rect rectAnim;
+    EntityType type;
+    bool active = true;
+    //SString name;         // Entity name identifier?
+    //uint32 id;            // Entity identifier?
+    Collider* collider = nullptr;
+    // Possible properties, it depends on how generic we
+    // want our Entity class, maybe it's not renderable...
+    iPoint position;        // Use a float instead?
+    fPoint velocity;
+    bool renderable = false;
+   // SDL_Texture* texture;
 };
+
+#endif // __ENTITY_H__

@@ -1,73 +1,70 @@
-#pragma once
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
 #include "Entity.h"
+#include "Input.h"
+#include "Render.h"
+#include "Collisions.h"
+#include "EntityManager.h"
+
 #include "Point.h"
-#include "SDL/include/SDL_rect.h"
+#include "SString.h"
 
-struct SDL_Texture;
+#include "SDL/include/SDL.h"
 
-class Player : public Entity 
+enum class PlayerAnim
+{
+    IDLE,
+    WALK,
+    JUMP,
+    FALL,
+    MELEE,
+    SHOOTING
+};
+
+class Player: public Entity
 {
 public:
 
-	Player();
-	
-	~Player();
-	
-	bool Update(float dt) override;
-	void OnCollision(Collider* collider) override;
-	
-	void Run(bool isLeft);
-	void Jump();
-	void SmallJump();
+    Player(Collisions* collisions,EntityManager* entityManager);
 
-	void Fall();
+    bool Update(Input* input, float dt);
 
-	void Die();
-	bool Died();
-	void GroundCollisions();
-	
-	void UpdateCamera();
+    void Draw(Render* render);
 
-	bool CheckCollision(SDL_Rect tileRect, SDL_Rect playerRect);
-	void PrintData();
+    void SetTexture(SDL_Texture *tex);
 
-	bool godMode = false;
+    SDL_Rect GetBounds();
 
-private:
-	// Physics variables
+    void OnCollision(Collider* collider) override;
 
-	bool onGround;
-
-	bool collision;
-
-	uint scale;
-
-	// Idle Animation
-	Animation playerIdle;
-
-	// Running Animation
-	Animation playerRunning;
-
-	// Jumping Animation
-	Animation playerJumping;
-
-	// Falling Animation
-	Animation playerFalling;
-
-	// Death Animation
-	Animation playerDeath;
-
+    //Movement functions
+    void Run(bool isLeft);
+    void Jump();
+    void SmallJump();
 public:
-	int score;
-	int lifes;
+    SDL_Texture* texture;
+    // TODO: Define all animation properties
+    Animation idleAnim;
+    Animation runningAnim;
+    Animation jumpingAnim;
+    Animation hitAnim;
+    Animation deadAnim;
+    Animation fallingAnim;
+    Animation meleeAnim;
+    Animation shootingAnim;
+    PlayerAnim currentAnim;
 
-	bool hasCheckpoint;
-	iPoint currentCheckpoint;
-
-	int fx;
+    int width, height;
+    bool readyToJump = true;
+    bool hitObstacle = false;
+    bool dead = false;
+    bool godMode = false;
+    bool isLeft = false;
+    
+    int lifes;
+    int score;
+    iPoint lastCheckpointPos = iPoint(0, 0);
 };
 
 #endif // __PLAYER_H__

@@ -1,74 +1,82 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "Module.h"
+#include "SString.h"
 
-struct SDL_Texture;
-struct Player;
-struct EnemyFly;
-struct EnemyWalk;
-struct Coin;
-struct Heart;
-struct Checkpoint;
+class Input;
+class Render;
+class Textures;
+class EntityManager;
+class GuiControl;
+class Window;
+class Collisions;
 
-class Scene : public Module
+enum class SceneType
+{
+    LOGO,
+    TITLE,
+    GAMEPLAY,
+    ENDING
+};
+
+class Scene
 {
 public:
 
-	Scene(bool startEnabled);
+    Scene() : active(true), loaded(false), transitionRequired(false) {}
 
-	// Destructor
-	virtual ~Scene();
+    virtual bool Load(Textures* tex)
+    {
+        return true;
+    }
+    virtual bool Load(Textures* tex,EntityManager* entityManager)
+    {
+        return true;
+    }
 
-	// Called before render is available
-	bool Awake();
+    virtual bool Update(Input* input, float dt)
+    {
+        return true;
+    }
 
-	// Called before the first frame
-	bool Start();
+    virtual bool Update(Input* input, Collisions* collisions, float dt)
+    {
+        return true;
+    }
 
-	// Called before all Updates
-	bool PreUpdate();
+    virtual bool Draw(Render* render)
+    {
+        return true;
+    }
 
-	// Called each loop iteration
-	bool Update(float dt);
+    virtual bool Unload()
+    {
+        return true;
+    }
 
-	// Called before all Updates
-	bool PostUpdate();
+    void TransitionToScene(SceneType scene)
+    {
+        transitionRequired = true;
+        nextScene = scene;
+    }
 
-	// Called before quitting
-	bool CleanUp();
+    // Define multiple Gui Event methods
+    virtual bool OnGuiMouseClickEvent(GuiControl* control)
+    {
+        return true;
+    }
 
-	void DrawDebug();
+public:
 
-	void VolumeUp();
-	void VolumeDown();
+    bool active = true;
+    SString name;         // Scene name identifier?
 
-	void UpdateCheckpoint(iPoint newPosition);
+    // Possible properties
+    bool loaded = false;
+    // TODO: Transition animation properties
 
-	Player* player = nullptr;
-
-	Checkpoint* checkpoint1;
-	Checkpoint* checkpoint2;
-	Checkpoint* checkpoint3;
-
-	SDL_Texture* debugTex;
-
-	bool debugDraw = 0;
-
-private:
-
-	SDL_Texture* background1;
-	SDL_Texture* background2;
-	SDL_Texture* background3;
-	SDL_Texture* background4;
-	SDL_Rect backgroundRect;
-
-	EnemyFly* flyingEnemy1 = nullptr;
-	EnemyFly* flyingEnemy2 = nullptr;
-	EnemyWalk* walkingEnemy1 = nullptr;
-
-	Coin* coin = nullptr;
-	Heart* heart = nullptr;
+    bool transitionRequired;
+    SceneType nextScene;
 };
 
 #endif // __SCENE_H__
