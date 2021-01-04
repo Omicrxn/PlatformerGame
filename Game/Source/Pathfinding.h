@@ -64,6 +64,10 @@ private:
 
 	// Map walkability values [0..255]
 	uchar* map;
+
+public:
+	// We store the created path here
+	DynArray<iPoint> lastPath;
 };
 
 // forward declaration
