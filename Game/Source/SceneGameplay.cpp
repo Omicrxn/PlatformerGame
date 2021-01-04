@@ -37,21 +37,31 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	//AudioManager::PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
 	// Load game entities
+	// Player load
 	player = (Player*)entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetTexture(tex->Load("Assets/Textures/Entities/Player/player_sheet.png"));
 	player->position = iPoint(96, 2350);
-	//Item load
+
+	// Item load
 	coin = (Coin*)entityManager->CreateEntity(EntityType::COIN);
 	coin->SetTexture(tex->Load("Assets/Textures/Entities/Items/coin.png"));
 	coin->SetPlayer(player);
 	coin->position = iPoint(21 * 64+16, 39 * 64);
+
 	heart = (Heart*)entityManager->CreateEntity(EntityType::HEART);
 	heart->SetTexture(tex->Load("Assets/Textures/Entities/Items/heart.png"));
 	heart->SetPlayer(player);
 	heart->position = iPoint(6*64, 23*64);
-	//checkpoint load
+
+	// Checkpoint load // 37,18
 	checkpoint1 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
-	//checkpoint1 = SetTexture
+	checkpoint1->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
+	checkpoint1->position = iPoint(1255, 1678);
+
+	checkpoint2 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
+	checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
+	checkpoint2->position = iPoint(37*64-14, 18*64+14);
+
     return false;
 }
 

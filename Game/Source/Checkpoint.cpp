@@ -4,14 +4,10 @@
 Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::CHECKPOINT)
 {
 	texture = NULL;
-	coinAnimation.PushBack({ 0,0,16,16 });
-	coinAnimation.PushBack({ 16,0,16,16 });
-	coinAnimation.PushBack({ 32,0,16,16 });
-	coinAnimation.PushBack({ 48,0,16,16 });
-	coinAnimation.PushBack({ 63,0,16,16 });
+	checkpointAnimation.PushBack({ 20,7,23,57 });
 
-	coinAnimation.loop = true;
-	coinAnimation.speed = 0.09f;
+	checkpointAnimation.loop = false;
+	checkpointAnimation.speed = 0.00f;
 
 	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
 	position = iPoint(0, 0);
@@ -37,10 +33,11 @@ void Checkpoint::Draw(Render* render)
 {
 	// TODO: Calculate the corresponding rectangle depending on the
 	// animation state and animation frame
-	SDL_Rect rec = coinAnimation.GetCurrentFrame();
+	SDL_Rect rec = checkpointAnimation.GetCurrentFrame();
 
+	//render->scale = 1;
 	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
-
+	//render->scale = 1;
 }
 
 void Checkpoint::SetPlayer(Player* player)

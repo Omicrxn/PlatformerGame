@@ -34,7 +34,7 @@ public:
 
     SDL_Texture* texture;
 
-    Animation coinAnimation;
+    Animation checkpointAnimation;
 
     int fx;
 

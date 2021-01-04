@@ -27,15 +27,19 @@ public:
 private:
 
     Map* map;
+
     Player* player;
+
     Coin* coin;
-    Checkpoint* checkpoint1;
     Heart* heart;
+    Checkpoint* checkpoint1;
+    Checkpoint* checkpoint2;
+
     SDL_Texture* playerTexture;
     SDL_Rect camera;
     iPoint tempPlayerPosition;
 
-    //background textures
+    // Background textures
     SDL_Texture* background1;
     SDL_Texture* background2;
     SDL_Texture* background3;
