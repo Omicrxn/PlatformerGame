@@ -169,24 +169,71 @@ int PathNode::CalculateF(const iPoint& destination)
 DynArray<iPoint>* PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
+	if (IsWalkable(origin) == false || IsWalkable(destination) == false)
+		return NULL;
 
 	// L12b: TODO 2: Create two lists: open, close
 	// Add the origin tile to open
 	// Iterate while we have tile in the open list
+	PathList open;
+	PathList close;
+	open.list.Add(PathNode(0, origin.DistanceTo(destination), origin, NULL));
 
-	// L12b: TODO 3: Move the lowest score cell from open list to the closed list
-	
-	// L12b: TODO 4: If we just added the destination, we are done!
-	// Backtrack to create the final path
-	// Use the Pathnode::parent and Flip() the path when you are finish
+	while (open.list.Count() != 0)
+	{
+		// L12b: TODO 3: Move the lowest score cell from open list to the closed list
+		close.list.Add(open.GetNodeLowestScore()->data);
+		open.list.Del(open.GetNodeLowestScore());
 
-	// L12b: TODO 5: Fill a list of all adjancent nodes
+		// L12b: TODO 4: If we just added the destination, we are done!
+		// Backtrack to create the final path
+		// Use the Pathnode::parent and Flip() the path when you are finish
+		if (close.list.end->data.pos == destination)
+		{
+			PathNode node = close.list.end->data;
+			lastPath.PushBack(node.pos);
+			do
+			{
+				node = close.Find(node.parent->pos)->data;
+				lastPath.PushBack(node.pos);
+			} while (node.parent != nullptr);
+			lastPath.Flip();
+			return 0;
+		}
 
-	// L12b: TODO 6: Iterate adjancent nodes:
-	// ignore nodes in the closed list
-	// If it is NOT found, calculate its F and add it to the open list
-	// If it is already in the open list, check if it is a better path (compare G)
-	// If it is a better path, Update the parent
+		// L12b: TODO 5: Fill a list of all adjancent nodes
+		PathList adjNodes;
+		close.list.end->data.FindWalkableAdjacents(instance, adjNodes);
+
+		// L12b: TODO 6: Iterate adjancent nodes:
+		// ignore nodes in the closed list
+		// If it is NOT found, calculate its F and add it to the open list
+		// If it is already in the open list, check if it is a better path (compare G)
+		// If it is a better path, Update the parent
+		ListItem<PathNode>* node;
+		for (node = adjNodes.list.start; node != NULL; node = node->next)
+		{
+			/*PathNode current = adjacentNodes.list.At(adjacentNodes.list.Count() - 1 - i)->data;*/
+			if (close.Find(node->data.pos) != NULL)
+			{
+				continue;
+			}
+			else if (open.Find(node->data.pos) != NULL)
+			{
+				PathNode tmp = open.Find(node->data.pos)->data;
+				if (node->data.g < tmp.g)
+				{
+					tmp.parent = node->data.parent;
+				}
+			}
+			else
+			{
+				node->data.CalculateF(destination);
+				open.list.Add(node->data);
+			}
+		}
+		adjNodes.list.Clear();
+	}
 
 	return NULL;
 }
