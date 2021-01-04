@@ -5,7 +5,6 @@
 
 Enemy::Enemy(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::ENEMY)
 {
-    path = PathFinding::GetInstance()->CreatePath(iPoint(15, 16), iPoint(1, 36));
 	pathfinding = PathFinding::GetInstance();
 
     //movingAnim.PushBack({});
@@ -51,6 +50,9 @@ bool Enemy::Update(float dt)
 		counter = 0.0f;
 		UpdatePath(map);
 		Move(map);
+		
+
+
 	}
 	counter += dt;
 
@@ -65,10 +67,10 @@ bool Enemy::Update(float dt)
 
 void Enemy::Move(Map* map)
 {
-	if (path->Count() > 0)
+	if (path.Count() > 0)
 	{
 		iPoint nextTile;
-		path->Pop(nextTile);
+		path.Pop(nextTile);
 
 		iPoint mapPos = map->WorldToMap(position.x, position.y);
 		if (mapPos.x < nextTile.x)
@@ -90,20 +92,18 @@ void Enemy::Move(Map* map)
 void Enemy::UpdatePath(Map* map)
 {
 	origin = map->WorldToMap(position.x, position.y);
-	goal = map->WorldToMap(player->position.x, player->position.y);
+	goal = map->WorldToMap(player->GetBounds().x, player->GetBounds().y);
 
-	if (abs(origin.x - goal.x) < 50 && abs(origin.y - goal.y) < 50)
-	{
+
 		pathfinding->lastPath.Clear();
-		if (pathfinding->CreatePath(origin, goal) != NULL)
+		if (pathfinding->CreatePath(origin, goal) != -1)
 		{
 			for (int i = 0; i < pathfinding->lastPath.Count(); i++)
 			{
-				path->PushBack(*pathfinding->lastPath.At(i));
+				path.PushBack(*pathfinding->lastPath.At(i));
 			}
-			path->Flip();
+			path.Flip();
 		}
-	}
 }
 
 void Enemy::OnCollision(Collider* collision)

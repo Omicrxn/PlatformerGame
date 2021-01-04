@@ -7,7 +7,7 @@
 #include "DynArray.h"
 #include "List.h"
 
-#define INVALID_WALK_CODE 86
+#define INVALID_WALK_CODE 255
 
 // --------------------------------------------------
 // Recommended reading:
@@ -34,7 +34,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	DynArray<iPoint>* CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;

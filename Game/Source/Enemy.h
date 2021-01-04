@@ -44,7 +44,7 @@ public:
     bool dead;
 
     // Variables to manage the enemy path
-    DynArray<iPoint>* path;
+    DynArray<iPoint> path;
     iPoint origin;
     iPoint goal;
     float counter;

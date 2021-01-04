@@ -166,11 +166,11 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-DynArray<iPoint>* PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
 	if (IsWalkable(origin) == false || IsWalkable(destination) == false)
-		return NULL;
+		return -1;
 
 	// L12b: TODO 2: Create two lists: open, close
 	// Add the origin tile to open
@@ -235,6 +235,6 @@ DynArray<iPoint>* PathFinding::CreatePath(const iPoint& origin, const iPoint& de
 		adjNodes.list.Clear();
 	}
 
-	return NULL;
+	return -1;
 }
 
