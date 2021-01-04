@@ -35,14 +35,18 @@ public:
 	bool UpdateAll(float dt, bool doLogic);
 
 	void OnCollision(Collider* c1, Collider* c2);
+
 public:
 
 	List<Entity*> entities;
 
 	float accumulatedTime = 0.0f;
 	float updateMsCycle = 0.0f;
+
 	bool doLogic = false;
+
 private:
+
 	Collisions* collisions;
 	Render* render;
 	AudioManager* audio;

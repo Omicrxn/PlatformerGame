@@ -17,6 +17,7 @@ EntityManager::EntityManager(Render* render, Collisions* collisions, AudioManage
 	name.Create("entitymanager");
 	this->collisions = collisions;
 	this->render = render;
+	this->audio = audio;
 }
 
 // Destructor
