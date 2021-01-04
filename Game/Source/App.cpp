@@ -8,6 +8,7 @@
 #include "EntityManager.h"
 #include "SceneManager.h"
 #include "Collisions.h"
+#include "Particles.h"
 
 
 #include "Defs.h"
@@ -31,6 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(render);
 	audio = new AudioManager();
 	collisions = new Collisions(render);
+	particles = new Particles(tex,render,collisions);
 	entityManager = new EntityManager(render, collisions);
 	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions);
 
@@ -41,6 +43,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(collisions);
+	AddModule(particles);
 
 	AddModule(sceneManager);
 	AddModule(entityManager);

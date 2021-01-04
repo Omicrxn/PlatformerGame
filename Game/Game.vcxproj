@@ -105,6 +105,7 @@
     <ClCompile Include="Source\Audio.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
+    <ClCompile Include="Source\Particles.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Player.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Source\Coin.h" />
     <ClInclude Include="Source\Heart.h" />
     <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\Particles.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Player.h" />

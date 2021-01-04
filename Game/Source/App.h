@@ -21,6 +21,7 @@ class AudioManager;
 class EntityManager;
 class SceneManager;
 class Collisions;
+class Particles;
 
 class App
 {
@@ -92,6 +93,7 @@ public:
 	EntityManager* entityManager;
 	SceneManager* sceneManager;
 	Collisions* collisions;
+	Particles* particles;
 private:
 
 	int argc;
