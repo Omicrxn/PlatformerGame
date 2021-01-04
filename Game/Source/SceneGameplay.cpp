@@ -56,11 +56,12 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	// Checkpoint load // 37,18
 	checkpoint1 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
 	checkpoint1->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
+	checkpoint1->SetPlayer(player);
 	checkpoint1->position = iPoint(1255, 1678);
 
-	checkpoint2 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
-	checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
-	checkpoint2->position = iPoint(37*64-14, 18*64+14);
+	//checkpoint2 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
+	//checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
+	//checkpoint2->position = iPoint(37*64-14, 18*64+14);
 
     return false;
 }

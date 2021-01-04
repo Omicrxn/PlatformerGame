@@ -43,6 +43,7 @@ public:
 	iPoint ScreenToWorld(int x, int y) const;
 	void CameraUpdate(iPoint position);
 	// Drawing
+	bool DrawTextureMap(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f,bool isLeft = false, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
 	bool DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f,bool isLeft = false, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled = true) const;
 	bool DrawLine(int x1, int y1, int x2, int y2, SDL_Color color) const;

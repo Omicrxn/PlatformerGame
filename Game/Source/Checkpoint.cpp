@@ -19,7 +19,7 @@ Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManage
 bool Checkpoint::Update(float dt)
 {
 	bool ret = true;
-
+	position = iPoint(1255, 1678-110);
 	// Update collider position
 	if (collider != nullptr)
 	{
@@ -35,9 +35,9 @@ void Checkpoint::Draw(Render* render)
 	// animation state and animation frame
 	SDL_Rect rec = checkpointAnimation.GetCurrentFrame();
 
-	//render->scale = 1;
+	render->scale = 3;
 	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
-	//render->scale = 1;
+	render->scale = 1;
 }
 
 void Checkpoint::SetPlayer(Player* player)

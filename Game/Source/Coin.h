@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Collisions.h"
 #include "EntityManager.h"
+#include "Audio.h"
 
 #include "Point.h"
 #include "SString.h"

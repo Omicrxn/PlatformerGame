@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="512" tileheight="512" infinite="0" backgroundcolor="#ffffff" nextlayerid="14" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="512" tileheight="512" infinite="0" backgroundcolor="#ffffff" nextlayerid="15" nextobjectid="1">
  <tileset firstgid="1" name="Tileset" tilewidth="512" tileheight="512" tilecount="49" columns="7">
   <image source="Mossy - TileSet.png" trans="ff00ff" width="3584" height="3584"/>
  </tileset>
@@ -8142,6 +8142,7 @@
  </layer>
  <layer id="6" name="collisions" width="45" height="45" visible="0" opacity="0.5">
   <properties>
+   <property name="Navigation" type="int" value="1"/>
    <property name="drawable" value="0"/>
   </properties>
   <data>

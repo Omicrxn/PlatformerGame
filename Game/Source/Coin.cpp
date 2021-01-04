@@ -38,8 +38,10 @@ void Coin::Draw(Render* render)
 	// TODO: Calculate the corresponding rectangle depending on the
 	// animation state and animation frame
 	SDL_Rect rec = coinAnimation.GetCurrentFrame();
-
+	render->scale = 2;
 	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
+	render->scale = 1;
+
 }
 
 void Coin::SetPlayer(Player* player)
