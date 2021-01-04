@@ -1,7 +1,7 @@
 #include "Heart.h"
 #include "Player.h"
 
-Heart::Heart(Collisions* collisions, EntityManager* entityManager) : Entity(EntityType::HEART)
+Heart::Heart(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::HEART)
 {
 	heartAnimation.PushBack({ 0,0,16,16 });
 	heartAnimation.PushBack({ 16,0,16,16 });
@@ -17,11 +17,8 @@ Heart::Heart(Collisions* collisions, EntityManager* entityManager) : Entity(Enti
 
 	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
 
-
 	position = iPoint(0, 0);
 	velocity = { 0,0 };
-
-
 
 	collider = collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_HEART, (Module*)entityManager);
 }
@@ -37,6 +34,7 @@ bool Heart::Update(float dt)
 	}
 	return ret;
 }
+
 void Heart::Draw(Render* render)
 {
 	// TODO: Calculate the corresponding rectangle depending on the
@@ -44,16 +42,18 @@ void Heart::Draw(Render* render)
 	SDL_Rect rec = heartAnimation.GetCurrentFrame();
 
 	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
-
 }
+
 void Heart::SetPlayer(Player* player)
 {
 	this->player = player;
 }
+
 void Heart::SetTexture(SDL_Texture* tex)
 {
 	texture = tex;
 }
+
 void Heart::OnCollision(Collider* collider)
 {
 	//app->audio->PlayFx(fx);

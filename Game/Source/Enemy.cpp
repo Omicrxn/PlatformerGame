@@ -1,5 +1,4 @@
 #include "Enemy.h"
-
 #include "Pathfinding.h"
 
 #define DEFAULT_PATH_LENGTH 50

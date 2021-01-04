@@ -26,7 +26,7 @@ class Player: public Entity
 {
 public:
 
-    Player(Collisions* collisions,EntityManager* entityManager);
+    Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager);
 
     bool Update(Input* input, float dt);
 
@@ -38,13 +38,16 @@ public:
 
     void OnCollision(Collider* collider) override;
 
-    //Movement functions
+    // Movement functions
     void Run(bool isLeft);
     void Jump();
     void SmallJump();
+
 public:
+
     SDL_Texture* texture;
-    // TODO: Define all animation properties
+
+    // Define all animation properties
     Animation idleAnim;
     Animation runningAnim;
     Animation jumpingAnim;
@@ -56,6 +59,7 @@ public:
     PlayerAnim currentAnim;
 
     int width, height;
+
     bool readyToJump = true;
     bool hitObstacle = false;
     bool dead = false;

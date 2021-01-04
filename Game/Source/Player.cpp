@@ -1,55 +1,62 @@
 #include "Player.h"
 
-Player::Player(Collisions* collisions, EntityManager* entityManager) : Entity(EntityType::PLAYER)
+Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::PLAYER)
 {
     texture = NULL;
 
     velocity = { 0,0 };
 
     // Define Player animations
-    //Idle Animation
+    // Idle Animation
     for (int i = 0; i < 231 * 6; i += 231)
     {
         idleAnim.PushBack({ i,0,231,190 });
     }
     idleAnim.speed = 0.1f;
-    //Running Animation
+
+    // Running Animation
     for (int i = 0; i < 231 * 8; i += 231)
     {
         runningAnim.PushBack({ i,191,231,190 });
     }
     runningAnim.speed = 0.18f;
-    //Jumping Animation
+
+    // Jumping Animation
     for (int i = 0; i < 231 * 2; i += 231)
     {
         jumpingAnim.PushBack({ i,380,231,190 });
     }
     jumpingAnim.speed = 0.18f;
-    //Falling Animation
+
+    // Falling Animation
     for (int i = 0; i < 231 * 2; i += 231)
     {
         fallingAnim.PushBack({ i,570,231,190 });
     }
     fallingAnim.speed = 0.18f;
-    //Hit Animation
+
+    // Hit Animation
     for (int i = 0; i < 231 * 4; i += 231)
     {
         hitAnim.PushBack({ i,760,231,190 });
     }
     hitAnim.speed = 0.08f;
-    //Dead Animation
+
+    // Dead Animation
     for (int i = 0; i < 231 * 7; i += 231)
     {
         deadAnim.PushBack({ i,950,231,190 });
     }
     deadAnim.speed = 0.08f;
-    //Melee Animation
+
+    // Melee Animation
     for (int i = 0; i < 231 * 8; i += 231)
     {
         meleeAnim.PushBack({ i,1140,231,190 });
     }
     meleeAnim.speed = 0.08f;
-    //Shooting Animation
+
+    // Shooting Animation
     for (int i = 0; i < 231 * 8; i += 231)
     {
         shootingAnim.PushBack({ i,1330,231,190 });
@@ -66,8 +73,8 @@ Player::Player(Collisions* collisions, EntityManager* entityManager) : Entity(En
 
 bool Player::Update(Input* input, float dt)
 {
-
     #define GRAVITY 600.0f
+
     // Calculate movement
     if (!dead && !godMode)
     {
@@ -75,6 +82,7 @@ bool Player::Update(Input* input, float dt)
         position.y = position.y + velocity.y * dt + (GRAVITY * dt * dt * 0.5);
         velocity.y = velocity.y + GRAVITY * dt;
     }
+
     if (readyToJump && !dead)
     {
         currentAnim = PlayerAnim::IDLE;
@@ -85,11 +93,7 @@ bool Player::Update(Input* input, float dt)
         currentAnim = PlayerAnim::FALL;
     }
 
-   
-
-
-
-    if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) ;
+    if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT);
     if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) Run(true);
     if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) Run(false);
     if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) Jump();
@@ -98,6 +102,7 @@ bool Player::Update(Input* input, float dt)
     {
         currentAnim = PlayerAnim::SHOOTING;
     }
+
     // Update collider position
     if (collider != nullptr)
     {
@@ -131,7 +136,6 @@ void Player::Draw(Render* render)
         break;
     }
     render->DrawTexture(texture, position.x, position.y+15, &rec, 1.0f, isLeft);
-   
 }
 
 void Player::SetTexture(SDL_Texture *tex)
@@ -146,7 +150,6 @@ SDL_Rect Player::GetBounds()
 
 void Player::Run(bool isLeft)
 {
-
     this->isLeft = isLeft;
     if (godMode)
     {
@@ -158,6 +161,7 @@ void Player::Run(bool isLeft)
         isLeft ? velocity.x = -200.0f : velocity.x = 250.0f;
     }
 }
+
 void Player::Jump()
 {
     if (godMode)

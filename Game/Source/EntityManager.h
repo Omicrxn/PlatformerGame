@@ -7,12 +7,13 @@
 #include "List.h"
 class Collisions;
 class Render;
+class AudioManager;
 
 class EntityManager : public Module
 {
 public:
 
-	EntityManager(Render* render, Collisions* collisions);
+	EntityManager(Render* render, Collisions* collisions, AudioManager* audio);
 
 	// Destructor
 	virtual ~EntityManager();
@@ -44,6 +45,7 @@ public:
 private:
 	Collisions* collisions;
 	Render* render;
+	AudioManager* audio;
 };
 
 #endif // __ENTITYMANAGER_H__

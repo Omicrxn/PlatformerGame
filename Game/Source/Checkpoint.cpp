@@ -1,8 +1,7 @@
 #include "Checkpoint.h"
 #include "Player.h"
 
-
-Checkpoint::Checkpoint(Collisions* collisions, EntityManager* entityManager) : Entity(EntityType::CHECKPOINT)
+Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::CHECKPOINT)
 {
 	texture = NULL;
 	coinAnimation.PushBack({ 0,0,16,16 });
@@ -33,6 +32,7 @@ bool Checkpoint::Update(float dt)
 
 	return ret;
 }
+
 void Checkpoint::Draw(Render* render)
 {
 	// TODO: Calculate the corresponding rectangle depending on the
@@ -42,14 +42,17 @@ void Checkpoint::Draw(Render* render)
 	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
 
 }
+
 void Checkpoint::SetPlayer(Player* player)
 {
 	this->player = player;
 }
+
 void Checkpoint::SetTexture(SDL_Texture* tex)
 {
 	texture = tex;
 }
+
 void Checkpoint::OnCollision(Collider* collider)
 {
 	//app->audio->PlayFx(fx);

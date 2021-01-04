@@ -4,8 +4,10 @@
 #include "Point.h"
 #include "SString.h"
 #include "Animation.h"
+
 class Collider;
 class Render;
+
 enum class EntityType
 {
     PLAYER,
@@ -27,6 +29,7 @@ public:
     {
         return true;
     }
+
     virtual void Draw(Render* render) {};
 
     const Collider* GetCollider() const { return collider; }
@@ -36,15 +39,20 @@ public:
 public:
 
     EntityType type;
+
     bool active = true;
+
     //SString name;         // Entity name identifier?
     //uint32 id;            // Entity identifier?
+
     Collider* collider = nullptr;
+
     // Possible properties, it depends on how generic we
     // want our Entity class, maybe it's not renderable...
     iPoint position;        // Use a float instead?
     fPoint velocity;
     bool renderable = false;
+
    // SDL_Texture* texture;
 };
 

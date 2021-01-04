@@ -10,7 +10,6 @@
 #include "Collisions.h"
 #include "Particles.h"
 
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -33,7 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new AudioManager();
 	collisions = new Collisions(render);
 	particles = new Particles(tex,render,collisions);
-	entityManager = new EntityManager(render, collisions);
+	entityManager = new EntityManager(render, collisions, audio);
 	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions);
 
 	// Ordered for awake / Start / Update

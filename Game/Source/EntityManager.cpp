@@ -12,7 +12,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-EntityManager::EntityManager(Render* render,Collisions* collisions) : Module()
+EntityManager::EntityManager(Render* render, Collisions* collisions, AudioManager* audio) : Module()
 {
 	name.Create("entitymanager");
 	this->collisions = collisions;
@@ -47,11 +47,11 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	switch (type)
 	{
 		// L13: Create the corresponding type entity
-		case EntityType::PLAYER: ret = new Player(collisions,this);  break;
-		//case EntityType::ENEMY: ret = new Enemy();  break;
-		case EntityType::COIN: ret = new Coin(collisions,this);break;
-		case EntityType::HEART: ret = new Heart(collisions,this);break;
-		case EntityType::CHECKPOINT: ret = new Checkpoint(collisions,this);break;
+		case EntityType::PLAYER: ret = new Player(collisions,audio,this); break;
+		//case EntityType::ENEMY: ret = new Enemy(); break;
+		case EntityType::COIN: ret = new Coin(collisions,audio,this); break;
+		case EntityType::HEART: ret = new Heart(collisions,audio,this); break;
+		case EntityType::CHECKPOINT: ret = new Checkpoint(collisions,audio,this); break;
 		default: break;
 	}
 
@@ -91,6 +91,7 @@ bool EntityManager::UpdateAll(float dt, bool doLogic)
 
 	return true;
 }
+
 void EntityManager::DestroyEntity(Entity* entity)
 {
 	ListItem<Entity*>* item = entities.At(entities.Find(entity));
@@ -100,6 +101,7 @@ void EntityManager::DestroyEntity(Entity* entity)
 
 	entities.Del(item);
 }
+
 void EntityManager::OnCollision(Collider* c1, Collider* c2)
 {
 	for (ListItem<Entity*>* i = entities.start; i != NULL; i = i->next)
