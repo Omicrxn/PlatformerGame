@@ -1,5 +1,6 @@
-#ifndef __ENEMY_H__
-#define __ENEMY_H__
+#pragma once
+#ifndef __ENEMYWALK_H__
+#define __ENEMYWALK_H__
 
 #include "Entity.h"
 #include "Render.h"
@@ -15,12 +16,12 @@
 
 class PathFinding;
 
-class Enemy : public Entity
+class EnemyWalk : public Entity
 {
 public:
 
-    Enemy(Collisions* collisions, AudioManager* audio, EntityManager* entityManager);
-    virtual ~Enemy();
+    EnemyWalk(Collisions* collisions, AudioManager* audio, EntityManager* entityManager);
+    virtual ~EnemyWalk();
 
     bool Update(float dt) override;
 
@@ -38,10 +39,10 @@ public:
 
     SDL_Texture* texture;
     Animation movingAnim;
-    Animation* currentAnim;
     SDL_Rect rectAnim;
 
     bool dead;
+    bool isLeft;
 
     // Variables to manage the enemy path
     DynArray<iPoint> path;
@@ -58,4 +59,4 @@ public:
     PathFinding* pathfinding;
 };
 
-#endif // __ENEMY_H__
+#endif // __ENEMYWALK_H__

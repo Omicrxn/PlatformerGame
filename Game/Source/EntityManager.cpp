@@ -2,7 +2,8 @@
 #include "Collisions.h"
 
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyFly.h"
+#include "EnemyWalk.h"
 #include "Checkpoint.h"
 #include "Coin.h"
 #include "Heart.h"
@@ -49,7 +50,8 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	{
 		// L13: Create the corresponding type entity
 		case EntityType::PLAYER: ret = new Player(collisions,audio,this); break;
-		case EntityType::ENEMY: ret = new Enemy(collisions,audio,this); break;
+		case EntityType::ENEMYFLY: ret = new EnemyFly(collisions,audio,this); break;
+		case EntityType::ENEMYWALK: ret = new EnemyWalk(collisions, audio, this); break;
 		case EntityType::COIN: ret = new Coin(collisions,audio,this); break;
 		case EntityType::HEART: ret = new Heart(collisions,audio,this); break;
 		case EntityType::CHECKPOINT: ret = new Checkpoint(collisions,audio,this); break;

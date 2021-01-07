@@ -41,7 +41,6 @@ void Coin::Draw(Render* render)
 	render->scale = 2;
 	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
 	render->scale = 1;
-
 }
 
 void Coin::SetPlayer(Player* player)

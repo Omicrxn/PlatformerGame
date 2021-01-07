@@ -56,13 +56,14 @@ bool SceneManager::Start()
 	//current = new SceneLogo();
 	current = new SceneTitle(win);
 
-	if (current->name == "Gameplay") {
+	if (current->name == "Gameplay")
+	{
 		current->Load(tex, entityManager);
 	}
-	else {
+	else
+	{
 		current->Load(tex);	// Load next screen
 	}
-	
 
 	next = nullptr;
 
@@ -113,7 +114,8 @@ bool SceneManager::Update(float dt)
 		{
 			current->Update(input, collisions, dt);
 		}
-		else {
+		else
+		{
 			current->Update(input, dt);
 		}
 	}
@@ -130,10 +132,12 @@ bool SceneManager::Update(float dt)
 				transitionAlpha = 1.0f;
 
 				current->Unload();	// Unload current screen
-				if (current->nextScene == SceneType::GAMEPLAY) {
+				if (current->nextScene == SceneType::GAMEPLAY)
+				{
 					next->Load(tex, entityManager);
 				}
-				else {
+				else
+				{
 					next->Load(tex);	// Load next screen
 				}
 				

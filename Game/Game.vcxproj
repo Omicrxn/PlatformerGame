@@ -91,7 +91,8 @@
   <ItemGroup>
     <ClCompile Include="Source\Checkpoint.cpp" />
     <ClCompile Include="Source\Collisions.cpp" />
-    <ClCompile Include="Source\Enemy.cpp" />
+    <ClCompile Include="Source\EnemyFly.cpp" />
+    <ClCompile Include="Source\EnemyWalk.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
@@ -121,7 +122,8 @@
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Checkpoint.h" />
     <ClInclude Include="Source\Collisions.h" />
-    <ClInclude Include="Source\Enemy.h" />
+    <ClInclude Include="Source\EnemyFly.h" />
+    <ClInclude Include="Source\EnemyWalk.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Font.h" />

@@ -8,7 +8,8 @@
 #include "Checkpoint.h"
 #include "Coin.h"
 #include "Heart.h"
-#include "Enemy.h"
+#include "EnemyFly.h"
+#include "EnemyWalk.h"
 
 class SceneGameplay : public Scene
 {
@@ -30,7 +31,8 @@ private:
     Map* map;
 
     Player* player;
-    Enemy* enemy;
+    EnemyFly* enemyFly1;
+    EnemyWalk* enemyWalk1;
 
     Coin* coin;
     Heart* heart;

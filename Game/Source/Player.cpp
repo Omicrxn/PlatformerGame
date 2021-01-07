@@ -108,6 +108,7 @@ bool Player::Update(Input* input, float dt)
     {
         collider->SetPos(position.x + 86, position.y + 43);
     }
+
     return true;
 }
 
@@ -118,7 +119,6 @@ void Player::Draw(Render* render)
     {
     case PlayerAnim::IDLE:
         rec = idleAnim.GetCurrentFrame();
-
         break;
     case PlayerAnim::WALK:
         rec = runningAnim.GetCurrentFrame();
@@ -145,7 +145,7 @@ void Player::SetTexture(SDL_Texture *tex)
 
 SDL_Rect Player::GetBounds()
 {
-    return { position.x + 86,position.y + 43, width, height };
+    return { position.x + 86, position.y + 43, width, height };
 }
 
 void Player::Run(bool isLeft)
@@ -154,7 +154,8 @@ void Player::Run(bool isLeft)
     if (godMode)
     {
         isLeft ? position.x -= 3 : position.x += 3;
-    }else
+    }
+    else
     {
         if(readyToJump)currentAnim = PlayerAnim::WALK;
         
@@ -173,7 +174,6 @@ void Player::Jump()
         currentAnim = PlayerAnim::JUMP;
         if (readyToJump)
         {
-            
             velocity.y = -400.0f;
             readyToJump = false;
         }

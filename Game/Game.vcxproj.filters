@@ -60,9 +60,6 @@
     <ClCompile Include="Source\Pathfinding.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Map.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -89,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="Source\Particles.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyFly.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyWalk.cpp">
+      <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +125,6 @@
     </ClInclude>
     <ClInclude Include="Source\PQueue.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enemy.h">
-      <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Entity.h">
       <Filter>Entities</Filter>
@@ -218,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="Source\Particles.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyFly.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyWalk.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

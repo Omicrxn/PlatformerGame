@@ -52,7 +52,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	heart = (Heart*)entityManager->CreateEntity(EntityType::HEART);
 	heart->SetTexture(tex->Load("Assets/Textures/Entities/Items/heart.png"));
 	heart->SetPlayer(player);
-	heart->position = iPoint(6*64, 23*64);
+	heart->position = iPoint(6 * 64, 23 * 64);
 
 	// Checkpoint load // 37,18
 	checkpoint1 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
@@ -64,12 +64,19 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	//checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
 	//checkpoint2->position = iPoint(37*64-14, 18*64+14);
 
-	// Enemy load
-	enemy = (Enemy*)entityManager->CreateEntity(EntityType::ENEMY);
-	enemy->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/Slime/Individual Sprites/slime-attack-0.png"));
-	enemy->SetPlayer(player);
-	enemy->SetMap(map);
-	enemy->position = iPoint(15*64,16*64);
+	// Flying enemy load
+	enemyFly1 = (EnemyFly*)entityManager->CreateEntity(EntityType::ENEMYFLY);
+	enemyFly1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/enemy_fly.png"));
+	enemyFly1->SetPlayer(player);
+	enemyFly1->SetMap(map);
+	enemyFly1->position = iPoint(15 * 64, 16 * 64);
+
+	// Walking enemy load
+	enemyWalk1 = (EnemyWalk*)entityManager->CreateEntity(EntityType::ENEMYWALK);
+	enemyWalk1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/slime.png"));
+	enemyWalk1->SetPlayer(player);
+	enemyWalk1->SetMap(map);
+	enemyWalk1->position = iPoint(20 * 64, 4 * 64);
 
     return false;
 }
@@ -99,6 +106,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 	{
 		TransitionToScene(SceneType::GAMEPLAY);
 	}
+
 	// L02: DONE 3: Request Load / Save when pressing L/S
 	//if (input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) app->LoadGameRequest();
 	//if (input->GetKey(SDL_SCANCODE_S) == KEY_DOWN) app->SaveGameRequest();
@@ -108,7 +116,6 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 
 bool SceneGameplay::Draw(Render* render)
 {
-
 	render->CameraUpdate(player->position);
 	DrawBackground(render);
 	//Draw map
@@ -138,11 +145,20 @@ void SceneGameplay::CollisionHandler()
 				player->position = tempPlayerPosition;
 				player->velocity.y = 0.0f;
 				player->readyToJump = true;
-				break;
+				//break;
+			}
+
+			if ((map->data.layers[4]->Get(x, y) >= 86) &&
+				CheckCollision(map->GetTilemapRec(x, y), enemyWalk1->collider->rect))
+			{
+				enemyWalk1->velocity.y = 0.0f;
+				// break; // Si lees esto, pregunta de Bosco --> Creamos una funcion para cada enemigo?
+				// O comprobamos cada la colision de cada tile con cada entity? 
 			}
 		}
 	}
 }
+
 void SceneGameplay::DrawBackground(Render* render) {
 	render->scale = 1.5;
 	render->DrawTexture(background1, 0, 150, &backgroundRect, 0.2f);

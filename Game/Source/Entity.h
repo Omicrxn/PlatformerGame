@@ -11,7 +11,8 @@ class Render;
 enum class EntityType
 {
     PLAYER,
-    ENEMY,
+    ENEMYFLY,
+    ENEMYWALK,
     COIN,
     HEART,
     MAP,
