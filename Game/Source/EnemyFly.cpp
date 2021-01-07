@@ -106,7 +106,7 @@ void EnemyFly::OnCollision(Collider* collision)
 	active = false;
 }
 
-void EnemyFly::Draw(Render* render, Map* map)
+void EnemyFly::Draw(Render* render)
 {
 	rectAnim = movingAnim.GetCurrentFrame();
 	if (velocity.x > 0)
