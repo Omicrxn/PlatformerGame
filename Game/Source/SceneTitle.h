@@ -26,6 +26,9 @@ public:
 private:
 
     GuiButton* btnStart;
+    GuiButton* btnContinue;
+    GuiButton* btnSettings;
+    GuiButton* btnCredits;
     GuiButton* btnExit;
     SDL_Texture* backgroundTexture;
     SDL_Rect backgroundRect;

@@ -76,7 +76,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	enemyWalk1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/slime.png"));
 	enemyWalk1->SetPlayer(player);
 	enemyWalk1->SetMap(map);
-	enemyWalk1->position = iPoint(20 * 64, 4 * 64);
+	enemyWalk1->position = iPoint(20 * 64, -10 * 64);
 
     return false;
 }
