@@ -31,7 +31,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(render);
 	audio = new AudioManager();
 	collisions = new Collisions(render);
-	particles = new Particles(tex,render,collisions);
+	particles = new Particles(tex, render, collisions);
 	entityManager = new EntityManager(render, collisions, audio);
 	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions);
 

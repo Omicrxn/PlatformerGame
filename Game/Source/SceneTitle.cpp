@@ -9,8 +9,7 @@
 
 #include "SDL/include/SDL.h"
 
-
-SceneTitle::SceneTitle(Window* win)
+SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager)
 {
     // GUI: Initialize required controls for the screen
     /*btnStart = new GuiButton(1, { (int)win->GetWindowWidth()/2 - 500/2, (int)win->GetWindowHeight() / 2+20, 500, 80 }, "START");
@@ -39,6 +38,11 @@ SceneTitle::SceneTitle(Window* win)
 
     //background rectangle definition
     backgroundRect = { 0,0,1280,720 };
+
+    creditsRect = { 0,0,1280,720 };
+
+    this->sceneManager = sceneManager;
+    currentSelection = SelectedOption::NONE;
 }
 
 SceneTitle::~SceneTitle()
@@ -48,6 +52,8 @@ SceneTitle::~SceneTitle()
 bool SceneTitle::Load(Textures* tex)
 {
     backgroundTexture = tex->Load("Assets/Textures/Scenes/title_screen.png");
+    creditsTexture = tex->Load("Assets/Textures/Scenes/credits_screen.png");
+
     return false;
 }
 
@@ -55,24 +61,36 @@ bool SceneTitle::Update(Input* input, float dt)
 {
     //if (input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) TransitionToScene(SceneType::GAMEPLAY);
 
-    btnStart->Update(input, dt);
-    btnContinue->Update(input,dt);
-    btnSettings->Update(input, dt);
-    btnCredits->Update(input, dt);
-    btnExit->Update(input, dt);
+    if (currentSelection == SelectedOption::NONE)
+    {
+        btnStart->Update(input, dt);
+        btnContinue->Update(input, dt);
+        btnSettings->Update(input, dt);
+        btnCredits->Update(input, dt);
+        btnExit->Update(input, dt);
+    }
+
+    if (input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+        currentSelection = SelectedOption::NONE;
 
     return false;
 }
 
 bool SceneTitle::Draw(Render* render)
 {
-    render->DrawTexture(backgroundTexture, 0, 0, &backgroundRect);
+    if (currentSelection == SelectedOption::NONE)
+    {
+        render->DrawTexture(backgroundTexture, 0, 0, &backgroundRect);
 
-    btnStart->Draw(render);
-    btnContinue->Draw(render);
-    btnSettings->Draw(render);
-    btnCredits->Draw(render);
-    btnExit->Draw(render);
+        btnStart->Draw(render);
+        btnContinue->Draw(render);
+        btnSettings->Draw(render);
+        btnCredits->Draw(render);
+        btnExit->Draw(render);
+    }
+    else if (currentSelection == SelectedOption::CONTINUE)
+    else if (currentSelection == SelectedOption::CREDITS)
+        render->DrawTexture(creditsTexture, 0, 0, &creditsRect);
 
     return false;
 }
@@ -92,7 +110,9 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
     case GuiControlType::BUTTON:
     {
         if (control->id == 1) TransitionToScene(SceneType::GAMEPLAY);
-        else if (control->id == 2) return false; // TODO: Exit request
+        
+        else if (control->id == 4) currentSelection = SelectedOption::CREDITS;
+        else if (control->id == 5) sceneManager->menuExitCall = true; // TODO: Exit request
     }
     default: break;
     }

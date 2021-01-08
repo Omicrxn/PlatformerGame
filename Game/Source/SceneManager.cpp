@@ -54,7 +54,7 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 	//current = new SceneLogo();
-	current = new SceneTitle(win);
+	current = new SceneTitle(win, this);
 
 	if (current->name == "Gameplay")
 	{
@@ -197,7 +197,7 @@ bool SceneManager::Update(float dt)
 		switch (current->nextScene)
 		{
 			case SceneType::LOGO: next = new SceneLogo(); break;
-			case SceneType::TITLE: next = new SceneTitle(win); break;
+			case SceneType::TITLE: next = new SceneTitle(win, this); break;
 			case SceneType::GAMEPLAY: next = new SceneGameplay(); break;
 			case SceneType::ENDING: next = new SceneEnding(win); break;
 			default: break;
@@ -206,7 +206,7 @@ bool SceneManager::Update(float dt)
 		current->transitionRequired = false;
 	}
 
-	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
+	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || menuExitCall == true) return false;
 	return true;
 }
 

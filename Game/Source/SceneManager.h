@@ -39,6 +39,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// Exit call coming from the menu
+	bool menuExitCall = false;
+
 private:
 
 	Input* input;

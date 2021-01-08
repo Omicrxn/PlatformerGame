@@ -159,14 +159,12 @@ void SceneGameplay::CollisionHandler()
 	}
 }
 
-void SceneGameplay::DrawBackground(Render* render) {
+void SceneGameplay::DrawBackground(Render* render)
+{
 	render->scale = 1.5;
 	render->DrawTexture(background1, 0, 150, &backgroundRect, 0.2f);
-	
 	render->DrawTexture(background2, 0, 150, &backgroundRect, 0.4f);
-
 	render->DrawTexture(background3, 0, 150, &backgroundRect, 0.6f);
-
 	render->DrawTexture(background4, 0, 150, &backgroundRect, 0.8f);
 	render->scale = 1;
 }

@@ -4,12 +4,22 @@
 #include "Scene.h"
 
 #include "GuiButton.h"
+#include "SceneManager.h"
+
+enum class SelectedOption
+{
+    NONE,
+    CONTINUE,
+    SETTINGS,
+    CREDITS,
+    EXIT
+};
 
 class SceneTitle : public Scene
 {
 public:
 
-    SceneTitle(Window* win);
+    SceneTitle(Window* win, SceneManager* sceneManager);
     virtual ~SceneTitle();
 
     bool Load(Textures* tex);
@@ -32,6 +42,11 @@ private:
     GuiButton* btnExit;
     SDL_Texture* backgroundTexture;
     SDL_Rect backgroundRect;
+    SDL_Texture* creditsTexture;
+    SDL_Rect creditsRect;
+
+    SceneManager* sceneManager;
+    SelectedOption currentSelection;
 };
 
 #endif // __SCENETITLE_H__
