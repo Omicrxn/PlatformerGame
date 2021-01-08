@@ -66,7 +66,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 
 	// Flying enemy load
 	enemyFly1 = (EnemyFly*)entityManager->CreateEntity(EntityType::ENEMYFLY);
-	enemyFly1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/enemy_fly.png"));
+	enemyFly1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/enemy_fly.png"), tex->Load("Assets/Maps/path_debug.png"));
 	enemyFly1->SetPlayer(player);
 	enemyFly1->SetMap(map);
 	enemyFly1->position = iPoint(15 * 64, 16 * 64);
@@ -96,15 +96,19 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 	CollisionHandler();
 
 	//Debug Keys
+	if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
+	{
+		TransitionToScene(SceneType::GAMEPLAY);
+	}
 	if (input->GetKey(SDL_SCANCODE_F9) == KeyState::KEY_DOWN)
 	{
 		map->drawColliders = !map->drawColliders;
 		collisions->debug = !collisions->debug;
 		
 	}
-	if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 	{
-		TransitionToScene(SceneType::GAMEPLAY);
+		player->godMode = !player->godMode;
 	}
 
 	// L02: DONE 3: Request Load / Save when pressing L/S

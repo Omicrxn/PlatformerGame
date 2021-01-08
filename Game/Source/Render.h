@@ -49,7 +49,7 @@ public:
 	bool DrawLine(int x1, int y1, int x2, int y2, SDL_Color color) const;
 	bool DrawCircle(int x1, int y1, int redius, SDL_Color color) const;
 
-	bool DrawText(Font font, const char* text, int x, int y, int size, int spacing, SDL_Color tint);
+	bool DrawText(Font* font, const char* text, int x, int y, int size, int spacing, SDL_Color tint);
 
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);

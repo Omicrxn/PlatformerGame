@@ -64,7 +64,10 @@ void EnemyFly::Move(Map* map)
 		iPoint nextTile;
 		path.Pop(nextTile);
 
-		iPoint mapPos = map->WorldToMap(position.x, position.y);
+		/*iPoint mapPos = map->WorldToMap(position.x, position.y);*/
+		iPoint mapPos;
+		mapPos.x = position.x / (64 * 1);
+		mapPos.y = position.y / (64 * 1);
 		if (mapPos.x < nextTile.x)
 			velocity.x = 1;
 		else
@@ -86,16 +89,16 @@ void EnemyFly::UpdatePath(Map* map)
 	origin = map->WorldToMap(position.x, position.y);
 	goal = map->WorldToMap(player->GetBounds().x, player->GetBounds().y);
 
-
-		pathfinding->lastPath.Clear();
-		if (pathfinding->CreatePath(origin, goal) != -1)
+	pathfinding->lastPath.Clear();
+	if (pathfinding->CreatePath(origin, goal) != -1)
+	{
+		path.Clear();
+		for (int i = 0; i < pathfinding->lastPath.Count(); i++)
 		{
-			for (int i = 0; i < pathfinding->lastPath.Count(); i++)
-			{
-				path.PushBack(*pathfinding->lastPath.At(i));
-			}
-			path.Flip();
+			path.PushBack(*pathfinding->lastPath.At(i));
 		}
+		path.Flip();
+	}
 }
 
 void EnemyFly::OnCollision(Collider* collision)
@@ -115,22 +118,18 @@ void EnemyFly::Draw(Render* render)
 		isLeft = true;
 	render->DrawTexture(texture, position.x, position.y, &rectAnim, 1.0f, isLeft);
 
-	//// Draw path
-	///*if (app->pathfinding->debug == true)
-	//{*/
-	//	const DynArray<iPoint>* path = PathFinding::GetLastPath();
-
-	//	for (uint i = 0; i < path->Count(); ++i)
-	//	{
-	//		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-	//		app->render->DrawTexture(app->scene->debugTex, pos.x, pos.y);
-	//	}
-	///*}*/
+	// Draw path
+	for (uint i = 0; i < path.Count(); ++i)
+	{
+		iPoint pos = map->MapToWorld(path.At(i)->x, path.At(i)->y);
+		render->DrawTexture(pathDebugTexture, pos.x, pos.y, &rectAnim, 1.0f, isLeft);
+	}
 }
 
-void EnemyFly::SetTexture(SDL_Texture* tex)
+void EnemyFly::SetTexture(SDL_Texture* tex, SDL_Texture* tex2)
 {
 	texture = tex;
+	pathDebugTexture = tex2;
 }
 
 void EnemyFly::SetPlayer(Player* player)

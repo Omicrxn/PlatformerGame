@@ -6,6 +6,8 @@
 #include "GuiButton.h"
 #include "SceneManager.h"
 
+class Font;
+
 enum class SelectedOption
 {
     NONE,
@@ -42,11 +44,12 @@ private:
     GuiButton* btnExit;
     SDL_Texture* backgroundTexture;
     SDL_Rect backgroundRect;
-    SDL_Texture* creditsTexture;
     SDL_Rect creditsRect;
 
     SceneManager* sceneManager;
     SelectedOption currentSelection;
+
+    Font* font;
 };
 
 #endif // __SCENETITLE_H__

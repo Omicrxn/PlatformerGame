@@ -63,9 +63,6 @@
     <ClCompile Include="Source\Map.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Font.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GuiCheckBox.cpp">
       <Filter>GuiControls</Filter>
     </ClCompile>
@@ -92,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="Source\EnemyWalk.cpp">
       <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Font.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,9 +192,6 @@
     <ClInclude Include="Source\Map.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Font.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GuiCheckBox.h">
       <Filter>GuiControls</Filter>
     </ClInclude>
@@ -224,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="Source\EnemyWalk.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Font.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

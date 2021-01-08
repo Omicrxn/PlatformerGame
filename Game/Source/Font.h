@@ -5,27 +5,28 @@
 
 #include "SDL/include/SDL.h"
 
+class Textures;
+
 class Font
 {
 public:
 
-    Font(SDL_Texture* atlas, int count, int rows, int cols, int padding);
+    Font(const char* rtpFontFile, Textures* tex);
 
     ~Font();
 
-    void SetFirstCharacter(int value);
-
+    SDL_Texture* GetTextureAtlas();
     SDL_Rect GetCharRec(int value);
 
 private:
 	
+    bool fontLoaded;
+
 	SDL_Texture* texture;
 
     int baseSize;
     int charsCount;
     SDL_Rect charsRecs[128];
-
-    int firstChar;
 };
 
 #endif //__FONT_H__

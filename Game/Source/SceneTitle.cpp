@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Window.h"
+#include "Font.h"
 
 #include "EntityManager.h"
 
@@ -52,7 +53,8 @@ SceneTitle::~SceneTitle()
 bool SceneTitle::Load(Textures* tex)
 {
     backgroundTexture = tex->Load("Assets/Textures/Scenes/title_screen.png");
-    creditsTexture = tex->Load("Assets/Textures/Scenes/credits_screen.png");
+
+    font = new Font("Assets/Fonts/happy_school.xml", tex);
 
     return false;
 }
@@ -69,6 +71,10 @@ bool SceneTitle::Update(Input* input, float dt)
         btnCredits->Update(input, dt);
         btnExit->Update(input, dt);
     }
+    else if (currentSelection == SelectedOption::SETTINGS)
+    {
+
+    }
 
     if (input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
         currentSelection = SelectedOption::NONE;
@@ -78,19 +84,44 @@ bool SceneTitle::Update(Input* input, float dt)
 
 bool SceneTitle::Draw(Render* render)
 {
+    render->DrawTexture(backgroundTexture, 0, 0, &backgroundRect);
+
     if (currentSelection == SelectedOption::NONE)
     {
-        render->DrawTexture(backgroundTexture, 0, 0, &backgroundRect);
-
         btnStart->Draw(render);
         btnContinue->Draw(render);
         btnSettings->Draw(render);
         btnCredits->Draw(render);
         btnExit->Draw(render);
+
+        render->DrawText(font, "PLAY", 580, 375, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "CONTINUE", 525, 435, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "SETTINGS", 525, 495, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "CREDITS", 550, 555, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "EXIT", 590, 615, 50, 5, { 255,255,255,255 });
     }
     else if (currentSelection == SelectedOption::CONTINUE)
+    {
+
+    }
+    else if (currentSelection == SelectedOption::SETTINGS)
+    {
+        render->DrawRectangle(backgroundRect, { 0, 0, 0, 227 });
+    }
     else if (currentSelection == SelectedOption::CREDITS)
-        render->DrawTexture(creditsTexture, 0, 0, &creditsRect);
+    {
+        render->DrawRectangle(backgroundRect, { 0, 0, 0, 227 });
+
+        render->DrawText(font, "Authors:", 540, 100, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "Alejandro Avila", 460, 160, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "Bosco Barber", 490, 220, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "Yeray Tarifa", 490, 280, 50, 5, { 255,255,255,255 });
+        render->DrawText(font, "This project is licensed under an unmodified MIT license, which is an", 215, 400, 25, 3, { 255,255,255,255 });
+        render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 215, 430, 25, 3, { 255,255,255,255 });
+        render->DrawText(font, "The assets' work of this project is licensed under the", 215, 490, 25, 3, { 255,255,255,255 });
+        render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 215, 510, 25, 3, { 255,255,255,255 });
+
+    }
 
     return false;
 }
