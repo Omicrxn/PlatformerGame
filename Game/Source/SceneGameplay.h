@@ -10,6 +10,7 @@
 #include "Heart.h"
 #include "EnemyFly.h"
 #include "EnemyWalk.h"
+#include "PerfTimer.h"
 
 class SceneGameplay : public Scene
 {
@@ -49,6 +50,10 @@ private:
     SDL_Texture* background3;
     SDL_Texture* background4;
     SDL_Rect backgroundRect;
+
+    Font* font;
+
+    PerfTimer* timer;
 };
 
 #endif // __SCENEGAMEPLAY_H__

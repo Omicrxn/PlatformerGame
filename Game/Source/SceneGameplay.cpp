@@ -6,6 +6,8 @@
 SceneGameplay::SceneGameplay()
 {
 	name = "Gameplay";
+
+	/*timer->Start();*/
 }
 
 SceneGameplay::~SceneGameplay()
@@ -36,6 +38,8 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 
 	// Load music
 	//AudioManager::PlayMusic("Assets/Audio/Music/music_spy.ogg");
+
+	font = new Font("Assets/Fonts/happy_school.xml", tex);
 
 	// Load game entities
 	// Player load
@@ -122,8 +126,21 @@ bool SceneGameplay::Draw(Render* render)
 {
 	render->CameraUpdate(player->position);
 	DrawBackground(render);
+
 	//Draw map
 	map->Draw(render);
+
+	char lifes[16] = { 0 };
+	sprintf_s(lifes, 16, "Lifes: %03i", player->lifes);
+	render->DrawText(font, lifes, 10, 10, 50, 5, { 255,255,255,255 });
+
+	char coins[16] = { 0 };
+	sprintf_s(coins, 16, "Coins: %03i", player->score);
+	render->DrawText(font, coins, 510, 10, 50, 5, { 255,255,255,255 });
+
+	/*char time[16] = { 0 };
+	sprintf_s(time, 16, "Timer: %03i", timer->ReadTicks());
+	render->DrawText(font, time, 800, 10, 50, 5, { 255,255,255,255 });*/
 	
     return false;
 }

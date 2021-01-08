@@ -120,7 +120,6 @@ bool SceneTitle::Draw(Render* render)
         render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 215, 430, 25, 3, { 255,255,255,255 });
         render->DrawText(font, "The assets' work of this project is licensed under the", 215, 490, 25, 3, { 255,255,255,255 });
         render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 215, 510, 25, 3, { 255,255,255,255 });
-
     }
 
     return false;
