@@ -81,6 +81,7 @@ bool Player::Update(Input* input, float dt)
 {
     #define GRAVITY 600.0f
 
+    tempPosition = position;
 
     // Calculate movement
     if (!dead && !godMode)
@@ -109,8 +110,6 @@ bool Player::Update(Input* input, float dt)
             {
                 currentAnim = PlayerAnim::FALL;
             }
-
-
     }
     else
     {

@@ -54,7 +54,9 @@ public:
     fPoint velocity;
     bool renderable = false;
     int width, height;
-   // SDL_Texture* texture;
+    // SDL_Texture* texture;
+
+    iPoint tempPosition;
 };
 
 #endif // __ENTITY_H__

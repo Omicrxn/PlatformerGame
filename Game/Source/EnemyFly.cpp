@@ -18,6 +18,7 @@ EnemyFly::EnemyFly(Collisions* collisions, AudioManager* audio, EntityManager* e
 	this->audio = audio;
 
     position = { 0, 0 };
+	tempPosition = position;
 
     dead = false;
 
@@ -33,6 +34,8 @@ EnemyFly::~EnemyFly()
 bool EnemyFly::Update(float dt)
 {
 	bool ret = true;
+
+	tempPosition = position;
 
 	if (!dead)
 	{
@@ -64,17 +67,16 @@ void EnemyFly::Move(Map* map)
 		iPoint nextTile;
 		path.Pop(nextTile);
 
-		/*iPoint mapPos = map->WorldToMap(position.x, position.y);*/
-			iPoint mapPos = map->WorldToMap(position.x, position.y);
+		iPoint mapPos = map->WorldToMap(position.x, position.y);
 		if (mapPos.x < nextTile.x)
 			velocity.x = 1;
 		else
 			velocity.x = -1;
 
 		if (mapPos.y < nextTile.y)
-			velocity.y = -1;
-		else
 			velocity.y = 1;
+		else
+			velocity.y = -1;
 	}
 	else
 	{
@@ -87,15 +89,17 @@ void EnemyFly::UpdatePath(Map* map)
 	origin = map->WorldToMap(position.x, position.y);
 	goal = map->WorldToMap(player->GetBounds().x, player->GetBounds().y);
 
-	pathfinding->lastPath.Clear();
 	if (pathfinding->CreatePath(origin, goal) != -1)
 	{
-		path.Clear();
-		for (int i = 0; i < pathfinding->lastPath.Count(); i++)
+		pathfinding->lastPath.Clear();
+		if (pathfinding->CreatePath(origin, goal) != -1)
 		{
-			path.PushBack(*pathfinding->lastPath.At(i));
+			for (int i = 0; i < pathfinding->lastPath.Count(); i++)
+			{
+				path.PushBack(*pathfinding->lastPath.At(i));
+			}
+			path.Flip();
 		}
-		path.Flip();
 	}
 }
 

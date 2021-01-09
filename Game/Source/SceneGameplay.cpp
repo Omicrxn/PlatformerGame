@@ -107,7 +107,6 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	}
 	enemiesWalk[0]->position = iPoint(20 * 64, -10 * 64);
 
-
     return false;
 }
 
@@ -121,10 +120,8 @@ inline bool CheckCollision(SDL_Rect rec1, SDL_Rect rec2)
 bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 {
 	// Collision detection: map vs player
-	player->tempPosition = player->position;
 	player->Update(input,dt);
 	CollisionHandler();
-
 
 	// Debug Keys
 
@@ -198,12 +195,10 @@ void SceneGameplay::CollisionHandler()
 					{
 						if (entity->data->type == EntityType::PLAYER)
 						{
-							player->position = player->tempPosition;
 							player->readyToJump = true;
 						}
-
+						entity->data->position = entity->data->tempPosition;
 						entity->data->velocity.y = 0.0f;
-
 
 						break;
 					}

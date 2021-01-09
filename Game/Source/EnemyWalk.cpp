@@ -19,6 +19,7 @@ EnemyWalk::EnemyWalk(Collisions* collisions, AudioManager* audio, EntityManager*
 	this->audio = audio;
 
 	position = { 0, 0 };
+	tempPosition = position;
 	velocity = {0,0};
 	dead = false;
 	width = 32;
@@ -36,7 +37,9 @@ bool EnemyWalk::Update(float dt)
 {
 	bool ret = true;
 
-#define GRAVITY 600
+	#define GRAVITY 600
+
+	tempPosition = position;
 
 	if (!dead)
 	{
