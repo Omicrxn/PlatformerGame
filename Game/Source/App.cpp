@@ -32,7 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new AudioManager();
 	collisions = new Collisions(render);
 	particles = new Particles(tex, render, collisions);
-	entityManager = new EntityManager(render, collisions, audio);
+	entityManager = new EntityManager(render, collisions, audio, particles);
 	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions, audio);
 
 	// Ordered for awake / Start / Update

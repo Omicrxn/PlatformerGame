@@ -22,7 +22,7 @@ Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManage
 bool Checkpoint::Update(float dt)
 {
 	bool ret = true;
-	position = iPoint(19 * 64, 1570);
+
 	// Update collider position
 	if (collider != nullptr)
 	{

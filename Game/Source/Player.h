@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "EntityManager.h"
+#include "Particles.h"
 
 #include "Point.h"
 #include "SString.h"
@@ -26,7 +27,7 @@ class Player: public Entity
 {
 public:
 
-    Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager);
+    Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager, Particles* particles);
 
     bool Update(Input* input, float dt);
 
@@ -57,6 +58,7 @@ public:
     Animation shootingAnim;
     PlayerAnim currentAnim;
 
+    Particles* particles;
 
 
     bool readyToJump = true;

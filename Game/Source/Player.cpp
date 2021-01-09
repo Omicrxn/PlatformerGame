@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::PLAYER)
+Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager, Particles* particles) : Entity(EntityType::PLAYER)
 {
     name = "Player";
     texture = NULL;
@@ -72,6 +72,7 @@ Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entit
     score = 0;
     lifes = 5;
     collider = collisions->AddCollider({ position.x+86,position.y+43,width,height }, Collider::Type::PLAYER, (Module*)entityManager);
+    this->particles = particles;
 }
 
 bool Player::Update(Input* input, float dt)
@@ -109,10 +110,10 @@ bool Player::Update(Input* input, float dt)
     if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) Run(false);
     if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) Jump();
     if (input->GetKey(SDL_SCANCODE_UP) == KEY_UP) SmallJump();
-    if (input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+    if (input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
     {
         Shoot();
-        currentAnim = PlayerAnim::SHOOTING;
+
     }
     // Update collider position
     if (collider != nullptr)
@@ -218,7 +219,21 @@ void Player::Die()
 
 void Player::Shoot()
 {
+    currentAnim = PlayerAnim::SHOOTING;
     //particles
+    if (isLeft && particles->playerBullet.speed.x > 0)
+    {
+       particles->playerBullet.speed.x = -particles->playerBullet.speed.x;
+    }
+    else if (!isLeft && particles->playerBullet.speed.x < 0)
+    {
+        particles->playerBullet.speed.x = -particles->playerBullet.speed.x;
+    }
+    if (shootingAnim.Finished())
+    {
+        particles->AddParticle(particles->playerBullet, GetBounds().x + 32, GetBounds().y, Collider::Type::PLAYER_BULLET);
+        shootingAnim.Reset();
+    }
 }
 
 void Player::OnCollision(Collider* collider)

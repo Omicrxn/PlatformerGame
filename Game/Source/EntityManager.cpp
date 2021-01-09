@@ -9,16 +9,18 @@
 #include "Heart.h"
 #include "Map.h"
 #include "Collisions.h"
+#include "Particles.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-EntityManager::EntityManager(Render* render, Collisions* collisions, AudioManager* audio) : Module()
+EntityManager::EntityManager(Render* render, Collisions* collisions, AudioManager* audio, Particles* particles) : Module()
 {
 	name.Create("entitymanager");
 	this->collisions = collisions;
 	this->render = render;
 	this->audio = audio;
+	this->particles = particles;
 }
 
 // Destructor
@@ -49,7 +51,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	switch (type)
 	{
 		// L13: Create the corresponding type entity
-		case EntityType::PLAYER: ret = new Player(collisions,audio,this); break;
+		case EntityType::PLAYER: ret = new Player(collisions,audio,this,particles); break;
 		case EntityType::ENEMYFLY: ret = new EnemyFly(collisions,audio,this); break;
 		case EntityType::ENEMYWALK: ret = new EnemyWalk(collisions, audio, this); break;
 		case EntityType::COIN: ret = new Coin(collisions,audio,this); break;

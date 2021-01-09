@@ -8,12 +8,13 @@
 class Collisions;
 class Render;
 class AudioManager;
+class Particles;
 
 class EntityManager : public Module
 {
 public:
 
-	EntityManager(Render* render, Collisions* collisions, AudioManager* audio);
+	EntityManager(Render* render, Collisions* collisions, AudioManager* audio, Particles* particles );
 
 	// Destructor
 	virtual ~EntityManager();
@@ -50,6 +51,7 @@ private:
 	Collisions* collisions;
 	Render* render;
 	AudioManager* audio;
+	Particles* particles;
 };
 
 #endif // __ENTITYMANAGER_H__
