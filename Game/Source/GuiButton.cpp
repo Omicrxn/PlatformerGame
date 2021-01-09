@@ -40,7 +40,7 @@ bool GuiButton::Update(Input* input, float dt)
     return false;
 }
 
-bool GuiButton::Draw(Render* render, SceneTitle* sceneTitle)
+bool GuiButton::Draw(Render* render)
 {
     // Draw the right button depending on state
     switch (state)
@@ -48,13 +48,13 @@ bool GuiButton::Draw(Render* render, SceneTitle* sceneTitle)
     case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 100, 100, 100, 255 });
         break;
     case GuiControlState::NORMAL: /*render->DrawRectangle(bounds, { 0, 139, 139, 127 });*/
-        render->DrawTexture(sceneTitle->atlasGUI, bounds.x, bounds.y, &sceneTitle->greyButton);
+        render->DrawTexture(texture, bounds.x, bounds.y, &greyButton);
         break;
     case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 224, 255, 255, 127 });*/
-        render->DrawTexture(sceneTitle->atlasGUI, bounds.x, bounds.y, &sceneTitle->yellowButton);
+        render->DrawTexture(texture, bounds.x, bounds.y, &yellowButton);
         break;
     case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
-        render->DrawTexture(sceneTitle->atlasGUI, bounds.x, bounds.y, &sceneTitle->brownButton);
+        render->DrawTexture(texture, bounds.x, bounds.y, &brownButton);
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;

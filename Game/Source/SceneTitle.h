@@ -50,16 +50,6 @@ public:
 
     // GUI: Title Screen Main Menu buttons (They have to be accessible from the diferent GuiControls)
     SDL_Texture* atlasGUI;
-
-    SDL_Rect whiteButton;
-    SDL_Rect brownButton;
-    SDL_Rect greyButton;
-    SDL_Rect yellowButton;
-
-    SDL_Rect greyCheckBox;
-    SDL_Rect yellowCheckBox;
-    SDL_Rect brownCheckBox;
-    SDL_Rect whiteCheckBox;
     
 private:
 
@@ -73,7 +63,7 @@ private:
     // Settings' sliders and checkboxes
     GuiSlider* sldrMusicVolume;
     GuiSlider* sldrFxVolume;
-    GuiCheckBox* cbxFullscreenMode;
+    GuiCheckBox* cbxFullscreen;
     GuiCheckBox* cbxVSync;
 
     SDL_Texture* backgroundTexture;

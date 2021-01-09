@@ -6,10 +6,6 @@
 #include "Point.h"
 #include "SString.h"
 
-#include "SceneTitle.h"
-
-class SceneTitle;
-
 class GuiCheckBox : public GuiControl
 {
 public:
@@ -18,13 +14,18 @@ public:
     virtual ~GuiCheckBox();
 
     bool Update(Input* input, float dt);
-    bool Draw(Render* render, SceneTitle* sceneTitle);
+    bool Draw(Render* render);
 
 private:
 
     // GuiCheckBox specific properties
     // Maybe some animation properties for state change?
     bool checked;
+
+    SDL_Rect greyCheckBox = { 290,0,45,49 };
+    SDL_Rect yellowCheckBox = { 293,294,45,49 };
+    SDL_Rect brownCheckBox = { 293,343,45,49 };
+    SDL_Rect whiteCheckBox = { 293,437,45,49 };
 };
 
 #endif // __GUICHECKBOX_H__

@@ -41,7 +41,7 @@ bool GuiCheckBox::Update(Input* input, float dt)
     return false;
 }
 
-bool GuiCheckBox::Draw(Render* render, SceneTitle* sceneTitle)
+bool GuiCheckBox::Draw(Render* render)
 {
     // Draw the right button depending on state
     switch (state)
@@ -53,12 +53,15 @@ bool GuiCheckBox::Draw(Render* render, SceneTitle* sceneTitle)
     } break;
     case GuiControlState::NORMAL: 
     {
-        if (checked) render->DrawRectangle(bounds, { 0, 255, 0, 255 });
-        else render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+        /*if (checked) render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+        else render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
+        render->DrawTexture(texture, bounds.x, bounds.y, &greyCheckBox);
     } break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 0, 255 });
+    case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 255, 255, 0, 255 });*/
+        render->DrawTexture(texture, bounds.x, bounds.y, &yellowCheckBox);
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 255, 255, 255 });
+    case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
+        render->DrawTexture(texture, bounds.x, bounds.y, &brownCheckBox);
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;

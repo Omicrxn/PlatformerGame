@@ -30,13 +30,13 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager)
 
     btnSettings = new GuiButton(3, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 140, 190, 40 }, "SETTINGS");
     btnSettings->SetObserver(this);
-
+    
     btnCredits = new GuiButton(4, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 200, 190, 40 }, "CREDITS");
     btnCredits->SetObserver(this);
-
+    
     btnExit = new GuiButton(5, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 260, 190, 40 }, "EXIT");
     btnExit->SetObserver(this);
-
+    
     // GUI: Initialize required controls for the settings
     sldrMusicVolume = new GuiSlider(1, { (int)win->GetWindowWidth() / 2 - 500 / 2, (int)win->GetWindowHeight() / 2 + 20, 500, 40 }, "MUSICVOLUME");
     sldrMusicVolume->SetObserver(this);
@@ -44,8 +44,8 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager)
     sldrFxVolume = new GuiSlider(2, { (int)win->GetWindowWidth() / 2 - 500 / 2, (int)win->GetWindowHeight() / 2 + 80, 500, 40 }, "FXVOLUME");
     sldrFxVolume->SetObserver(this);
 
-    cbxFullscreenMode = new GuiCheckBox(1, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 140, 45, 49 }, "FULLSCREEN");
-    cbxFullscreenMode->SetObserver(this);
+    cbxFullscreen = new GuiCheckBox(1, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 140, 45, 49 }, "FULLSCREEN");
+    cbxFullscreen->SetObserver(this);
 
     cbxVSync = new GuiCheckBox(2, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 200, 45, 49 }, "VSYNC");
     cbxVSync->SetObserver(this);
@@ -53,16 +53,6 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager)
     //Rectangles definition
     backgroundRect = { 0,0,1280,720 };
     creditsRect = { 0,0,1280,720 };
-
-    whiteButton = { 0,0,190,49 };
-    brownButton = { 0,49,190,49 };
-    greyButton = { 0,188,190,49 };
-    yellowButton = { 0,282,190,49 };
-
-    greyCheckBox = { 290,0,45,49 };
-    yellowCheckBox = { 293,294,45,49 };
-    brownCheckBox = { 293,343,45,49 };
-    whiteCheckBox = { 293,437,45,49 };
 
     this->sceneManager = sceneManager;
     this->window = win;
@@ -78,7 +68,17 @@ SceneTitle::~SceneTitle()
 bool SceneTitle::Load(Textures* tex)
 {
     backgroundTexture = tex->Load("Assets/Textures/Scenes/title_screen.png");
+
     atlasGUI = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
+    btnStart->SetTexture(atlasGUI);
+    btnContinue->SetTexture(atlasGUI);
+    btnSettings->SetTexture(atlasGUI);
+    btnCredits->SetTexture(atlasGUI);
+    btnExit->SetTexture(atlasGUI);
+
+    cbxFullscreen->SetTexture(atlasGUI);
+    cbxVSync->SetTexture(atlasGUI);
+
     font = new Font("Assets/Fonts/happy_school.xml", tex);
 
     return false;
@@ -106,7 +106,7 @@ bool SceneTitle::Update(Input* input, float dt)
     {
         sldrMusicVolume->Update(input, dt);
         sldrFxVolume->Update(input, dt);
-        cbxFullscreenMode->Update(input, dt);
+        cbxFullscreen->Update(input, dt);
         cbxVSync->Update(input, dt);
 
         if (settingsCurrentSelection == SettingsSelection::FULLSCREEN)
@@ -146,11 +146,11 @@ bool SceneTitle::Draw(Render* render)
 
     if (menuCurrentSelection == MenuSelection::NONE)
     {
-        btnStart->Draw(render, this);
-        btnContinue->Draw(render, this);
-        btnSettings->Draw(render, this);
-        btnCredits->Draw(render, this);
-        btnExit->Draw(render, this);
+        btnStart->Draw(render);
+        btnContinue->Draw(render);
+        btnSettings->Draw(render);
+        btnCredits->Draw(render);
+        btnExit->Draw(render);
 
         int offset = 3;
         render->DrawText(font, "PLAY", 596 + offset, 383 + offset, 40, 5, { 105,105,105,255 });
@@ -171,8 +171,8 @@ bool SceneTitle::Draw(Render* render)
 
         sldrMusicVolume->Draw(render);
         sldrFxVolume->Draw(render);
-        cbxFullscreenMode->Draw(render, this);
-        cbxVSync->Draw(render, this);
+        cbxFullscreen->Draw(render);
+        cbxVSync->Draw(render);
 
         render->DrawText(font, "Fullscreen", 450, 495, 50, 5, { 255,255,255,255 });
     }
