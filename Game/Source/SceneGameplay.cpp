@@ -3,9 +3,11 @@
 #include "EntityManager.h"
 #include "Pathfinding.h"
 
-SceneGameplay::SceneGameplay()
+SceneGameplay::SceneGameplay(App* app)
 {
 	name = "Gameplay";
+
+	this->app = app;
 
 	timer.Start();
 }
@@ -16,7 +18,8 @@ SceneGameplay::~SceneGameplay()
 bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 {
 	this->entityManager = entityManager;
-	//Load Background
+	
+	// Load Background
 	background1 = tex->Load("Assets/Maps/background1.png");
 	background2 = tex->Load("Assets/Maps/background2.png");
 	background3 = tex->Load("Assets/Maps/background3.png");
@@ -37,55 +40,71 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		RELEASE_ARRAY(data);
 	}
 
-	// Load music
-	//AudioManager::PlayMusic("Assets/Audio/Music/music_spy.ogg");
-
+	// Load font
 	font = new Font("Assets/Fonts/happy_school.xml", tex);
 
-	// Checkpoint load // 37,18
-	checkpoint1 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
-	checkpoint1->SetTexture(tex->Load("Assets/Textures/Entities/Checkpoints/checkpoint_statue.png"));
-	checkpoint1->position = iPoint(19 * 64, 1572);
 	// Load game entities
 	// Player load
 	player = (Player*)entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetTexture(tex->Load("Assets/Textures/Entities/Player/player_sheet.png"));
 	player->position = iPoint(96, 2350);
 
+	// Checkpoint load
+	for (int i = 0; i < MAX_CHECKPOINTS; ++i)
+	{
+		checkpoints[i] = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
+		checkpoints[i]->SetTexture(tex->Load("Assets/Textures/Entities/Checkpoints/checkpoint_statue.png"));
 
-	//assign player to checkpoints
-	checkpoint1->SetPlayer(player);
+		// Assign player to checkpoints
+		checkpoints[i]->SetPlayer(player);
+	}
+	checkpoints[0]->position = iPoint(19 * 64, 1572);
+	//checkpoints[1]->position = iPoint(37*64-14, 18*64+14);
 
 	// Item load
-	coin = (Coin*)entityManager->CreateEntity(EntityType::COIN);
-	coin->SetTexture(tex->Load("Assets/Textures/Entities/Items/coin.png"));
-	coin->SetPlayer(player);
-	coin->position = iPoint(21 * 64+16, 39 * 64);
+	for (int i = 0; i < MAX_COINS; ++i)
+	{
+		coins[i] = (Coin*)entityManager->CreateEntity(EntityType::COIN);
+		coins[i]->SetTexture(tex->Load("Assets/Textures/Entities/Items/coin.png"));
+		
+		// Assign player to coins
+		coins[i]->SetPlayer(player);
+	}
+	coins[0]->position = iPoint(21 * 64+16, 39 * 64);
 
-	heart = (Heart*)entityManager->CreateEntity(EntityType::HEART);
-	heart->SetTexture(tex->Load("Assets/Textures/Entities/Items/heart.png"));
-	heart->SetPlayer(player);
-	heart->position = iPoint(6 * 64, 23 * 64);
+	for (int i = 0; i < MAX_HEARTS; ++i)
+	{
+		hearts[i] = (Heart*)entityManager->CreateEntity(EntityType::HEART);
+		hearts[i]->SetTexture(tex->Load("Assets/Textures/Entities/Items/heart.png"));
 
-
-
-	//checkpoint2 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
-	//checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
-	//checkpoint2->position = iPoint(37*64-14, 18*64+14);
+		// Assign player to hearts
+		hearts[i]->SetPlayer(player);
+	}
+	hearts[0]->position = iPoint(6 * 64, 23 * 64);
 
 	// Flying enemy load
-	enemyFly1 = (EnemyFly*)entityManager->CreateEntity(EntityType::ENEMYFLY);
-	enemyFly1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/enemy_fly.png"), tex->Load("Assets/Maps/path_debug.png"));
-	enemyFly1->SetPlayer(player);
-	enemyFly1->SetMap(map);
-	enemyFly1->position = iPoint(15 * 64, 16 * 64);
+	for (int i = 0; i < MAX_FLYING_ENEMIES; ++i)
+	{
+		enemiesFly[i] = (EnemyFly*)entityManager->CreateEntity(EntityType::ENEMYFLY);
+		enemiesFly[i]->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/enemy_fly.png"), tex->Load("Assets/Maps/path_debug.png"));
+
+		// Assign player and map to flying enemies
+		enemiesFly[i]->SetPlayer(player);
+		enemiesFly[i]->SetMap(map);
+	}
+	enemiesFly[0]->position = iPoint(15 * 64, 16 * 64);
 
 	// Walking enemy load
-	enemyWalk1 = (EnemyWalk*)entityManager->CreateEntity(EntityType::ENEMYWALK);
-	enemyWalk1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/slime.png"));
-	enemyWalk1->SetPlayer(player);
-	enemyWalk1->SetMap(map);
-	enemyWalk1->position = iPoint(20 * 64, -10 * 64);
+	for (int i = 0; i < MAX_WALKING_ENEMIES; ++i)
+	{
+		enemiesWalk[i] = (EnemyWalk*)entityManager->CreateEntity(EntityType::ENEMYWALK);
+		enemiesWalk[i]->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/slime.png"));
+
+		// Assign player and map to walking enemies
+		enemiesWalk[i]->SetPlayer(player);
+		enemiesWalk[i]->SetMap(map);
+	}
+	enemiesWalk[0]->position = iPoint(20 * 64, -10 * 64);
 
     return false;
 }
@@ -104,7 +123,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 	player->Update(input,dt);
 	CollisionHandler();
 
-	//Debug Keys
+	// Debug Keys
 	if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
 	{
 		TransitionToScene(SceneType::GAMEPLAY);
@@ -120,9 +139,9 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		player->godMode = !player->godMode;
 	}
 
-	// L02: DONE 3: Request Load / Save when pressing L/S
-	//if (input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) app->LoadGameRequest();
-	//if (input->GetKey(SDL_SCANCODE_S) == KEY_DOWN) app->SaveGameRequest();
+	// Request Load / Save when pressing L/S
+	if (input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) app->LoadGameRequest();
+	if (input->GetKey(SDL_SCANCODE_S) == KEY_DOWN) app->SaveGameRequest();
 
 	return true;
 }
@@ -132,7 +151,7 @@ bool SceneGameplay::Draw(Render* render)
 	render->CameraUpdate(player->position);
 	DrawBackground(render);
 
-	//Draw map
+	// Draw map
 	map->Draw(render);
 
 	char lifes[16] = { 0 };
@@ -177,9 +196,7 @@ void SceneGameplay::CollisionHandler()
 						player->position = player->tempPosition;
 						player->readyToJump = true;
 					}
-					
 					entity->data->velocity.y = 0.0f;
-					
 					
 					break;
 				}
@@ -197,9 +214,7 @@ void SceneGameplay::CollisionHandler()
 						}
 						
 					}
-					
-						entity->data->velocity.y = 0.0f;
-					
+					entity->data->velocity.y = 0.0f;
 					
 					break;
 				}
