@@ -10,7 +10,7 @@
 #include "Heart.h"
 #include "EnemyFly.h"
 #include "EnemyWalk.h"
-#include "PerfTimer.h"
+#include "Timer.h"
 
 class SceneGameplay : public Scene
 {
@@ -53,7 +53,7 @@ private:
 
     Font* font;
 
-    PerfTimer* timer;
+    Timer timer;
 };
 
 #endif // __SCENEGAMEPLAY_H__
