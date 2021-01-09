@@ -5,6 +5,7 @@
 #include "SceneGameplay.h"
 #include "SceneEnding.h"
 
+#include "App.h"
 #include "Input.h"
 #include "Render.h"
 #include "Textures.h"
@@ -21,7 +22,7 @@
 #define FADEOUT_TRANSITION_SPEED	2.0f
 #define FADEIN_TRANSITION_SPEED		2.0f
 
-SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio) : Module()
+SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio, App* app) : Module()
 {
 	name.Create("scenemanager");
 
@@ -29,6 +30,7 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityMa
 	fadeOutCompleted = false;
 	transitionAlpha = 0.0f;;
 
+	this->app = app;
 	this->input = input;
 	this->render = render;
 	this->tex = tex;
@@ -199,7 +201,7 @@ bool SceneManager::Update(float dt)
 		{
 			case SceneType::LOGO: next = new SceneLogo(); break;
 			case SceneType::TITLE: next = new SceneTitle(win, this, audio); break;
-			case SceneType::GAMEPLAY: next = new SceneGameplay(); break;
+			case SceneType::GAMEPLAY: next = new SceneGameplay(app); break;
 			case SceneType::ENDING: next = new SceneEnding(win); break;
 			default: break;
 		}

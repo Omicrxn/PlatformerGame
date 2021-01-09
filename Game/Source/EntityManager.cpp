@@ -117,3 +117,33 @@ void EntityManager::OnCollision(Collider* c1, Collider* c2)
 		}
 	}
 }
+
+// Load Game State
+bool EntityManager::LoadState(pugi::xml_node& data)
+{
+	for (int i = 0; i < entities.Count(); i++)
+	{
+		SString entityName;
+		entityName.Create("Entity%d", i + 1);
+		pugi::xml_node currentEntity = data.child(entityName.GetString());
+		entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
+		entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
+	}
+
+	return true;
+}
+
+// Save Game State
+bool EntityManager::SaveState(pugi::xml_node& data) const
+{
+	for (int i = 0; i < entities.Count(); i++)
+	{
+		SString entityName;
+		entityName.Create("Entity%d", i + 1);
+		pugi::xml_node currentEntity = data.append_child(entityName.GetString());
+		currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
+		currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
+	}
+
+	return true;
+}

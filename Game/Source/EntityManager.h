@@ -37,6 +37,10 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 
+	// Load / Save
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
+
 public:
 
 	List<Entity*> entities;

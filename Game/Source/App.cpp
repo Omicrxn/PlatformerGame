@@ -33,7 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions(render);
 	particles = new Particles(tex, render, collisions);
 	entityManager = new EntityManager(render, collisions, audio, particles);
-	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions, audio);
+	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions, audio, this);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -377,39 +377,29 @@ bool App::LoadGame()
 
 	loadGameRequested = false;
 
-	//pugi::xml_document doc;
-	//pugi::xml_parse_result result = doc.load_file("save_game.xml");
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(SAVE_STATE_FILENAME);
 
-	//if (result == NULL)
-	//{
-	//	LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
-	//	ret = false;
-	//}
-	//else
-	//{
-	//	bool ret = true;
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		bool ret = true;
 
-	//	pugi::xml_node node = doc.child("save");
+		pugi::xml_node node = doc.child("save");
 
-	//	ListItem<Module*>* item;
-	//	item = modules.start;
+		ListItem<Module*>* item;
+		item = modules.start;
 
-	//	while (item != NULL && ret == true)
-	//	{
-	//		ret = item->data->LoadState(node.child(item->data->name.GetString()));
-	//		item = item->next;
-	//	}
-
-	//	pugi::xml_node nodeEntity = node.child("entitymanager");
-	//	for (int i = 0; i < app->entityman->entities.Count(); i++)
-	//	{
-	//		SString entityName;
-	//		entityName.Create("Entity%d", i + 1);
-	//		pugi::xml_node currentEntity = nodeEntity.child(entityName.GetString());
-	//		app->entityman->entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
-	//		app->entityman->entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
-	//	}
-	//}
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->LoadState(node.child(item->data->name.GetString()));
+			item = item->next;
+		}
+	}
 
 	return ret;
 }
@@ -421,7 +411,7 @@ bool App::SaveGame() const
 
 	saveGameRequested = false;
 
-	/*pugi::xml_document doc;
+	pugi::xml_document doc;
 	pugi::xml_node node = doc.append_child("save");
 	pugi::xml_node newNode;
 
@@ -435,17 +425,7 @@ bool App::SaveGame() const
 		item = item->next;
 	}
 
-	pugi::xml_node nodeEntity = node.child("entitymanager");
-	for (int i = 0; i < app->entityman->entities.Count(); i++)
-	{
-		SString entityName;
-		entityName.Create("Entity%d", i + 1);
-		pugi::xml_node currentEntity = nodeEntity.append_child(entityName.GetString());
-		currentEntity.append_attribute("x").set_value(app->entityman->entities.At(i)->data->position.x);
-		currentEntity.append_attribute("y").set_value(app->entityman->entities.At(i)->data->position.y);
-	}
-
-	doc.save_file("save_game.xml");*/
+	doc.save_file(SAVE_STATE_FILENAME);
 
 	return ret;
 }
