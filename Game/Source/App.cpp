@@ -389,7 +389,7 @@ bool App::LoadGame()
 	{
 		bool ret = true;
 
-		pugi::xml_node node = doc.child("game_state");
+		pugi::xml_node node = doc.child("save");
 
 		ListItem<Module*>* item;
 		item = modules.start;
@@ -412,7 +412,7 @@ bool App::SaveGame() const
 	saveGameRequested = false;
 
 	pugi::xml_document doc;
-	pugi::xml_node node = doc.append_child("game_state");
+	pugi::xml_node node = doc.append_child("save");
 	pugi::xml_node newNode;
 
 	ListItem<Module*>* item;

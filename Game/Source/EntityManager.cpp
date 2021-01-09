@@ -121,16 +121,14 @@ void EntityManager::OnCollision(Collider* c1, Collider* c2)
 // Load Game State
 bool EntityManager::LoadState(pugi::xml_node& data)
 {
-	pugi::xml_node nodeEntity = data.child("entitymanager");
 	for (int i = 0; i < entities.Count(); i++)
 	{
 		SString entityName;
 		entityName.Create("Entity%d", i + 1);
-		pugi::xml_node currentEntity = nodeEntity.child(entityName.GetString());
+		pugi::xml_node currentEntity = data.child(entityName.GetString());
 		entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
 		entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
 	}
-
 
 	return true;
 }
@@ -138,12 +136,11 @@ bool EntityManager::LoadState(pugi::xml_node& data)
 // Save Game State
 bool EntityManager::SaveState(pugi::xml_node& data) const
 {
-	pugi::xml_node nodeEntity = data.child("entitymanager");
 	for (int i = 0; i < entities.Count(); i++)
 	{
 		SString entityName;
 		entityName.Create("Entity%d", i + 1);
-		pugi::xml_node currentEntity = nodeEntity.append_child(entityName.GetString());
+		pugi::xml_node currentEntity = data.append_child(entityName.GetString());
 		currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
 		currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
 	}
