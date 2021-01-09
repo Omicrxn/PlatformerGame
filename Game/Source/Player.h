@@ -4,7 +4,6 @@
 #include "Entity.h"
 #include "Input.h"
 #include "Render.h"
-#include "Collisions.h"
 #include "EntityManager.h"
 
 #include "Point.h"
@@ -19,7 +18,8 @@ enum class PlayerAnim
     JUMP,
     FALL,
     MELEE,
-    SHOOTING
+    SHOOTING,
+    DEAD
 };
 
 class Player: public Entity
@@ -34,19 +34,17 @@ public:
 
     void SetTexture(SDL_Texture *tex);
 
-    SDL_Rect GetBounds();
-
     void OnCollision(Collider* collider) override;
 
     // Movement functions
     void Run(bool isLeft);
     void Jump();
     void SmallJump();
-
+    void Die();
 public:
 
     SDL_Texture* texture;
-
+    SDL_Rect animRec;
     // Define all animation properties
     Animation idleAnim;
     Animation runningAnim;
@@ -58,7 +56,7 @@ public:
     Animation shootingAnim;
     PlayerAnim currentAnim;
 
-    int width, height;
+
 
     bool readyToJump = true;
     bool hitObstacle = false;

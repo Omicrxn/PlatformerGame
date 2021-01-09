@@ -15,6 +15,7 @@ SceneGameplay::~SceneGameplay()
 
 bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 {
+	this->entityManager = entityManager;
 	//Load Background
 	background1 = tex->Load("Assets/Maps/background1.png");
 	background2 = tex->Load("Assets/Maps/background2.png");
@@ -60,9 +61,9 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 
 	// Checkpoint load // 37,18
 	checkpoint1 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
-	checkpoint1->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
+	checkpoint1->SetTexture(tex->Load("Assets/Textures/Entities/Checkpoints/checkpoint_statue.png"));
 	checkpoint1->SetPlayer(player);
-	checkpoint1->position = iPoint(1255, 1678);
+	checkpoint1->position = iPoint(19*64, 1572);
 
 	//checkpoint2 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
 	//checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
@@ -156,27 +157,51 @@ void SceneGameplay::CollisionHandler()
 {
 	// Check if updated player position collides with next tile
 	// IMPROVEMENT: Just check adyacent tiles to player
-	for (int y = 0; y < map->data.height; y++)
+	ListItem<Entity*>* entity = entityManager->entities.start;
+	while (entity != NULL)
 	{
-		for (int x = 0; x < map->data.width; x++)
+		for (int y = 0; y < map->data.height; y++)
 		{
-			if ((map->data.layers[4]->Get(x, y) >= 86) &&
-				CheckCollision(map->GetTilemapRec(x, y), player->GetBounds()))
+			for (int x = 0; x < map->data.width; x++)
 			{
-				player->position = tempPlayerPosition;
-				player->velocity.y = 0.0f;
-				player->readyToJump = true;
-				//break;
-			}
-
-			if ((map->data.layers[4]->Get(x, y) >= 86) &&
-				CheckCollision(map->GetTilemapRec(x, y), enemyWalk1->collider->rect))
-			{
-				enemyWalk1->velocity.y = 0.0f;
-				// break; // Si lees esto, pregunta de Bosco --> Creamos una funcion para cada enemigo?
-				// O comprobamos cada la colision de cada tile con cada entity? 
+				//Check ground
+				if ((map->data.layers[4]->Get(x, y) >= 86) &&
+					CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
+				{
+					if (entity->data->name == "Player")
+					{
+						player->position = tempPlayerPosition;
+						player->readyToJump = true;
+					}
+					
+					entity->data->velocity.y = 0.0f;
+					
+					
+					break;
+				}
+				//Check water
+				if ((map->data.layers[4]->Get(x, y) == 85) &&
+					CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
+				{
+					if (entity->data->name == "Player")
+					{
+						player->position = tempPlayerPosition;
+						player->readyToJump = false;
+						if (!player->dead)
+						{
+							player->dead = true;
+						}
+						
+					}
+					
+						entity->data->velocity.y = 0.0f;
+					
+					
+					break;
+				}
 			}
 		}
+		entity = entity->next;
 	}
 }
 

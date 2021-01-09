@@ -4,7 +4,10 @@
 Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::CHECKPOINT)
 {
 	texture = NULL;
-	checkpointAnimation.PushBack({ 20,7,23,57 });
+	checkpointAnimation.PushBack({ 20,7,35,57 });
+	checkpointAnimation.PushBack({ 82,7,35,57 });
+	checkpointAnimation.PushBack({ 145,7,35,57 });
+	checkpointAnimation.PushBack({ 209,7,35,57 });
 
 	checkpointAnimation.loop = false;
 	checkpointAnimation.speed = 0.00f;
@@ -12,14 +15,14 @@ Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManage
 	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
 	position = iPoint(0, 0);
 	velocity = { 0,0 };
-
-	collider = collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_COIN, (Module*)entityManager);
+	scale = 3;
+	collider = collisions->AddCollider({ position.x,position.y,35*scale,57*scale }, Collider::Type::ITEM_COIN, (Module*)entityManager);
 }
 
 bool Checkpoint::Update(float dt)
 {
 	bool ret = true;
-	position = iPoint(1255, 1678-110);
+	position = iPoint(19 * 64, 1570);
 	// Update collider position
 	if (collider != nullptr)
 	{
@@ -35,8 +38,8 @@ void Checkpoint::Draw(Render* render)
 	// animation state and animation frame
 	SDL_Rect rec = checkpointAnimation.GetCurrentFrame();
 
-	render->scale = 3;
-	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
+	render->scale = scale;
+	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f,true);
 	render->scale = 1;
 }
 
@@ -54,4 +57,6 @@ void Checkpoint::OnCollision(Collider* collider)
 {
 	//app->audio->PlayFx(fx);
 	player->lastCheckpointPos = this->position;
+	checkpointAnimation.speed = 0.04f;
+
 }

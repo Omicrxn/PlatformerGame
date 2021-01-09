@@ -54,6 +54,7 @@ private:
     Font* font;
 
     Timer timer;
+    EntityManager* entityManager;
 };
 
 #endif // __SCENEGAMEPLAY_H__

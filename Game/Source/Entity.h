@@ -5,7 +5,7 @@
 #include "SString.h"
 #include "Animation.h"
 
-class Collider;
+#include "Collisions.h"
 class Render;
 
 enum class EntityType
@@ -37,23 +37,23 @@ public:
 
     virtual void OnCollision(Collider* collider) {};
 
+    virtual SDL_Rect GetBounds() const { return { collider->rect.x, collider->rect.y, width, height }; };
+
 public:
 
     EntityType type;
 
     bool active = true;
-
-    //SString name;         // Entity name identifier?
     //uint32 id;            // Entity identifier?
 
     Collider* collider = nullptr;
-
+    SString name;
     // Possible properties, it depends on how generic we
     // want our Entity class, maybe it's not renderable...
     iPoint position;        // Use a float instead?
     fPoint velocity;
     bool renderable = false;
-
+    int width, height;
    // SDL_Texture* texture;
 };
 

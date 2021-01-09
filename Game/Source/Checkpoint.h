@@ -4,7 +4,7 @@
 
 #include "Entity.h"
 #include "Render.h"
-#include "Collisions.h"
+
 #include "EntityManager.h"
 
 #include "Point.h"
@@ -39,6 +39,7 @@ public:
     int fx;
 
     Player* player;
+    int scale;
 };
 
 #endif // __CHECKPOINT_H__

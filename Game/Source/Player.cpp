@@ -2,6 +2,7 @@
 
 Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::PLAYER)
 {
+    name = "Player";
     texture = NULL;
 
     velocity = { 0,0 };
@@ -48,6 +49,7 @@ Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entit
         deadAnim.PushBack({ i,950,231,190 });
     }
     deadAnim.speed = 0.08f;
+    deadAnim.loop = false;
 
     // Melee Animation
     for (int i = 0; i < 231 * 8; i += 231)
@@ -83,14 +85,22 @@ bool Player::Update(Input* input, float dt)
         velocity.y = velocity.y + GRAVITY * dt;
     }
 
-    if (readyToJump && !dead)
+    if (!dead)
     {
-        currentAnim = PlayerAnim::IDLE;
-        velocity.x = 0;
+        if (readyToJump)
+        {
+            currentAnim = PlayerAnim::IDLE;
+            velocity.x = 0;
+        }
+        else
+        {
+            currentAnim = PlayerAnim::FALL;
+        }
     }
     else
     {
-        currentAnim = PlayerAnim::FALL;
+        Die();
+        
     }
 
     if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT);
@@ -102,7 +112,6 @@ bool Player::Update(Input* input, float dt)
     {
         currentAnim = PlayerAnim::SHOOTING;
     }
-
     // Update collider position
     if (collider != nullptr)
     {
@@ -114,38 +123,36 @@ bool Player::Update(Input* input, float dt)
 
 void Player::Draw(Render* render)
 {
-    SDL_Rect rec;
+    
     switch (currentAnim)
     {
     case PlayerAnim::IDLE:
-        rec = idleAnim.GetCurrentFrame();
+        animRec = idleAnim.GetCurrentFrame();
         break;
     case PlayerAnim::WALK:
-        rec = runningAnim.GetCurrentFrame();
+        animRec = runningAnim.GetCurrentFrame();
         break;
     case PlayerAnim::JUMP:
-        rec = jumpingAnim.GetCurrentFrame();
+        animRec = jumpingAnim.GetCurrentFrame();
         break;
     case PlayerAnim::FALL:
-        rec = fallingAnim.GetCurrentFrame();
+        animRec = fallingAnim.GetCurrentFrame();
         break;    
     case PlayerAnim::SHOOTING:
-        rec = shootingAnim.GetCurrentFrame();
+        animRec = shootingAnim.GetCurrentFrame();
+        break;
+    case PlayerAnim::DEAD:
+        animRec = deadAnim.GetCurrentFrame();
         break;
     default:
         break;
     }
-    render->DrawTexture(texture, position.x, position.y+15, &rec, 1.0f, isLeft);
+    render->DrawTexture(texture, position.x, position.y+15, &animRec, 1.0f, isLeft);
 }
 
 void Player::SetTexture(SDL_Texture *tex)
 {
     texture = tex;
-}
-
-SDL_Rect Player::GetBounds()
-{
-    return { position.x + 86, position.y + 43, width, height };
 }
 
 void Player::Run(bool isLeft)
@@ -186,19 +193,31 @@ void Player::SmallJump()
     if (velocity.y < -200.0f && !godMode) velocity.y = -200.0f;
 }
 
+void Player::Die()
+{
+    currentAnim = PlayerAnim::DEAD;
+    if (deadAnim.Finished())
+    {
+        if (lifes > 0)
+        {
+            lifes--;
+            position = lastCheckpointPos;
+            dead = false;
+        }
+        else
+        {
+            active = false;
+        }
+    }
+    
+}
+
 void Player::OnCollision(Collider* collider)
 {
 	if (collider->type == Collider::Type::ENEMY)
 	{
 		//audio->PlayFx(fx);
 		
-		if (lifes > 0) 
-		{
-			lifes--;
-		}
-		else 
-		{
-            active = false;
-		}
+        Die();
 	}
 }

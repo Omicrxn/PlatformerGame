@@ -4,7 +4,6 @@
 
 #include "Entity.h"
 #include "Render.h"
-#include "Collisions.h"
 #include "EntityManager.h"
 
 #include "Point.h"
