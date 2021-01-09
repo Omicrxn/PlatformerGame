@@ -20,7 +20,7 @@ Heart::Heart(Collisions* collisions, AudioManager* audio, EntityManager* entityM
 	position = iPoint(0, 0);
 	velocity = { 0,0 };
 
-	collider = collisions->AddCollider({ position.x,position.y,16,16 }, Collider::Type::ITEM_HEART, (Module*)entityManager);
+	collider = collisions->AddCollider({ position.x,position.y,16*2,16*2 }, Collider::Type::ITEM_HEART, (Module*)entityManager);
 }
 
 bool Heart::Update(float dt)
