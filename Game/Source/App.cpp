@@ -187,10 +187,12 @@ void App::PrepareUpdate()
     // L08: DONE 4: Calculate the dt: differential time since last frame
 	dt = frameTime.ReadSec();
 	frameTime.Start();
+
 	if (input->GetKey(SDL_SCANCODE_F11) == KeyState::KEY_DOWN)
 	{
 		capTo60fps = !capTo60fps;
 	}
+
 	if (capTo60fps)
 	{
 		cappedMs = 1000 / 60;
@@ -367,28 +369,83 @@ void App::SaveGameRequest() const
 }
 
 // ---------------------------------------
-// L02: TODO 5: Create a method to actually load an xml file
+// Create a method to actually load an xml file
 // then call all the modules to load themselves
 bool App::LoadGame()
 {
 	bool ret = false;
 
-	//...
-
 	loadGameRequested = false;
+
+	//pugi::xml_document doc;
+	//pugi::xml_parse_result result = doc.load_file("save_game.xml");
+
+	//if (result == NULL)
+	//{
+	//	LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
+	//	ret = false;
+	//}
+	//else
+	//{
+	//	bool ret = true;
+
+	//	pugi::xml_node node = doc.child("save");
+
+	//	ListItem<Module*>* item;
+	//	item = modules.start;
+
+	//	while (item != NULL && ret == true)
+	//	{
+	//		ret = item->data->LoadState(node.child(item->data->name.GetString()));
+	//		item = item->next;
+	//	}
+
+	//	pugi::xml_node nodeEntity = node.child("entitymanager");
+	//	for (int i = 0; i < app->entityman->entities.Count(); i++)
+	//	{
+	//		SString entityName;
+	//		entityName.Create("Entity%d", i + 1);
+	//		pugi::xml_node currentEntity = nodeEntity.child(entityName.GetString());
+	//		app->entityman->entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
+	//		app->entityman->entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
+	//	}
+	//}
 
 	return ret;
 }
 
-// L02: TODO 7: Implement the xml save method for current state
+// Implement the xml save method for current state
 bool App::SaveGame() const
 {
 	bool ret = true;
 
-	//...
-
 	saveGameRequested = false;
+
+	/*pugi::xml_document doc;
+	pugi::xml_node node = doc.append_child("save");
+	pugi::xml_node newNode;
+
+	ListItem<Module*>* item;
+	item = modules.start;
+
+	while (item != NULL && ret == true)
+	{
+		newNode = node.append_child(item->data->name.GetString());
+		ret = item->data->SaveState(newNode);
+		item = item->next;
+	}
+
+	pugi::xml_node nodeEntity = node.child("entitymanager");
+	for (int i = 0; i < app->entityman->entities.Count(); i++)
+	{
+		SString entityName;
+		entityName.Create("Entity%d", i + 1);
+		pugi::xml_node currentEntity = nodeEntity.append_child(entityName.GetString());
+		currentEntity.append_attribute("x").set_value(app->entityman->entities.At(i)->data->position.x);
+		currentEntity.append_attribute("y").set_value(app->entityman->entities.At(i)->data->position.y);
+	}
+
+	doc.save_file("save_game.xml");*/
 
 	return ret;
 }
-

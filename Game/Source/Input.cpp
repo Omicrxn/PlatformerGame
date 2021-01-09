@@ -38,6 +38,8 @@ bool Input::Awake(pugi::xml_node& config)
 		ret = false;
 	}
 
+	SDL_ShowCursor(0);
+
 	return ret;
 }
 

@@ -122,8 +122,11 @@ private:
 	Timer lastSecFrameTime;
 	uint32 lastSecFrameCount = 0;
 	uint32 prevLastSecFrameCount = 0;
+
 	float dt = 0.0f;
+
 	bool capTo60fps = true;
+
 	int	cappedMs = -1;
 };
 
