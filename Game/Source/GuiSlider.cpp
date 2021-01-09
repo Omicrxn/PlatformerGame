@@ -4,6 +4,13 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 {
     this->bounds = bounds;
     this->text = text;
+
+    minValue = 0;
+    maxValue = 128;
+    barWidth = 300;
+
+    leftLimit = 550;
+    rightLimit = 850;
 }
 
 GuiSlider::~GuiSlider()
@@ -16,14 +23,15 @@ bool GuiSlider::Update(Input* input, float dt)
     {
         int mouseX, mouseY;
         input->GetMousePosition(mouseX, mouseY);
-        /*mouseY += 500;
 
-        int motionX = 0, motionY = 0;
+        int motionX, motionY;
         input->GetMouseMotion(motionX, motionY);
 
-        unit = 319 / 100;
-        volume = (mouseX - 493) / unit;
-        value = round(value);*/
+        unit = barWidth / maxValue;
+        value = (mouseX - leftLimit) / unit;
+        value = round(value);
+
+        // bounds.x += render->camera.x
 
         // Check collision between mouse and button bounds
         if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 
@@ -32,18 +40,18 @@ bool GuiSlider::Update(Input* input, float dt)
             state = GuiControlState::FOCUSED;
 
             // TODO.
-            //if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-            //{
-            //    state = GuiControlState::PRESSED;
-            //}
+            if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+            {
+                state = GuiControlState::PRESSED;
+            }
 
-            //// If mouse button pressed -> Generate event!
-            //if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KeyState::KEY_REPEAT)
-            //{
-            //    NotifyObserver();
-            //}
+            // If mouse button pressed -> Generate event!
+            if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KeyState::KEY_REPEAT)
+            {
+                NotifyObserver();
+            }
         }
-        /*else if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KeyState::KEY_UP)
+        else if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KeyState::KEY_UP)
         {
             state = GuiControlState::NORMAL;
         }
@@ -54,17 +62,17 @@ bool GuiSlider::Update(Input* input, float dt)
             NotifyObserver();
         }
 
-        if (bounds.x < 463)
+        if (bounds.x < leftLimit)
         {
-            bounds.x = 463;
+            bounds.x = leftLimit;
         }
-        if (bounds.x >= 782)
+        if (bounds.x >= rightLimit)
         {
-            bounds.x = 782;
+            bounds.x = rightLimit;
         }
 
         if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-            state = GuiControlState::NORMAL;*/
+            state = GuiControlState::NORMAL;
     }
 
     return false;
@@ -73,31 +81,18 @@ bool GuiSlider::Update(Input* input, float dt)
 bool GuiSlider::Draw(Render* render)
 {
     // Draw the right button depending on state
-    /*switch (state)
-    {
-    case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 100, 100, 100, 255 });
-        break;
-    case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
-        break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 0, 255 });
-        break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 0, 255, 255, 255 });
-        break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
-        break;
-    default:
-        break;
-    }*/
-
     switch (state)
     {
     case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 100, 100, 100, 255 });
         break;
-    case GuiControlState::NORMAL: render->DrawRectangle(bounds, { 255, 255, 255, 255 });
+    case GuiControlState::NORMAL: /*render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
+        render->DrawTexture(texture, bounds.x, bounds.y, &greySlider);
         break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, { 255, 255, 0, 150 });
+    case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 255, 255, 0, 255 });*/
+        render->DrawTexture(texture, bounds.x, bounds.y, &yellowSlider);
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, { 255, 255, 255, 200 });
+    case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
+        render->DrawTexture(texture, bounds.x, bounds.y, &brownSlider);
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;
@@ -106,4 +101,9 @@ bool GuiSlider::Draw(Render* render)
     }
 
     return false;
+}
+
+int GuiSlider::GetValue()
+{
+    return value;
 }

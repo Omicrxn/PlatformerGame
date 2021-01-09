@@ -9,18 +9,10 @@
 #include "EntityManager.h"
 
 #include "SDL/include/SDL.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
-SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager)
+SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio)
 {
-    // GUI: Initialize required controls for the screen
-    /*btnStart = new GuiButton(1, { (int)win->GetWindowWidth()/2 - 500/2, (int)win->GetWindowHeight() / 2+20, 500, 80 }, "START");
-    btnStart->SetObserver(this);
-
-    btnExit = new GuiButton(2, { (int)win->GetWindowWidth() / 2 - 500/2, (int)win->GetWindowHeight() / 2+120, 500, 80 }, "EXIT");
-    btnExit->SetObserver(this);*/
-    //background rectangle definition
-    /*backgroundRect = { 0,0,1280,720 };*/
-
     // GUI: Initialize required controls for the screen
     btnStart = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
     btnStart->SetObserver(this);
@@ -38,24 +30,25 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager)
     btnExit->SetObserver(this);
     
     // GUI: Initialize required controls for the settings
-    sldrMusicVolume = new GuiSlider(1, { (int)win->GetWindowWidth() / 2 - 500 / 2, (int)win->GetWindowHeight() / 2 + 20, 500, 40 }, "MUSICVOLUME");
+    sldrMusicVolume = new GuiSlider(6, { 700, (int)win->GetWindowHeight() / 2 + 23, 35, 35 }, "MUSICVOLUME");
     sldrMusicVolume->SetObserver(this);
 
-    sldrFxVolume = new GuiSlider(2, { (int)win->GetWindowWidth() / 2 - 500 / 2, (int)win->GetWindowHeight() / 2 + 80, 500, 40 }, "FXVOLUME");
+    sldrFxVolume = new GuiSlider(7, { 700, (int)win->GetWindowHeight() / 2 + 83, 35, 35 }, "FXVOLUME");
     sldrFxVolume->SetObserver(this);
 
-    cbxFullscreen = new GuiCheckBox(1, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 140, 45, 49 }, "FULLSCREEN");
+    cbxFullscreen = new GuiCheckBox(8, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 140, 45, 49 }, "FULLSCREEN");
     cbxFullscreen->SetObserver(this);
 
-    cbxVSync = new GuiCheckBox(2, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 200, 45, 49 }, "VSYNC");
+    cbxVSync = new GuiCheckBox(9, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 200, 45, 49 }, "VSYNC");
     cbxVSync->SetObserver(this);
 
     //Rectangles definition
     backgroundRect = { 0,0,1280,720 };
-    creditsRect = { 0,0,1280,720 };
+    barRect = { 0,0,300,35 };
 
     this->sceneManager = sceneManager;
     this->window = win;
+    this->audio = audio;
 
     menuCurrentSelection = MenuSelection::NONE;
     settingsCurrentSelection = SettingsSelection::NONE;
@@ -68,18 +61,20 @@ SceneTitle::~SceneTitle()
 bool SceneTitle::Load(Textures* tex)
 {
     backgroundTexture = tex->Load("Assets/Textures/Scenes/title_screen.png");
-
+    barTexture = tex->Load("Assets/Textures/UI/bar.png");
     atlasGUI = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
     btnStart->SetTexture(atlasGUI);
     btnContinue->SetTexture(atlasGUI);
     btnSettings->SetTexture(atlasGUI);
     btnCredits->SetTexture(atlasGUI);
     btnExit->SetTexture(atlasGUI);
-
+    sldrMusicVolume->SetTexture(atlasGUI);
+    sldrFxVolume->SetTexture(atlasGUI);
     cbxFullscreen->SetTexture(atlasGUI);
     cbxVSync->SetTexture(atlasGUI);
 
     font = new Font("Assets/Fonts/happy_school.xml", tex);
+    audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
     return false;
 }
@@ -109,7 +104,15 @@ bool SceneTitle::Update(Input* input, float dt)
         cbxFullscreen->Update(input, dt);
         cbxVSync->Update(input, dt);
 
-        if (settingsCurrentSelection == SettingsSelection::FULLSCREEN)
+        if (settingsCurrentSelection == SettingsSelection::MUSICVOLUME)
+        {
+            Mix_VolumeMusic(sldrMusicVolume->GetValue());
+        }
+        else if (settingsCurrentSelection == SettingsSelection::FXVOLUME)
+        {
+            Mix_Volume(-1, sldrFxVolume->GetValue());
+        }
+        else if (settingsCurrentSelection == SettingsSelection::FULLSCREEN)
         {
             if (fullscreen == false)
             {
@@ -162,6 +165,9 @@ bool SceneTitle::Draw(Render* render)
         btnExit->Draw(render);
 
         int offset = 3;
+        render->DrawText(font, "PARACELSUS", 370 + offset, 250 + offset, 100, 13, { 105,105,105,255 });
+        render->DrawText(font, "PARACELSUS", 370, 250, 100, 13, { 255,255,255,255 });
+
         render->DrawText(font, "PLAY", 596 + offset, 383 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "CONTINUE", 557 + offset, 443 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "SETTINGS", 557 + offset, 503 + offset, 40, 5, { 105,105,105,255 });
@@ -176,27 +182,45 @@ bool SceneTitle::Draw(Render* render)
     }
     else if (menuCurrentSelection == MenuSelection::SETTINGS)
     {
-        render->DrawRectangle(backgroundRect, { 0, 0, 0, 227 });
+        render->DrawTexture(barTexture, 567, 383, &barRect);
+        render->DrawTexture(barTexture, 567, 443, &barRect);
 
         sldrMusicVolume->Draw(render);
         sldrFxVolume->Draw(render);
         cbxFullscreen->Draw(render);
         cbxVSync->Draw(render);
 
-        render->DrawText(font, "Fullscreen", 450, 495, 50, 5, { 255,255,255,255 });
+        int offset = 3;
+        render->DrawText(font, "MUSIC", 425 + offset, 383 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "MUSIC", 425, 383, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "FX", 425 + offset, 443 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "FX", 425, 443, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "FULLSCREEN", 475 + offset, 503 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "FULLSCREEN", 475, 503, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "VSYNC", 475 + offset, 563 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "VSYNC", 475, 563, 40, 5, { 255,255,255,255 });
     }
     else if (menuCurrentSelection == MenuSelection::CREDITS)
     {
-        render->DrawRectangle(backgroundRect, { 0, 0, 0, 227 });
+        int offset = 3;
+        render->DrawText(font, "AUTHORS:", 570 + offset, 190 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "ALEJANDRO AVILA", 490 + offset, 230 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "BOSCO BARBER", 520 + offset, 270 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "YERAY TARIFA", 520 + offset, 310 + offset, 40, 5, { 105,105,105,255 });
+        offset = 2;
+        render->DrawText(font, "This project is licensed under an unmodified MIT license, which is an", 150 + offset, 400 + offset, 30, 3, { 105,105,105,255 });
+        render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 150 + offset, 430 + offset, 30, 3, { 105,105,105,255 });
+        render->DrawText(font, "The assets' work of this project is licensed under the", 150 + offset, 490 + offset, 30, 3, { 105,105,105,255 });
+        render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 150 + offset, 520 + offset, 30, 3, { 105,105,105,255 });
 
-        render->DrawText(font, "Authors:", 540, 100, 50, 5, { 255,255,255,255 });
-        render->DrawText(font, "Alejandro Avila", 460, 160, 50, 5, { 255,255,255,255 });
-        render->DrawText(font, "Bosco Barber", 490, 220, 50, 5, { 255,255,255,255 });
-        render->DrawText(font, "Yeray Tarifa", 490, 280, 50, 5, { 255,255,255,255 });
-        render->DrawText(font, "This project is licensed under an unmodified MIT license, which is an", 215, 400, 25, 3, { 255,255,255,255 });
-        render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 215, 430, 25, 3, { 255,255,255,255 });
-        render->DrawText(font, "The assets' work of this project is licensed under the", 215, 490, 25, 3, { 255,255,255,255 });
-        render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 215, 510, 25, 3, { 255,255,255,255 });
+        render->DrawText(font, "AUTHORS:", 570, 190, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "ALEJANDRO AVILA", 490, 230, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "BOSCO BARBER", 520, 270, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "YERAY TARIFA", 520, 310, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "This project is licensed under an unmodified MIT license, which is an", 150, 400, 30, 3, { 255,255,255,255 });
+        render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 150, 430, 30, 3, { 255,255,255,255 });
+        render->DrawText(font, "The assets' work of this project is licensed under the", 150, 490, 30, 3, { 255,255,255,255 });
+        render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 150, 520, 30, 3, { 255,255,255,255 });
     }
 
     return false;
@@ -224,13 +248,13 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
     }
     case GuiControlType::SLIDER:
     {
-        if (control->id == 1) settingsCurrentSelection = SettingsSelection::MUSICVOLUME;
-        else if (control->id == 2) settingsCurrentSelection = SettingsSelection::FXVOLUME;
+        if (control->id == 6) settingsCurrentSelection = SettingsSelection::MUSICVOLUME;
+        else if (control->id == 7) settingsCurrentSelection = SettingsSelection::FXVOLUME;
     }
     case GuiControlType::CHECKBOX:
     {
-        if (control->id == 1) settingsCurrentSelection = SettingsSelection::FULLSCREEN;
-        else if (control->id == 2) settingsCurrentSelection = SettingsSelection::VSYNC;
+        if (control->id == 8) settingsCurrentSelection = SettingsSelection::FULLSCREEN;
+        else if (control->id == 9) settingsCurrentSelection = SettingsSelection::VSYNC;
     }
     default: break;
     }

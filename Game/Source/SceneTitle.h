@@ -8,6 +8,7 @@
 #include "GuiCheckBox.h"
 #include "SceneManager.h"
 #include "Window.h"
+#include "Audio.h"
 
 class Font;
 
@@ -34,7 +35,7 @@ class SceneTitle : public Scene
 {
 public:
 
-    SceneTitle(Window* win, SceneManager* sceneManager);
+    SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio);
     virtual ~SceneTitle();
 
     bool Load(Textures* tex);
@@ -47,9 +48,6 @@ public:
 
     // Declare on mouse click event
     bool OnGuiMouseClickEvent(GuiControl* control);
-
-    // GUI: Title Screen Main Menu buttons (They have to be accessible from the diferent GuiControls)
-    SDL_Texture* atlasGUI;
     
 private:
 
@@ -66,12 +64,15 @@ private:
     GuiCheckBox* cbxFullscreen;
     GuiCheckBox* cbxVSync;
 
+    SDL_Texture* atlasGUI;
     SDL_Texture* backgroundTexture;
+    SDL_Texture* barTexture;
     SDL_Rect backgroundRect;
-    SDL_Rect creditsRect;
+    SDL_Rect barRect;
 
     SceneManager* sceneManager;
     Window* window;
+    AudioManager* audio;
 
     MenuSelection menuCurrentSelection;
     SettingsSelection settingsCurrentSelection;

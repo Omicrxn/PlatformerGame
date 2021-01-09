@@ -72,13 +72,13 @@ bool GuiCheckBox::Draw(Render* render)
         if (checked)
         {
             render->scale = 2;
-            render->DrawTexture(texture, bounds.x + 5, bounds.y + 5, &whiteTick);
+            render->DrawTexture(texture, bounds.x + 7, bounds.y + 7, &whiteTick);
             render->scale = 1;
         }
         else
         {
             render->scale = 2;
-            render->DrawTexture(texture, bounds.x + 5, bounds.y + 5, &whiteCross);
+            render->DrawTexture(texture, bounds.x + 7, bounds.y + 7, &whiteCross);
             render->scale = 1;
         }
         break;

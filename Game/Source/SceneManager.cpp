@@ -21,7 +21,7 @@
 #define FADEOUT_TRANSITION_SPEED	2.0f
 #define FADEIN_TRANSITION_SPEED		2.0f
 
-SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions) : Module()
+SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio) : Module()
 {
 	name.Create("scenemanager");
 
@@ -35,6 +35,7 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityMa
 	this->entityManager = entityManager;
 	this->win = win;
 	this->collisions = collisions;
+	this->audio = audio;
 }
 
 // Destructor
@@ -54,7 +55,7 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 	//current = new SceneLogo();
-	current = new SceneTitle(win, this);
+	current = new SceneTitle(win, this, audio);
 
 	if (current->name == "Gameplay")
 	{
@@ -197,7 +198,7 @@ bool SceneManager::Update(float dt)
 		switch (current->nextScene)
 		{
 			case SceneType::LOGO: next = new SceneLogo(); break;
-			case SceneType::TITLE: next = new SceneTitle(win, this); break;
+			case SceneType::TITLE: next = new SceneTitle(win, this, audio); break;
 			case SceneType::GAMEPLAY: next = new SceneGameplay(); break;
 			case SceneType::ENDING: next = new SceneEnding(win); break;
 			default: break;

@@ -33,7 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions(render);
 	particles = new Particles(tex, render, collisions);
 	entityManager = new EntityManager(render, collisions, audio);
-	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions);
+	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions, audio);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp

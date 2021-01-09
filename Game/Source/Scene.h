@@ -10,6 +10,7 @@ class EntityManager;
 class GuiControl;
 class Window;
 class Collisions;
+class AudioManager;
 
 enum class SceneType
 {
@@ -29,7 +30,7 @@ public:
     {
         return true;
     }
-    virtual bool Load(Textures* tex,EntityManager* entityManager)
+    virtual bool Load(Textures* tex, EntityManager* entityManager)
     {
         return true;
     }

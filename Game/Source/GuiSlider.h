@@ -16,6 +16,8 @@ public:
     bool Update(Input* input, float dt);
     bool Draw(Render* render);
 
+    int GetValue();
+
 private:
 
     // GuiSlider specific properties
@@ -25,6 +27,16 @@ private:
 
     int minValue;
     int maxValue;
+    int barWidth;
+    int unit;
+
+    int leftLimit;
+    int rightLimit;
+
+    SDL_Rect whiteSlider = { 335,0,35,35 };
+    SDL_Rect greySlider = { 335,38,35,35 };
+    SDL_Rect yellowSlider = { 335,76,35,35 };
+    SDL_Rect brownSlider = { 335,114,35,35 };
 };
 
 #endif // __GUISLIDER_H__
