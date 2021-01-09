@@ -58,5 +58,4 @@ void Checkpoint::OnCollision(Collider* collider)
 	//app->audio->PlayFx(fx);
 	player->lastCheckpointPos = { this->position.x-player->width,this->position.y };
 	checkpointAnimation.speed = 0.04f;
-
 }
