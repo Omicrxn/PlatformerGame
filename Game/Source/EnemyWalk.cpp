@@ -19,10 +19,11 @@ EnemyWalk::EnemyWalk(Collisions* collisions, AudioManager* audio, EntityManager*
 	this->audio = audio;
 
 	position = { 0, 0 };
-
+	velocity = {0,0};
 	dead = false;
-
-	collider = collisions->AddCollider({ position.x, position.y, 32, 24 }, Collider::Type::ENEMY, (Module*)entityManager);
+	width = 32;
+	height = 24;
+	collider = collisions->AddCollider({ position.x, position.y, width, height }, Collider::Type::ENEMY, (Module*)entityManager);
 
 	counter = 0;
 }
@@ -35,7 +36,7 @@ bool EnemyWalk::Update(float dt)
 {
 	bool ret = true;
 
-#define GRAVITY 600.0f
+#define GRAVITY 600
 
 	if (!dead)
 	{
@@ -70,7 +71,7 @@ void EnemyWalk::Move(Map* map)
 
 		iPoint mapPos = map->WorldToMap(position.x, position.y);
 		if (mapPos.x < nextTile.x)
-			velocity.x = 100.0f;
+			velocity.x = 150.0f;
 		else
 			velocity.x = -100.0f;
 	}
@@ -78,6 +79,7 @@ void EnemyWalk::Move(Map* map)
 	{
 		velocity = { 0,0 };
 	}
+
 }
 
 void EnemyWalk::UpdatePath(Map* map)

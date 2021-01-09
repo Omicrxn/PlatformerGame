@@ -63,7 +63,9 @@ Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entit
     {
         shootingAnim.PushBack({ i,1330,231,190 });
     }
-    shootingAnim.speed = 0.08f;
+    shootingAnim.speed = 0.5f;
+    shootingAnim.loop = false;
+
 
     width = 57;
     height = 86;
@@ -79,6 +81,7 @@ bool Player::Update(Input* input, float dt)
 {
     #define GRAVITY 600.0f
 
+
     // Calculate movement
     if (!dead && !godMode)
     {
@@ -89,15 +92,25 @@ bool Player::Update(Input* input, float dt)
 
     if (!dead)
     {
-        if (readyToJump)
-        {
-            currentAnim = PlayerAnim::IDLE;
-            velocity.x = 0;
-        }
-        else
-        {
-            currentAnim = PlayerAnim::FALL;
-        }
+       
+            if (readyToJump)
+            {
+                if (shootingAnim.Finished())
+                {
+                    currentAnim = PlayerAnim::IDLE;
+                }
+                if (currentAnim != PlayerAnim::SHOOTING)
+                {
+                    currentAnim = PlayerAnim::IDLE;
+                }
+                velocity.x = 0;
+            }
+            else
+            {
+                currentAnim = PlayerAnim::FALL;
+            }
+
+
     }
     else
     {
@@ -219,7 +232,11 @@ void Player::Die()
 
 void Player::Shoot()
 {
-    currentAnim = PlayerAnim::SHOOTING;
+    shootingAnim.Reset();
+    if (position == tempPosition)
+    {
+        currentAnim = PlayerAnim::SHOOTING;
+    }
     //particles
     if (isLeft && particles->playerBullet.speed.x > 0)
     {
@@ -229,11 +246,9 @@ void Player::Shoot()
     {
         particles->playerBullet.speed.x = -particles->playerBullet.speed.x;
     }
-    if (shootingAnim.Finished())
-    {
-        particles->AddParticle(particles->playerBullet, GetBounds().x + 32, GetBounds().y, Collider::Type::PLAYER_BULLET);
-        shootingAnim.Reset();
-    }
+
+    particles->AddParticle(particles->playerBullet, GetBounds().x + 32, GetBounds().y+GetBounds().h/2, Collider::Type::PLAYER_BULLET);
+
 }
 
 void Player::OnCollision(Collider* collider)

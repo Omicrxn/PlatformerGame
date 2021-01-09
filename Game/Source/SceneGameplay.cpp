@@ -85,7 +85,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	enemyWalk1->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/slime.png"));
 	enemyWalk1->SetPlayer(player);
 	enemyWalk1->SetMap(map);
-	enemyWalk1->position = iPoint(20 * 64, -10 * 64);
+	enemyWalk1->position = iPoint(6 * 64, 2350);
 
     return false;
 }
@@ -103,7 +103,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 	player->tempPosition = player->position;
 	player->Update(input,dt);
 	CollisionHandler();
-
+	enemyWalk1->GetBounds();
 	//Debug Keys
 	if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
 	{
@@ -168,41 +168,43 @@ void SceneGameplay::CollisionHandler()
 		{
 			for (int x = 0; x < map->data.width; x++)
 			{
-				//Check ground
-				if ((map->data.layers[4]->Get(x, y) >= 86) &&
-					CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
-				{
-					if (entity->data->name == "Player")
+				
+					//Check ground
+					if ((map->data.layers[4]->Get(x, y) >= 86) &&
+						CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
 					{
-						player->position = player->tempPosition;
-						player->readyToJump = true;
-					}
-					
-					entity->data->velocity.y = 0.0f;
-					
-					
-					break;
-				}
-				//Check water
-				if ((map->data.layers[4]->Get(x, y) == 85) &&
-					CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
-				{
-					if (entity->data->name == "Player")
-					{
-						player->position = player->tempPosition;
-						player->readyToJump = false;
-						if (!player->dead)
+						if (entity->data->type == EntityType::PLAYER)
 						{
-							player->dead = true;
+							player->position = player->tempPosition;
+							player->readyToJump = true;
 						}
-						
+
+						entity->data->velocity.y = 0.0f;
+
+
+						break;
+					}
+					//Check water
+					if ((map->data.layers[4]->Get(x, y) == 85) &&
+						CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
+					{
+						if (entity->data->name == "Player")
+						{
+							player->position = player->tempPosition;
+							player->readyToJump = false;
+							if (!player->dead)
+							{
+								player->dead = true;
+							}
+
+						}
+
+						entity->data->velocity.y = 0.0f;
+
+
+						break;
 					}
 					
-						entity->data->velocity.y = 0.0f;
-					
-					
-					break;
-				}
 			}
 		}
 		entity = entity->next;

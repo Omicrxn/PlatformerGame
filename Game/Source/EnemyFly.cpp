@@ -65,18 +65,16 @@ void EnemyFly::Move(Map* map)
 		path.Pop(nextTile);
 
 		/*iPoint mapPos = map->WorldToMap(position.x, position.y);*/
-		iPoint mapPos;
-		mapPos.x = position.x / (64 * 1);
-		mapPos.y = position.y / (64 * 1);
+			iPoint mapPos = map->WorldToMap(position.x, position.y);
 		if (mapPos.x < nextTile.x)
 			velocity.x = 1;
 		else
 			velocity.x = -1;
 
 		if (mapPos.y < nextTile.y)
-			velocity.y = 1;
-		else
 			velocity.y = -1;
+		else
+			velocity.y = 1;
 	}
 	else
 	{
