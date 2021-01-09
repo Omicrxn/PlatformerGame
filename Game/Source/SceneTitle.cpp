@@ -124,7 +124,16 @@ bool SceneTitle::Update(Input* input, float dt)
         }
         else if (settingsCurrentSelection == SettingsSelection::VSYNC)
         {
-
+            if (vsync == false)
+            {
+                SDL_GL_SetSwapInterval(1);
+                vsync = true;
+            }
+            else
+            {
+                SDL_GL_SetSwapInterval(0);
+                vsync = false;
+            }
         }
 
         settingsCurrentSelection = SettingsSelection::NONE;

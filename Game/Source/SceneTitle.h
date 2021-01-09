@@ -79,6 +79,7 @@ private:
     Font* font;
 
     bool fullscreen = false;
+    bool vsync = false;
 };
 
 #endif // __SCENETITLE_H__

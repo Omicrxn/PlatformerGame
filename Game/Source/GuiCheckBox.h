@@ -26,6 +26,9 @@ private:
     SDL_Rect yellowCheckBox = { 293,294,45,49 };
     SDL_Rect brownCheckBox = { 293,343,45,49 };
     SDL_Rect whiteCheckBox = { 293,437,45,49 };
+
+    SDL_Rect whiteCross = { 370,60,15,15 };
+    SDL_Rect whiteTick = { 370,75,16,15 };
 };
 
 #endif // __GUICHECKBOX_H__
