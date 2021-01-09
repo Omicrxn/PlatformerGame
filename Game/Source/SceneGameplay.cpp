@@ -139,7 +139,7 @@ bool SceneGameplay::Draw(Render* render)
 	render->DrawText(font, coins, 525, 10, 50, 5, { 255,255,255,255 });
 
 	char time[16] = { 0 };
-	sprintf_s(time, 16, "Timer: %03i", (int)timer.ReadSec());
+	sprintf_s(time, 16, "Timer: %03i", (int)timer.ReadSec() - 2);
 	render->DrawText(font, time, 1025, 10, 50, 5, { 255,255,255,255 });
 	
     return false;

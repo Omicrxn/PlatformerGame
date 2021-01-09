@@ -4,17 +4,30 @@
 #include "Scene.h"
 
 #include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiCheckBox.h"
 #include "SceneManager.h"
+#include "Window.h"
 
 class Font;
 
-enum class SelectedOption
+enum class MenuSelection
 {
     NONE,
+    PLAY,
     CONTINUE,
     SETTINGS,
     CREDITS,
     EXIT
+};
+
+enum class SettingsSelection
+{
+    NONE,
+    MUSICVOLUME,
+    FXVOLUME,
+    FULLSCREEN,
+    VSYNC
 };
 
 class SceneTitle : public Scene
@@ -35,21 +48,47 @@ public:
     // Declare on mouse click event
     bool OnGuiMouseClickEvent(GuiControl* control);
 
+    // GUI: Title Screen Main Menu buttons (They have to be accessible from the diferent GuiControls)
+    SDL_Texture* atlasGUI;
+
+    SDL_Rect whiteButton;
+    SDL_Rect brownButton;
+    SDL_Rect greyButton;
+    SDL_Rect yellowButton;
+
+    SDL_Rect greyCheckBox;
+    SDL_Rect yellowCheckBox;
+    SDL_Rect brownCheckBox;
+    SDL_Rect whiteCheckBox;
+    
 private:
 
+    // Main menu buttons
     GuiButton* btnStart;
     GuiButton* btnContinue;
     GuiButton* btnSettings;
     GuiButton* btnCredits;
     GuiButton* btnExit;
+
+    // Settings' sliders and checkboxes
+    GuiSlider* sldrMusicVolume;
+    GuiSlider* sldrFxVolume;
+    GuiCheckBox* cbxFullscreenMode;
+    GuiCheckBox* cbxVSync;
+
     SDL_Texture* backgroundTexture;
     SDL_Rect backgroundRect;
     SDL_Rect creditsRect;
 
     SceneManager* sceneManager;
-    SelectedOption currentSelection;
+    Window* window;
+
+    MenuSelection menuCurrentSelection;
+    SettingsSelection settingsCurrentSelection;
 
     Font* font;
+
+    bool fullscreen = false;
 };
 
 #endif // __SCENETITLE_H__

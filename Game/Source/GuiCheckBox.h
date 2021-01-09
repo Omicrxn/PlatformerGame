@@ -6,6 +6,10 @@
 #include "Point.h"
 #include "SString.h"
 
+#include "SceneTitle.h"
+
+class SceneTitle;
+
 class GuiCheckBox : public GuiControl
 {
 public:
@@ -14,7 +18,7 @@ public:
     virtual ~GuiCheckBox();
 
     bool Update(Input* input, float dt);
-    bool Draw(Render* render);
+    bool Draw(Render* render, SceneTitle* sceneTitle);
 
 private:
 

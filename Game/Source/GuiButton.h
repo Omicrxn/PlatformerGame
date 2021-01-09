@@ -6,6 +6,9 @@
 #include "Point.h"
 #include "SString.h"
 
+#include "SceneTitle.h"
+class SceneTitle;
+
 class GuiButton : public GuiControl
 {
 public:
@@ -14,7 +17,7 @@ public:
     virtual ~GuiButton();
 
     bool Update(Input* input, float dt);
-    bool Draw(Render* render);
+    bool Draw(Render* render, SceneTitle* sceneTitle);
 
 private:
 
