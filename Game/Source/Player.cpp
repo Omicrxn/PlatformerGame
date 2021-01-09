@@ -68,6 +68,7 @@ Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entit
     width = 57;
     height = 86;
     position = iPoint(96,2300);
+    lastCheckpointPos = position;
     score = 0;
     lifes = 5;
     collider = collisions->AddCollider({ position.x+86,position.y+43,width,height }, Collider::Type::PLAYER, (Module*)entityManager);
@@ -110,6 +111,7 @@ bool Player::Update(Input* input, float dt)
     if (input->GetKey(SDL_SCANCODE_UP) == KEY_UP) SmallJump();
     if (input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
     {
+        Shoot();
         currentAnim = PlayerAnim::SHOOTING;
     }
     // Update collider position
@@ -202,7 +204,9 @@ void Player::Die()
         {
             lifes--;
             position = lastCheckpointPos;
+            tempPosition = lastCheckpointPos;
             dead = false;
+            deadAnim.Reset();
         }
         else
         {
@@ -210,6 +214,11 @@ void Player::Die()
         }
     }
     
+}
+
+void Player::Shoot()
+{
+    //particles
 }
 
 void Player::OnCollision(Collider* collider)

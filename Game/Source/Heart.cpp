@@ -40,8 +40,9 @@ void Heart::Draw(Render* render)
 	// TODO: Calculate the corresponding rectangle depending on the
 	// animation state and animation frame
 	SDL_Rect rec = heartAnimation.GetCurrentFrame();
-
+	render->scale = 2;
 	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f);
+	render->scale = 1;
 }
 
 void Heart::SetPlayer(Player* player)

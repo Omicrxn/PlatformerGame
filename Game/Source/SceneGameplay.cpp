@@ -42,11 +42,19 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 
 	font = new Font("Assets/Fonts/happy_school.xml", tex);
 
+	// Checkpoint load // 37,18
+	checkpoint1 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
+	checkpoint1->SetTexture(tex->Load("Assets/Textures/Entities/Checkpoints/checkpoint_statue.png"));
+	checkpoint1->position = iPoint(19 * 64, 1572);
 	// Load game entities
 	// Player load
 	player = (Player*)entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetTexture(tex->Load("Assets/Textures/Entities/Player/player_sheet.png"));
 	player->position = iPoint(96, 2350);
+
+
+	//assign player to checkpoints
+	checkpoint1->SetPlayer(player);
 
 	// Item load
 	coin = (Coin*)entityManager->CreateEntity(EntityType::COIN);
@@ -59,11 +67,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	heart->SetPlayer(player);
 	heart->position = iPoint(6 * 64, 23 * 64);
 
-	// Checkpoint load // 37,18
-	checkpoint1 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
-	checkpoint1->SetTexture(tex->Load("Assets/Textures/Entities/Checkpoints/checkpoint_statue.png"));
-	checkpoint1->SetPlayer(player);
-	checkpoint1->position = iPoint(19*64, 1572);
+
 
 	//checkpoint2 = (Checkpoint*)entityManager->CreateEntity(EntityType::CHECKPOINT);
 	//checkpoint2->SetTexture(tex->Load("Assets/Textures/Entities/Items/checkpoint_statue.png"));
@@ -96,7 +100,7 @@ inline bool CheckCollision(SDL_Rect rec1, SDL_Rect rec2)
 bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 {
 	// Collision detection: map vs player
-	tempPlayerPosition = player->position;
+	player->tempPosition = player->position;
 	player->Update(input,dt);
 	CollisionHandler();
 
@@ -170,7 +174,7 @@ void SceneGameplay::CollisionHandler()
 				{
 					if (entity->data->name == "Player")
 					{
-						player->position = tempPlayerPosition;
+						player->position = player->tempPosition;
 						player->readyToJump = true;
 					}
 					
@@ -185,7 +189,7 @@ void SceneGameplay::CollisionHandler()
 				{
 					if (entity->data->name == "Player")
 					{
-						player->position = tempPlayerPosition;
+						player->position = player->tempPosition;
 						player->readyToJump = false;
 						if (!player->dead)
 						{

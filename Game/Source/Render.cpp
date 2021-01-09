@@ -149,19 +149,19 @@ void Render::CameraUpdate(iPoint position)
 	{
 		camera.x = 0;
 	}
-	//else if (camera.x <= -1275)
-	//{
-	//	camera.x = -1275;
-	//}
+	else if (camera.x <= -1600)
+	{
+		camera.x = -1600;
+	}
 
 	if (camera.y >= -6)
 	{
 		camera.y = -6;
 	}
-	//else if (camera.y <= -720)
-	//{
-	//	camera.y = -720;
-	//}
+	else if (camera.y <= -2007)
+	{
+		camera.y = -2007;
+	}
 }
 // Draw to screen
 bool Render::DrawTextureMap(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, bool isLeft, double angle, int pivotX, int pivotY) const

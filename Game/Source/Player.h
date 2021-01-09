@@ -41,6 +41,7 @@ public:
     void Jump();
     void SmallJump();
     void Die();
+    void Shoot();
 public:
 
     SDL_Texture* texture;
@@ -63,10 +64,10 @@ public:
     bool dead = false;
     bool godMode = false;
     bool isLeft = false;
-    
+    iPoint tempPosition = { 0,0 };
     int lifes;
     int score;
-    iPoint lastCheckpointPos = iPoint(0, 0);
+    iPoint lastCheckpointPos;
 };
 
 #endif // __PLAYER_H__
