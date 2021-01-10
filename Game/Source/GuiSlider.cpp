@@ -92,8 +92,7 @@ bool GuiSlider::Draw(Render* render)
         if (debug)
             render->DrawRectangle(bounds, { 255, 255, 0, 127 });
         break;
-    case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownSlider);
+    case GuiControlState::PRESSED: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownSlider);
         if (debug)
             render->DrawRectangle(bounds, { 0, 255, 255, 127 });
         break;

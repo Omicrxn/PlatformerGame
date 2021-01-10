@@ -84,7 +84,7 @@ bool GuiButton::Draw(Render* render)
         if (debug)
             render->DrawRectangle(bounds, { 0, 255, 255, 127 });
         break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+    case GuiControlState::SELECTED: /*render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
         break;
     default:
         break;

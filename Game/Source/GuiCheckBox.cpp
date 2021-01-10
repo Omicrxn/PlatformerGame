@@ -52,13 +52,10 @@ bool GuiCheckBox::Draw(Render* render)
     switch (state)
     {
     case GuiControlState::DISABLED:
-    {
         /*if (checked) render->DrawRectangle(bounds, { 100, 100, 100, 255 });
         else render->DrawRectangle(bounds, { 100, 100, 100, 255 });*/
-    } break;
-    case GuiControlState::NORMAL: 
-    {
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greyCheckBox);
+        break;
+    case GuiControlState::NORMAL: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greyCheckBox);
         if (checked)
         {
             render->scale = 2;
@@ -73,9 +70,8 @@ bool GuiCheckBox::Draw(Render* render)
         }
         if (debug)
             render->DrawRectangleWithoutCamera(bounds, { 0, 255, 0, 127 });
-    } break;
-    case GuiControlState::FOCUSED:
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowCheckBox);
+        break;
+    case GuiControlState::FOCUSED: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowCheckBox);
         if (checked)
         {
             render->scale = 2;
@@ -91,8 +87,7 @@ bool GuiCheckBox::Draw(Render* render)
         if (debug)
             render->DrawRectangle(bounds, { 255, 255, 0, 127 });
         break;
-    case GuiControlState::PRESSED:
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownCheckBox);
+    case GuiControlState::PRESSED: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownCheckBox);
         if (checked)
         {
             render->scale = 1.5;
