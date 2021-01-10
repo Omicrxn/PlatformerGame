@@ -92,16 +92,21 @@ bool App::Awake()
 		ret = true;
 		configApp = config.child("app");
 
-		// L01: DONE 4: Read the title from the config file
+		// Read the title from the config file
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
 
-        // L08: DONE 1: Read from config file your framerate cap
+        // Read from config file your framerate cap
 		int cap = configApp.child("framerate_cap").attribute("value").as_int(-1);
 		if (cap > 0)
 		{
-			cappedMs = 1000 / cap;
-			if(cap == 60) capTo60fps = true;
+			if (cap == 30) 
+				capTo30fps = true;
+			else
+			{
+				cappedMs = 1000 / cap;
+				capTo30fps = false;
+			}
 		}
 	}
 
@@ -112,7 +117,7 @@ bool App::Awake()
 
 		while ((item != NULL) && (ret == true))
 		{
-			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
+			// Add a new argument to the Awake method to receive a pointer to an xml node.
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 			// that can be used to read all variables for that module.
 			// Send nullptr if the node does not exist in config.xml
@@ -141,7 +146,7 @@ bool App::Start()
 		item = item->next;
 	}
 	
-	win->SetTitle("Paracelsus");
+	//win->SetTitle("Paracelsus");
 
 	PERF_PEEK(ptimer);
 
@@ -194,18 +199,15 @@ void App::PrepareUpdate()
 	dt = frameTime.ReadSec();
 	frameTime.Start();
 
+	// Enable / Disable cap to 30 fps
 	if (input->GetKey(SDL_SCANCODE_F11) == KeyState::KEY_DOWN)
 	{
-		capTo60fps = !capTo60fps;
-	}
+		capTo30fps = !capTo30fps;
 
-	if (capTo60fps)
-	{
-		cappedMs = 1000 / 60;
-	}
-	else
-	{
-		cappedMs = 0;
+		if (capTo30fps)
+			cappedMs = 1000 / 30;
+		else
+			cappedMs = 0;
 	}
 }
 
@@ -234,11 +236,11 @@ void App::FinishUpdate()
 	uint32 lastFrameMs = frameTime.Read();
 	uint32 framesOnLastUpdate = prevLastSecFrameCount;
 
-	/*static char title[256];
+	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
-			  averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);*/
+			  averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
 
-	//app->win->SetTitle(title);
+	win->SetTitle(title);
 
     // L08: DONE 2: Use SDL_Delay to make sure you get your capped framerate
 	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
@@ -258,13 +260,12 @@ bool App::PreUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if (pModule->active == false)
 			continue;
-		}
 
 		ret = item->data->PreUpdate();
 	}
@@ -284,9 +285,8 @@ bool App::DoUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
 			continue;
-		}
 
         // L08: DONE 5: Send dt as an argument to all updates, you need
         // to update module parent class and all modules that use update
@@ -307,9 +307,8 @@ bool App::PostUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
 			continue;
-		}
 
 		ret = item->data->PostUpdate();
 	}

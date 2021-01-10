@@ -241,10 +241,6 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		CollisionHandler();
 
 		// Debug Keys
-		if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
-		{
-			TransitionToScene(SceneType::GAMEPLAY);
-		}
 
 		if (input->GetKey(SDL_SCANCODE_F7) == KeyState::KEY_DOWN)
 		{

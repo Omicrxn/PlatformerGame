@@ -66,7 +66,6 @@ Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entit
     shootingAnim.speed = 0.5f;
     shootingAnim.loop = false;
 
-
     width = 57;
     height = 86;
     position = iPoint(96,2300);
@@ -119,7 +118,6 @@ bool Player::Update(Input* input, float dt)
 
         }
 
-        if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT);
         if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) Run(true);
         if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) Run(false);
         if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) Jump();
@@ -129,6 +127,18 @@ bool Player::Update(Input* input, float dt)
             Shoot();
 
         }
+
+        // Debug
+        if (godMode && input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+        {
+            position.y += 3;
+        }
+
+        if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
+        {
+            position = iPoint(96, 2300);
+        }
+
         // Update collider position
         if (collider != nullptr)
         {

@@ -128,7 +128,7 @@ private:
 
 	float dt = 0.0f;
 
-	bool capTo60fps = true;
+	bool capTo30fps = true;
 
 	int	cappedMs = -1;
 };

@@ -18,7 +18,7 @@ Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManage
 	position = iPoint(0, 0);
 	velocity = { 0,0 };
 	scale = 3;
-	collider = collisions->AddCollider({ position.x,position.y,35*scale,57*scale }, Collider::Type::ITEM_COIN, (Module*)entityManager);
+	collider = collisions->AddCollider({ position.x,position.y,35 * scale,57 * scale }, Collider::Type::ITEM_COIN, (Module*)entityManager);
 
 	achieved = false;
 }
@@ -41,7 +41,7 @@ bool Checkpoint::Update(float dt)
 
 void Checkpoint::Draw(Render* render)
 {
-	if (!pause)
+	if (!pause && !achieved)
 	{
 		// TODO: Calculate the corresponding rectangle depending on the
 		// animation state and animation frame
@@ -50,6 +50,15 @@ void Checkpoint::Draw(Render* render)
 		render->DrawTexture(texture, position.x, position.y, &rec, 1.0f, true);
 		render->scale = 1;
 	}
+	else if (achieved)
+	{
+		SDL_Rect rec = checkpointAnimation.GetFrame(3);
+
+		render->scale = scale;
+		render->DrawTexture(texture, position.x, position.y, &rec, 1.0f, true);
+		render->scale = 1;
+	}
+
 }
 
 void Checkpoint::SetPlayer(Player* player)
@@ -70,6 +79,5 @@ void Checkpoint::OnCollision(Collider* collider)
 		player->lastCheckpointPos = { this->position.x - player->width,this->position.y };
 		checkpointAnimation.speed = 0.04f;
 	}
-
 	achieved = true;
 }

@@ -61,7 +61,14 @@ public:
 
     bool pause;
 
+    // Entities attributes that need load / save
+    // Checkpoint
     bool achieved;
+
+    // Player
+    iPoint lastCheckpointPos;
+    int lifes;
+    int score;
 };
 
 #endif // __ENTITY_H__

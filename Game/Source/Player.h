@@ -59,16 +59,13 @@ public:
 
     Particles* particles;
 
-
     bool readyToJump = true;
     bool hitObstacle = false;
     bool dead = false;
     bool hit = false;
     bool godMode = false;
     bool isLeft = false;
-    int lifes;
-    int score;
-    iPoint lastCheckpointPos;
+
 };
 
 #endif // __PLAYER_H__
