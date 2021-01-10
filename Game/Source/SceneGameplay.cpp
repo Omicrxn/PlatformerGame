@@ -64,6 +64,8 @@ SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager, Window* win)
 
 	menuCurrentSelection = MenuSelection::NONE;
 	settingsCurrentSelection = SettingsSelection::NONE;
+
+	debugCP = false;
 }
 
 SceneGameplay::~SceneGameplay()
@@ -151,7 +153,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		checkpoints[i]->SetPlayer(player);
 	}
 	checkpoints[0]->position = iPoint(19 * 64, 1572);
-	//checkpoints[1]->position = iPoint(37*64-14, 18*64+14);
+	checkpoints[1]->position = iPoint(36*64, 16*64+27);
 
 	// Item load
 	for (int i = 0; i < MAX_COINS; ++i)
@@ -236,11 +238,29 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		{
 			TransitionToScene(SceneType::GAMEPLAY);
 		}
+
+		if (input->GetKey(SDL_SCANCODE_F7) == KeyState::KEY_DOWN)
+		{
+			if (!debugCP)
+			{
+				player->position.x = checkpoints[0]->position.x - player->width;
+				player->position.y = checkpoints[0]->position.y;
+				debugCP = true;
+			}
+			else
+			{
+				player->position.x = checkpoints[1]->position.x - player->width;
+				player->position.y = checkpoints[1]->position.y;
+				debugCP = false;
+			}
+		}
+
 		if (input->GetKey(SDL_SCANCODE_F9) == KeyState::KEY_DOWN)
 		{
 			map->drawColliders = !map->drawColliders;
 			collisions->debug = !collisions->debug;
 		}
+
 		if (input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 		{
 			player->godMode = !player->godMode;
@@ -251,7 +271,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 
 		// Pause
-		if (input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN)
+		if (input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 		{
 			pause = !pause;
 			ListItem<Entity*>* entity = entityManager->entities.start;

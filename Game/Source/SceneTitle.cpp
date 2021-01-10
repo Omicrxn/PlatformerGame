@@ -11,7 +11,7 @@
 #include "SDL/include/SDL.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
-SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app, GuiManager* guiManager)
+SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app)
 {
     this->app = app;
     this->sceneManager = sceneManager;

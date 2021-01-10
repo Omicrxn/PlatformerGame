@@ -46,9 +46,9 @@ public:
 
 private:
 
-	Input* input;
-	Render* render;
-	AudioManager* audio;
+	//Input* input;
+	//Render* render;
+	//AudioManager* audio;
 };
 
 #endif // __GUIMANAGER_H__

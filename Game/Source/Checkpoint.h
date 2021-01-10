@@ -40,6 +40,8 @@ public:
     int fx;
 
     Player* player;
+
+    bool achieved;
     
     int scale;
 };

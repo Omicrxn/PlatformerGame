@@ -9,6 +9,7 @@
 #include "Heart.h"
 #include "Map.h"
 #include "Particles.h"
+#include "Collisions.h"
 #include "Textures.h"
 
 #include "Defs.h"
@@ -153,8 +154,16 @@ bool EntityManager::SaveState(pugi::xml_node& data) const
 		SString entityName;
 		entityName.Create("Entity%d", i + 1);
 		pugi::xml_node currentEntity = data.append_child(entityName.GetString());
-		currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
-		currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
+
+		//if (entities.At(i)->data->type == EntityType::CHECKPOINT)
+		//{
+		//	entities.At(i)->data.
+		//}
+		//else
+		//{
+			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
+			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
+		//}
 	}
 
 	return true;

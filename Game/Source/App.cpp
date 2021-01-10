@@ -6,7 +6,6 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "EntityManager.h"
-#include "GuiManager.h"
 #include "SceneManager.h"
 #include "Collisions.h"
 #include "Particles.h"
@@ -34,8 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions(render);
 	particles = new Particles(tex, render, collisions);
 	entityManager = new EntityManager(render, tex, collisions, audio, particles);
-	guiManager = new GuiManager(input, render, audio);
-	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions, audio, this, guiManager);
+	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions, audio, this);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -48,7 +46,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	AddModule(sceneManager);
 	AddModule(entityManager);
-	AddModule(guiManager);
 
 	// Render last to swap buffer
 	AddModule(render);
