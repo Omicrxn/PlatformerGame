@@ -53,6 +53,9 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* au
     backgroundRect = { 0,0,1280,720 };
     barRect = { 0,0,300,35 };
 
+    mouseCursorRect[0] = { 30,482,30,30 };
+    mouseCursorRect[1] = { 60,482,30,30 };
+
     menuCurrentSelection = MenuSelection::NONE;
     settingsCurrentSelection = SettingsSelection::NONE;
 }
@@ -65,16 +68,20 @@ bool SceneTitle::Load(Textures* tex)
 {
     backgroundTexture = tex->Load("Assets/Textures/Scenes/title_screen.png");
     barTexture = tex->Load("Assets/Textures/UI/bar.png");
-    atlasGUI = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
-    btnPlay->SetTexture(atlasGUI);
-    btnContinue->SetTexture(atlasGUI);
-    btnSettings->SetTexture(atlasGUI);
-    btnCredits->SetTexture(atlasGUI);
-    btnExit->SetTexture(atlasGUI);
-    sldrMusicVolume->SetTexture(atlasGUI);
-    sldrFxVolume->SetTexture(atlasGUI);
-    cbxFullscreen->SetTexture(atlasGUI);
-    cbxVSync->SetTexture(atlasGUI);
+    atlasGUITexture = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
+
+    hoverFx = audio->LoadFx("Assets/Audio/Fx/bong.ogg");
+    clickFx = audio->LoadFx("Assets/Audio/Fx/click.ogg");
+
+    btnPlay->SetTexture(atlasGUITexture);
+    btnContinue->SetTexture(atlasGUITexture);
+    btnSettings->SetTexture(atlasGUITexture);
+    btnCredits->SetTexture(atlasGUITexture);
+    btnExit->SetTexture(atlasGUITexture);
+    sldrMusicVolume->SetTexture(atlasGUITexture);
+    sldrFxVolume->SetTexture(atlasGUITexture);
+    cbxFullscreen->SetTexture(atlasGUITexture);
+    cbxVSync->SetTexture(atlasGUITexture);
 
     font = new Font("Assets/Fonts/happy_school.xml", tex);
 
@@ -92,11 +99,11 @@ bool SceneTitle::Update(Input* input, float dt)
 {
     if (menuCurrentSelection == MenuSelection::NONE)
     {
-        btnPlay->Update(input, dt);
-        btnContinue->Update(input, dt);
-        btnSettings->Update(input, dt);
-        btnCredits->Update(input, dt);
-        btnExit->Update(input, dt);
+        btnPlay->Update(input, dt, audio, hoverFx, clickFx);
+        btnContinue->Update(input, dt, audio, hoverFx, clickFx);
+        btnSettings->Update(input, dt, audio, hoverFx, clickFx);
+        btnCredits->Update(input, dt, audio, hoverFx, clickFx);
+        btnExit->Update(input, dt, audio, hoverFx, clickFx);
     }
     else if (menuCurrentSelection == MenuSelection::PLAY)
     {
@@ -162,6 +169,13 @@ bool SceneTitle::Update(Input* input, float dt)
 
     if (input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
         menuCurrentSelection = MenuSelection::NONE;
+
+    input->GetMousePosition(mousePos.x, mousePos.y);
+
+    if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+        clicking = true;
+    else
+        clicking = false;
 
     return false;
 }
@@ -247,6 +261,11 @@ bool SceneTitle::Draw(Render* render)
         render->DrawText(font, "PRESS 'B' TO RETURN", 475, 623, 40, 5, { 255,255,255,255 });
     }
 
+    if (clicking)
+        render->DrawTextureWithoutCamera(atlasGUITexture, mousePos.x, mousePos.y, &mouseCursorRect[0]);
+    else
+        render->DrawTextureWithoutCamera(atlasGUITexture, mousePos.x, mousePos.y, &mouseCursorRect[1]);
+
     return false;
 }
 
@@ -254,10 +273,10 @@ bool SceneTitle::Unload(Textures* tex, AudioManager* audio)
 {
     tex->UnLoad(backgroundTexture);
     tex->UnLoad(barTexture);
-    tex->UnLoad(atlasGUI);
+    tex->UnLoad(atlasGUITexture);
     backgroundTexture = nullptr;
     barTexture = nullptr;
-    atlasGUI = nullptr;
+    atlasGUITexture = nullptr;
 
     delete btnPlay;
     delete btnContinue;
@@ -276,6 +295,7 @@ bool SceneTitle::Unload(Textures* tex, AudioManager* audio)
     this->render = nullptr;
     this->guiManager = nullptr;
     delete font;
+
     return true;
 }
 

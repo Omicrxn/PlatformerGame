@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 
 #include "Window.h"
+#include "Audio.h"
 #include "Map.h"
 #include "Player.h"
 #include "Checkpoint.h"
@@ -34,7 +35,7 @@ class SceneGameplay : public Scene
 {
 public:
 
-    SceneGameplay(App* app, SceneManager* sceneManager, Window* win);
+    SceneGameplay(App* app, SceneManager* sceneManager, Window* win, AudioManager* audio);
     virtual ~SceneGameplay();
 
     bool Load(Textures* tex, EntityManager* entityManager);
@@ -54,6 +55,7 @@ private:
 
     App* app;
     SceneManager* sceneManager;
+    AudioManager* audio;
 
     Map* map;
 
@@ -76,6 +78,12 @@ private:
     SDL_Texture* background4;
     SDL_Rect backgroundRect;
     SDL_Rect menuRect;
+
+    SDL_Rect mouseCursorRect[2];
+    iPoint mousePos;
+    bool clicking;
+    int hoverFx;
+    int clickFx;
 
     // Menu textures
     SDL_Texture* atlasGUITexture;

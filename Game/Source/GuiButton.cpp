@@ -4,13 +4,15 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 {
     this->bounds = bounds;
     this->text = text;
+
+    isFocusing = false;
 }
 
 GuiButton::~GuiButton()
 {
 }
 
-bool GuiButton::Update(Input* input, float dt)
+bool GuiButton::Update(Input* input, float dt, AudioManager* audio, int hoverFx, int clickFx)
 {
     if (state != GuiControlState::DISABLED)
     {
@@ -23,9 +25,21 @@ bool GuiButton::Update(Input* input, float dt)
         {
             state = GuiControlState::FOCUSED;
 
+            if (!isFocusing)
+            {
+                isFocusing = true;
+                audio->PlayFx(hoverFx);
+            }
+
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
             {
                 state = GuiControlState::PRESSED;
+            }
+
+            if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+            {
+                state = GuiControlState::PRESSED;
+                audio->PlayFx(clickFx);
             }
 
             // If mouse button pressed -> Generate event!
@@ -34,7 +48,11 @@ bool GuiButton::Update(Input* input, float dt)
                 NotifyObserver();
             }
         }
-        else state = GuiControlState::NORMAL;
+        else
+        {
+            state = GuiControlState::NORMAL;
+            isFocusing = false;
+        }
     }
 
     return false;

@@ -139,8 +139,18 @@ bool EntityManager::LoadState(pugi::xml_node& data)
 		SString entityName;
 		entityName.Create("Entity%d", i + 1);
 		pugi::xml_node currentEntity = data.child(entityName.GetString());
-		entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
-		entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
+
+		if (entities.At(i)->data->type == EntityType::CHECKPOINT)
+		{
+			entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
+			entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
+			entities.At(i)->data->achieved = currentEntity.attribute("achieved").as_bool();
+		}
+		else
+		{
+			entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
+			entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
+		}
 	}
 
 	return true;
@@ -155,15 +165,17 @@ bool EntityManager::SaveState(pugi::xml_node& data) const
 		entityName.Create("Entity%d", i + 1);
 		pugi::xml_node currentEntity = data.append_child(entityName.GetString());
 
-		//if (entities.At(i)->data->type == EntityType::CHECKPOINT)
-		//{
-		//	entities.At(i)->data.
-		//}
-		//else
-		//{
+		if (entities.At(i)->data->type == EntityType::CHECKPOINT)
+		{
 			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
 			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
-		//}
+			currentEntity.append_attribute("achieved").set_value(entities.At(i)->data->achieved);
+		}
+		else
+		{
+			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
+			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
+		}
 	}
 
 	return true;

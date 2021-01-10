@@ -17,8 +17,9 @@ public:
     GuiButton(uint32 id, SDL_Rect bounds, const char *text);
     virtual ~GuiButton();
 
-    bool Update(Input* input, float dt);
+    bool Update(Input* input, float dt, AudioManager* audio, int hoverFx, int clickFx);
     bool Draw(Render* render);
+
 
 private:
 
@@ -29,6 +30,8 @@ private:
     SDL_Rect brownButton = { 0,49,190,49 };
     SDL_Rect greyButton = { 0,188,190,49 };
     SDL_Rect yellowButton = { 0,282,190,49 };
+
+    bool isFocusing;
 };
 
 #endif // __GUIBUTTON_H__

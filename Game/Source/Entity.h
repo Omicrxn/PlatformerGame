@@ -60,6 +60,8 @@ public:
     iPoint tempPosition = { 0,0 };
 
     bool pause;
+
+    bool achieved;
 };
 
 #endif // __ENTITY_H__

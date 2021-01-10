@@ -141,6 +141,8 @@ bool App::Start()
 		item = item->next;
 	}
 	
+	win->SetTitle("Paracelsus");
+
 	PERF_PEEK(ptimer);
 
 	return ret;

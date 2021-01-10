@@ -24,13 +24,14 @@ enum class SettingsSelection
 	VSYNC
 };
 
-SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager, Window* win)
+SceneGameplay::SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager, Window* win, AudioManager* audio)
 {
 	name = "Gameplay";
 
 	this->app = app;
 	this->sceneManager = sceneManager;
 	this->window = win;
+	this->audio = audio;
 
 	// GUI: Initialize required controls for the screen
 	btnResume = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "RESUME");
@@ -62,6 +63,9 @@ SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager, Window* win)
 
 	barRect = { 0,0,300,35 };
 
+	mouseCursorRect[0] = { 30,482,30,30 };
+	mouseCursorRect[1] = { 60,482,30,30 };
+
 	menuCurrentSelection = MenuSelection::NONE;
 	settingsCurrentSelection = SettingsSelection::NONE;
 
@@ -88,6 +92,10 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	// Load GUI assets
 	barTexture = tex->Load("Assets/Textures/UI/bar.png");
 	atlasGUITexture = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
+
+	hoverFx = audio->LoadFx("Assets/Audio/Fx/bong.ogg");
+	clickFx = audio->LoadFx("Assets/Audio/Fx/click.ogg");
+
 	btnResume->SetTexture(atlasGUITexture);
 	btnSettings->SetTexture(atlasGUITexture);
 	btnTitle->SetTexture(atlasGUITexture);
@@ -286,10 +294,10 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 	{
 		if (menuCurrentSelection == MenuSelection::NONE)
 		{
-			btnResume->Update(input, dt);
-			btnSettings->Update(input, dt);
-			btnTitle->Update(input, dt);
-			btnExit->Update(input, dt);
+			btnResume->Update(input, dt, audio, hoverFx, clickFx);
+			btnSettings->Update(input, dt, audio, hoverFx, clickFx);
+			btnTitle->Update(input, dt, audio, hoverFx, clickFx);
+			btnExit->Update(input, dt, audio, hoverFx, clickFx);
 		}
 		else if (menuCurrentSelection == MenuSelection::RESUME)
 		{
@@ -357,6 +365,13 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		if (input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 			menuCurrentSelection = MenuSelection::NONE;
 	}
+
+	input->GetMousePosition(mousePos.x, mousePos.y);
+
+	if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+		clicking = true;
+	else
+		clicking = false;
 
 	return true;
 }
@@ -470,6 +485,11 @@ bool SceneGameplay::Draw(Render* render)
 			render->DrawText(font, "PRESS 'B' TO RETURN", 475 + offset, 623 + offset, 40, 5, { 105,105,105,255 });
 			render->DrawText(font, "PRESS 'B' TO RETURN", 475, 623, 40, 5, { 255,255,255,255 });
 		}
+
+		if (clicking)
+			render->DrawTextureWithoutCamera(atlasGUITexture, mousePos.x, mousePos.y, &mouseCursorRect[0]);
+		else
+			render->DrawTextureWithoutCamera(atlasGUITexture, mousePos.x, mousePos.y, &mouseCursorRect[1]);
 	}
 	
     return false;

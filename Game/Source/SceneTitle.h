@@ -67,11 +67,17 @@ private:
     GuiCheckBox* cbxFullscreen;
     GuiCheckBox* cbxVSync;
 
-    SDL_Texture* atlasGUI;
+    SDL_Texture* atlasGUITexture;
     SDL_Texture* backgroundTexture;
     SDL_Texture* barTexture;
     SDL_Rect backgroundRect;
     SDL_Rect barRect;
+
+    SDL_Rect mouseCursorRect[2];
+    iPoint mousePos;
+    bool clicking;
+    int hoverFx;
+    int clickFx;
 
     SceneManager* sceneManager;
     Window* window;
