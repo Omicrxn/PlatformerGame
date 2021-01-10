@@ -326,19 +326,19 @@ bool Map::LoadMap()
 		data.height = map.attribute("height").as_int();
 		data.tileWidth = map.attribute("tilewidth").as_int();
 		data.tileHeight = map.attribute("tileheight").as_int();
-		SString bg_color(map.attribute("backgroundcolor").as_string());
+		SString bgColor(map.attribute("backgroundcolor").as_string());
 
 		data.backgroundColor.r = 0;
 		data.backgroundColor.g = 0;
 		data.backgroundColor.b = 0;
 		data.backgroundColor.a = 0;
 		/*
-		if (bg_color.Length() > 0)
+		if (bgColor.Length() > 0)
 		{
 			SString red, green, blue;
-			bg_color.SubString(1, 2, red);
-			bg_color.SubString(3, 4, green);
-			bg_color.SubString(5, 6, blue);
+			bgColor.SubString(1, 2, red);
+			bgColor.SubString(3, 4, green);
+			bgColor.SubString(5, 6, blue);
 
 			int v = 0;
 
@@ -365,18 +365,18 @@ bool Map::LoadMap()
 }
 
 // L03: DONE: Load Tileset attributes
-bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
 	
 	// L03: DONE: Load Tileset attributes
-	set->name.Create(tileset_node.attribute("name").as_string());
-	set->firstgid = tileset_node.attribute("firstgid").as_int();
-	set->tileWidth = tileset_node.attribute("tilewidth").as_int();
-	set->tileHeight = tileset_node.attribute("tileheight").as_int();
-	set->margin = tileset_node.attribute("margin").as_int();
-	set->spacing = tileset_node.attribute("spacing").as_int();
-	pugi::xml_node offset = tileset_node.child("tileoffset");
+	set->name.Create(tilesetNode.attribute("name").as_string());
+	set->firstgid = tilesetNode.attribute("firstgid").as_int();
+	set->tileWidth = tilesetNode.attribute("tilewidth").as_int();
+	set->tileHeight = tilesetNode.attribute("tileheight").as_int();
+	set->margin = tilesetNode.attribute("margin").as_int();
+	set->spacing = tilesetNode.attribute("spacing").as_int();
+	pugi::xml_node offset = tilesetNode.child("tileoffset");
 
 	if (offset != NULL)
 	{
@@ -393,10 +393,10 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 }
 
 // L03: DONE: Load Tileset image
-bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
-	pugi::xml_node image = tileset_node.child("image");
+	pugi::xml_node image = tilesetNode.child("image");
 
 	if (image == NULL)
 	{
