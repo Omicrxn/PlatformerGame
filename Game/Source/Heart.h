@@ -35,6 +35,7 @@ public:
 
 	Animation heartAnimation;
 
+	AudioManager* audio;
 	int fx;
 
 	Player* player;

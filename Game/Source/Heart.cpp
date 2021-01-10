@@ -1,5 +1,6 @@
 #include "Heart.h"
 #include "Player.h"
+#include "Audio.h"
 
 Heart::Heart(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::HEART)
 {
@@ -15,7 +16,8 @@ Heart::Heart(Collisions* collisions, AudioManager* audio, EntityManager* entityM
 	heartAnimation.loop = true;
 	heartAnimation.speed = 0.09f;
 
-	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
+	this->audio = audio;
+	fx = audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
 
 	position = iPoint(0, 0);
 	velocity = { 0,0 };
@@ -64,7 +66,7 @@ void Heart::SetTexture(SDL_Texture* tex)
 
 void Heart::OnCollision(Collider* collider)
 {
-	//app->audio->PlayFx(fx);
+	audio->PlayFx(fx);
 	player->lifes++;
 	printf("Lifes: %d \n", player->lifes);
 	this->collider->pendingToDelete = true;

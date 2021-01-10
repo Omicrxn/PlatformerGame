@@ -36,6 +36,7 @@ public:
 
     Animation coinAnimation;
 
+    AudioManager* audio;
     int fx;
 
     Player* player;

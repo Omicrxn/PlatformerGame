@@ -13,7 +13,8 @@ Coin::Coin(Collisions* collisions, AudioManager* audio, EntityManager* entityMan
 	coinAnimation.loop = true;
 	coinAnimation.speed = 0.09f;
 
-	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
+	this->audio = audio;
+	fx = audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
 	position = iPoint(0, 0);
 	velocity = { 0,0 };
 
@@ -61,7 +62,7 @@ void Coin::SetTexture(SDL_Texture* tex)
 
 void Coin::OnCollision(Collider* collider)
 {
-	//app->audio->PlayFx(fx);
+	audio->PlayFx(fx);
 	player->score += 100;
 	printf("Score: %d \n", player->score);
 	this->collider->pendingToDelete = true;

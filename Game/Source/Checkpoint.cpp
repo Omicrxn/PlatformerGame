@@ -1,5 +1,6 @@
 #include "Checkpoint.h"
 #include "Player.h"
+#include "Audio.h"
 
 Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::CHECKPOINT)
 {
@@ -12,7 +13,8 @@ Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManage
 	checkpointAnimation.loop = false;
 	checkpointAnimation.speed = 0.00f;
 
-	//fx = app->audio->LoadFx("Assets/Audio/Fx/item_pick.wav");
+	this->audio = audio;
+	fx = audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 	position = iPoint(0, 0);
 	velocity = { 0,0 };
 	scale = 3;
@@ -60,7 +62,7 @@ void Checkpoint::SetTexture(SDL_Texture* tex)
 
 void Checkpoint::OnCollision(Collider* collider)
 {
-	//app->audio->PlayFx(fx);
+	audio->PlayFx(fx);
 	player->lastCheckpointPos = { this->position.x-player->width,this->position.y };
 	checkpointAnimation.speed = 0.04f;
 }

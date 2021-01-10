@@ -313,17 +313,22 @@ bool SceneGameplay::Draw(Render* render)
 
 	if (!pause)
 	{
+		int offset = 3;
+
 		char lifes[16] = { 0 };
 		sprintf_s(lifes, 16, "Lifes: %03i", player->lifes);
-		render->DrawText(font, lifes, 25, 10, 50, 5, { 255,255,255,255 });
+		render->DrawText(font, lifes, 50 + offset, 25 + offset, 40, 5, { 105,105,105,255 });
+		render->DrawText(font, lifes, 50, 25, 40, 5, { 255,255,255,255 });
 
 		char coins[16] = { 0 };
 		sprintf_s(coins, 16, "Coins: %03i", player->score);
-		render->DrawText(font, coins, 525, 10, 50, 5, { 255,255,255,255 });
+		render->DrawText(font, coins, 550 + offset, 25 + offset, 40, 5, { 105,105,105,255 });
+		render->DrawText(font, coins, 550, 25, 40, 5, { 255,255,255,255 });
 
 		char time[16] = { 0 };
 		sprintf_s(time, 16, "Timer: %03i", (int)timer.ReadSec() - 2);
-		render->DrawText(font, time, 1025, 10, 50, 5, { 255,255,255,255 });
+		render->DrawText(font, time, 1025 + offset, 25 + offset, 40, 5, { 105,105,105,255 });
+		render->DrawText(font, time, 1025, 25, 40, 5, { 255,255,255,255 });
 	}
 	else
 	{

@@ -36,9 +36,11 @@ public:
 
     Animation checkpointAnimation;
 
+    AudioManager* audio;
     int fx;
 
     Player* player;
+    
     int scale;
 };
 
