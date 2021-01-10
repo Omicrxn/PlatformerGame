@@ -36,7 +36,7 @@ public:
 
     void Move(Map* map);
 
-    SDL_Texture* texture;
+
     Animation movingAnim;
     SDL_Rect rectAnim;
 

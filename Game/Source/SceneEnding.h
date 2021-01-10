@@ -16,7 +16,7 @@ public:
 
     bool Draw(Render* render);
 
-    bool Unload();
+    bool Unload(Textures* tex, AudioManager* audio);
 
 private:
 };

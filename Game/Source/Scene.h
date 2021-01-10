@@ -50,7 +50,7 @@ public:
         return true;
     }
 
-    virtual bool Unload()
+    virtual bool Unload(Textures* tex, AudioManager* audio)
     {
         return true;
     }

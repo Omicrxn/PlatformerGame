@@ -31,7 +31,7 @@ bool SceneEnding::Draw(Render* render)
     return false;
 }
 
-bool SceneEnding::Unload()
+bool SceneEnding::Unload(Textures* tex, AudioManager* audio)
 {
     return false;
 }

@@ -43,7 +43,7 @@ public:
 
     bool Draw(Render* render);
     void DrawBackground(Render* render);
-    bool Unload();
+    bool Unload(Textures* tex, AudioManager* audio);
     void CollisionHandler();
     bool OnGuiMouseClickEvent(GuiControl* control);
 

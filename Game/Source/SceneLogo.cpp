@@ -76,8 +76,9 @@ bool SceneLogo::Draw(Render* render)
     return false;
 }
 
-bool SceneLogo::Unload()
-{
-
-    return false;
+bool SceneLogo::Unload(Textures* tex, AudioManager* audio)
+{   
+    tex->UnLoad(logoTexture);
+    logoTexture = nullptr;
+    return true;
 }

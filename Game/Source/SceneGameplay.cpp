@@ -127,7 +127,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		int w, h;
 		uchar* data = NULL;
 
-		if (map->CreateWalkabilityMap(w, h, &data)) PathFinding::GetInstance()->SetMap(w, h, data);
+		//if (map->CreateWalkabilityMap(w, h, &data)) PathFinding::GetInstance()->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
 	}
@@ -449,11 +449,65 @@ bool SceneGameplay::Draw(Render* render)
     return false;
 }
 
-bool SceneGameplay::Unload()
+bool SceneGameplay::Unload(Textures* tex, AudioManager* audio)
 {
 	// TODO: Unload all resources
+	tex->UnLoad(background1);
+	tex->UnLoad(background2);
+	tex->UnLoad(background3);
+	tex->UnLoad(background4);
 
-    return false;
+	map->CleanUp();
+	delete map;
+	tex->UnLoad(barTexture);
+	tex->UnLoad(atlasGUITexture);
+
+	tex->UnLoad(heartTexture);
+	tex->UnLoad(coinTexture);
+
+	delete font;
+	player->active = false;
+	for (int i = MAX_CHECKPOINTS-1; i >= 0; i--)
+	{
+		checkpoints[i]->active = false;
+	}
+	for (int i = MAX_COINS-1; i >= 0; i--)
+	{
+		coins[i]->active = false;
+	}
+	for (int i = MAX_HEARTS-1; i >= 0; i--)
+	{
+		hearts[i]->active = false;
+	}
+	for (int i = MAX_FLYING_ENEMIES-1; i >= 0; i--)
+	{
+		enemiesFly[i]->active = false;
+	}
+	for (int i = MAX_WALKING_ENEMIES-1; i >= 0; i--)
+	{
+		enemiesWalk[i]->active = false;
+	}
+
+	// GUI: Initialize required controls for the screen
+	delete btnResume;
+
+	delete btnSettings;
+
+	delete btnTitle;
+
+	delete btnExit;
+
+	// GUI: Initialize required controls for the settings
+	delete sldrMusicVolume;
+
+	delete sldrFxVolume;
+
+	delete cbxFullscreen;
+
+	delete cbxVSync;
+
+	PathFinding::GetInstance()->CleanUp();
+    return true;
 }
 
 void SceneGameplay::CollisionHandler() 
@@ -485,7 +539,10 @@ void SceneGameplay::CollisionHandler()
 				if ((map->data.layers[4]->Get(x, y) == 85) &&
 					CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
 				{
-
+					if (entity->data->type == EntityType::PLAYER)
+					{
+						player->Die();
+					}
 					entity->data->velocity.y = 0.0f;
 
 					break;

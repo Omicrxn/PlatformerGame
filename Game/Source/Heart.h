@@ -36,7 +36,6 @@ public:
 
 public:
 
-	SDL_Texture* texture;
 
 	Animation heartAnimation;
 

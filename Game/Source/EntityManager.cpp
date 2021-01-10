@@ -9,17 +9,19 @@
 #include "Heart.h"
 #include "Map.h"
 #include "Particles.h"
+#include "Textures.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-EntityManager::EntityManager(Render* render, Collisions* collisions, AudioManager* audio, Particles* particles) : Module()
+EntityManager::EntityManager(Render* render, Textures* tex, Collisions* collisions, AudioManager* audio, Particles* particles) : Module()
 {
 	name.Create("entitymanager");
 	this->collisions = collisions;
 	this->render = render;
 	this->audio = audio;
 	this->particles = particles;
+	this->tex = tex;
 }
 
 // Destructor
@@ -39,7 +41,14 @@ bool EntityManager::Awake()
 bool EntityManager::CleanUp()
 {
 	if (!active) return true;
+	ListItem<Entity*>* entity = entities.start;
+	while (entity != nullptr)
+	{
+		if (!entity->data->active)
+			DestroyEntity(entity->data);
 
+		entity = entity->next;
+	}
 	return true;
 }
 
@@ -103,8 +112,8 @@ bool EntityManager::UpdateAll(float dt, bool doLogic)
 void EntityManager::DestroyEntity(Entity* entity)
 {
 	ListItem<Entity*>* item = entities.At(entities.Find(entity));
-	//app->tex->Unload(entity->texture);
-	//entity->texture = nullptr;
+	tex->UnLoad(entity->texture);
+	entity->collider->pendingToDelete = true;
 	RELEASE(entity);
 
 	entities.Del(item);

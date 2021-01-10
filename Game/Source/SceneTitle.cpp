@@ -4,7 +4,9 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Window.h"
+#include "SceneManager.h"
 #include "Font.h"
+#include "App.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer/include/SDL_mixer.h"
@@ -165,6 +167,7 @@ bool SceneTitle::Update(Input* input, float dt)
 
 bool SceneTitle::Draw(Render* render)
 {
+    render->camera = { 0,0 };
     render->DrawTexture(backgroundTexture, 0, 0, &backgroundRect);
 
     if (menuCurrentSelection == MenuSelection::NONE)
@@ -246,9 +249,33 @@ bool SceneTitle::Draw(Render* render)
     return false;
 }
 
-bool SceneTitle::Unload()
+bool SceneTitle::Unload(Textures* tex, AudioManager* audio)
 {
-    return false;
+    tex->UnLoad(backgroundTexture);
+    tex->UnLoad(barTexture);
+    tex->UnLoad(atlasGUI);
+    backgroundTexture = nullptr;
+    barTexture = nullptr;
+    atlasGUI = nullptr;
+
+    delete btnPlay;
+    delete btnContinue;
+    delete btnSettings;
+    delete btnCredits;
+    delete btnExit;
+    delete sldrMusicVolume;
+    delete sldrFxVolume;
+    delete cbxFullscreen;
+    delete cbxVSync;
+
+    this->app = nullptr;
+    this->sceneManager = nullptr;
+    this->window = nullptr;
+    this->audio = nullptr;
+    this->render = nullptr;
+    this->guiManager = nullptr;
+    delete font;
+    return true;
 }
 
 //----------------------------------------------------------

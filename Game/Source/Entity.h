@@ -7,6 +7,7 @@
 
 #include "Collisions.h"
 class Render;
+#include "SDL_image/include/SDL_image.h"
 
 enum class EntityType
 {
@@ -54,7 +55,7 @@ public:
     fPoint velocity;
     bool renderable = false;
     int width, height;
-    // SDL_Texture* texture;
+    SDL_Texture* texture;
 
     iPoint tempPosition = { 0,0 };
 

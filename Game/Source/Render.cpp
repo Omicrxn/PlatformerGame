@@ -212,7 +212,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	SDL_Rect rect;
 	rect.x = (int)(camera.x * speed) + x;
-	rect.y = (int)(camera.y * speed) + y ;
+	rect.y = (int)(camera.y * speed) + y;
 
 	if (section != NULL)
 	{

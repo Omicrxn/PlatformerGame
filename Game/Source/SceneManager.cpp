@@ -55,8 +55,8 @@ bool SceneManager::Awake()
 // Called before the first frame
 bool SceneManager::Start()
 {
-	//current = new SceneLogo();
-	current = new SceneTitle(win, this, audio, render, app, guiManager);
+	current = new SceneLogo();
+	//current = new SceneTitle(win, this, audio, render, app, guiManager);
 
 	if (current->name == "Gameplay")
 	{
@@ -133,7 +133,7 @@ bool SceneManager::Update(float dt)
 			{
 				transitionAlpha = 1.0f;
 
-				current->Unload();	// Unload current screen
+				current->Unload(tex,audio);	// Unload current screen
 				if (current->nextScene == SceneType::GAMEPLAY)
 				{
 					next->Load(tex, entityManager);
@@ -225,7 +225,7 @@ bool SceneManager::CleanUp()
 {
 	LOG("Freeing scene");
 
-	if (current != nullptr) current->Unload();
+	if (current != nullptr) current->Unload(tex,audio);
 
 	return true;
 }

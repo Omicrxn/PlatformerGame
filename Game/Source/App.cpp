@@ -33,7 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new AudioManager();
 	collisions = new Collisions(render);
 	particles = new Particles(tex, render, collisions);
-	entityManager = new EntityManager(render, collisions, audio, particles);
+	entityManager = new EntityManager(render, tex, collisions, audio, particles);
 	guiManager = new GuiManager(input, render, audio);
 	sceneManager = new SceneManager(input, render, tex, entityManager, win, collisions, audio, this, guiManager);
 

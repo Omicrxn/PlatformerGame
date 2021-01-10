@@ -45,7 +45,6 @@ public:
     void Shoot();
 public:
 
-    SDL_Texture* texture;
     SDL_Rect animRec;
     // Define all animation properties
     Animation idleAnim;

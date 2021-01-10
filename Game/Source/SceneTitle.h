@@ -7,11 +7,11 @@
 #include "GuiSlider.h"
 #include "GuiCheckBox.h"
 
-#include "App.h"
-#include "SceneManager.h"
-#include "Window.h"
-#include "Audio.h"
-#include "Render.h"
+class App;
+class SceneManager;
+class Window;
+class Audio;
+class Render;
 
 class Font;
 
@@ -47,7 +47,7 @@ public:
 
     bool Draw(Render* render);
 
-    bool Unload();
+    bool Unload(Textures* tex, AudioManager* audio);
 
     // Declare on mouse click event
     bool OnGuiMouseClickEvent(GuiControl* control);

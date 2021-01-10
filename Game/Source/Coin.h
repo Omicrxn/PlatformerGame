@@ -37,7 +37,6 @@ public:
 
 public:
 
-    SDL_Texture* texture;
 
     Animation coinAnimation;
 
