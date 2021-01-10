@@ -34,4 +34,3 @@ bool GuiManager::Update(float dt)
 
 	return true;
 }
-

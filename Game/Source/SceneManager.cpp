@@ -57,7 +57,7 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 	//current = new SceneLogo();
-	current = new SceneTitle(win, this, audio);
+	current = new SceneTitle(win, this, audio, render, app);
 
 	if (current->name == "Gameplay")
 	{
@@ -104,7 +104,7 @@ bool SceneManager::PreUpdate()
 	{
 		current->TransitionToScene(SceneType::GAMEPLAY);
 	}
-	
+
 	return true;
 }
 
@@ -200,7 +200,7 @@ bool SceneManager::Update(float dt)
 		switch (current->nextScene)
 		{
 			case SceneType::LOGO: next = new SceneLogo(); break;
-			case SceneType::TITLE: next = new SceneTitle(win, this, audio); break;
+			case SceneType::TITLE: next = new SceneTitle(win, this, audio, render, app); break;
 			case SceneType::GAMEPLAY: next = new SceneGameplay(app); break;
 			case SceneType::ENDING: next = new SceneEnding(win); break;
 			default: break;

@@ -11,7 +11,7 @@
 #include "SDL/include/SDL.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
-SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio)
+SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app)
 {
     // GUI: Initialize required controls for the screen
     btnStart = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
@@ -42,13 +42,15 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* au
     cbxVSync = new GuiCheckBox(9, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 200, 45, 49 }, "VSYNC");
     cbxVSync->SetObserver(this);
 
-    //Rectangles definition
+    // Rectangles definition
     backgroundRect = { 0,0,1280,720 };
     barRect = { 0,0,300,35 };
 
+    this->app = app;
     this->sceneManager = sceneManager;
     this->window = win;
     this->audio = audio;
+    this->render = render;
 
     menuCurrentSelection = MenuSelection::NONE;
     settingsCurrentSelection = SettingsSelection::NONE;
@@ -74,7 +76,13 @@ bool SceneTitle::Load(Textures* tex)
     cbxVSync->SetTexture(atlasGUI);
 
     font = new Font("Assets/Fonts/happy_school.xml", tex);
+
     audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
+
+    this->vsync = render->vsync;
+
+    if(!app->isGameSaved())
+        btnContinue->state = GuiControlState::DISABLED;
 
     return false;
 }
@@ -95,7 +103,10 @@ bool SceneTitle::Update(Input* input, float dt)
     }
     else if (menuCurrentSelection == MenuSelection::CONTINUE)
     {
-
+        if (app->isGameSaved())
+        {
+            TransitionToScene(SceneType::GAMEPLAY);
+        }
     }
     else if (menuCurrentSelection == MenuSelection::SETTINGS)
     {

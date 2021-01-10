@@ -62,7 +62,9 @@ public:
 	SDL_Color background;
 
 	Window* win;
-	float scale=1;
+	float scale = 1;
+
+	bool vsync;
 };
 
 #endif // __RENDER_H__

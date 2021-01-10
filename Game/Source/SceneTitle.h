@@ -6,9 +6,11 @@
 #include "GuiButton.h"
 #include "GuiSlider.h"
 #include "GuiCheckBox.h"
+#include "App.h"
 #include "SceneManager.h"
 #include "Window.h"
 #include "Audio.h"
+#include "Render.h"
 
 class Font;
 
@@ -35,7 +37,7 @@ class SceneTitle : public Scene
 {
 public:
 
-    SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio);
+    SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app);
     virtual ~SceneTitle();
 
     bool Load(Textures* tex);
@@ -73,6 +75,8 @@ private:
     SceneManager* sceneManager;
     Window* window;
     AudioManager* audio;
+    Render* render;
+    App* app;
 
     MenuSelection menuCurrentSelection;
     SettingsSelection settingsCurrentSelection;
@@ -80,7 +84,7 @@ private:
     Font* font;
 
     bool fullscreen = false;
-    bool vsync = false;
+    bool vsync;
 };
 
 #endif // __SCENETITLE_H__

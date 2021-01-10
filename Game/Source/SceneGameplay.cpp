@@ -107,6 +107,9 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	}
 	enemiesWalk[0]->position = iPoint(20 * 64, -10 * 64);
 
+	if (app->isGameSaved())
+		app->LoadGameRequest();
+
     return false;
 }
 
@@ -124,7 +127,6 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 	CollisionHandler();
 
 	// Debug Keys
-
 	if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
 	{
 		TransitionToScene(SceneType::GAMEPLAY);
@@ -140,9 +142,9 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		player->godMode = !player->godMode;
 	}
 
-	// Request Load / Save when pressing L/S
-	if (input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) app->LoadGameRequest();
-	if (input->GetKey(SDL_SCANCODE_S) == KEY_DOWN) app->SaveGameRequest();
+	// Request Load / Save
+	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
+	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
 
 	return true;
 }

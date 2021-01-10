@@ -97,8 +97,12 @@ bool App::Awake()
 		organization.Create(configApp.child("organization").child_value());
 
         // L08: DONE 1: Read from config file your framerate cap
-		int cap = configApp.attribute("framerate_cap").as_int(-1);
-		if (cap > 0) cappedMs = 1000 / cap;
+		int cap = configApp.child("framerate_cap").attribute("value").as_int(-1);
+		if (cap > 0)
+		{
+			cappedMs = 1000 / cap;
+			if(cap == 60) capTo60fps = true;
+		}
 	}
 
 	if (ret == true)
@@ -199,7 +203,7 @@ void App::PrepareUpdate()
 	}
 	else
 	{
-		cappedMs = 1000 / 30;
+		cappedMs = 0;
 	}
 }
 
@@ -228,9 +232,9 @@ void App::FinishUpdate()
 	uint32 lastFrameMs = frameTime.Read();
 	uint32 framesOnLastUpdate = prevLastSecFrameCount;
 
-	static char title[256];
+	/*static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
-			  averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
+			  averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);*/
 
 	//app->win->SetTitle(title);
 
@@ -426,6 +430,26 @@ bool App::SaveGame() const
 	}
 
 	doc.save_file(SAVE_STATE_FILENAME);
+
+	return ret;
+}
+
+bool App::isGameSaved()
+{
+	bool ret = false;
+
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(SAVE_STATE_FILENAME);
+
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		ret = true;
+	}
 
 	return ret;
 }

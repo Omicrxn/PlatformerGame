@@ -62,6 +62,8 @@ public:
 	// NOTE: It receives config document
 	pugi::xml_node LoadConfig(pugi::xml_document&) const;
 
+	bool isGameSaved();
+
 private:
 
 	// Call modules before each loop iteration
@@ -94,6 +96,7 @@ public:
 	SceneManager* sceneManager;
 	Collisions* collisions;
 	Particles* particles;
+
 private:
 
 	int argc;
