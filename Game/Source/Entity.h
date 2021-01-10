@@ -56,7 +56,7 @@ public:
     int width, height;
     // SDL_Texture* texture;
 
-    iPoint tempPosition;
+    iPoint tempPosition = { 0,0 };
 };
 
 #endif // __ENTITY_H__

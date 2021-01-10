@@ -66,7 +66,6 @@ public:
     bool dead = false;
     bool godMode = false;
     bool isLeft = false;
-    iPoint tempPosition = { 0,0 };
     int lifes;
     int score;
     iPoint lastCheckpointPos;

@@ -89,8 +89,7 @@ void EnemyFly::UpdatePath(Map* map)
 	origin = map->WorldToMap(position.x, position.y);
 	goal = map->WorldToMap(player->GetBounds().x, player->GetBounds().y);
 
-	if (pathfinding->CreatePath(origin, goal) != -1)
-	{
+
 		pathfinding->lastPath.Clear();
 		if (pathfinding->CreatePath(origin, goal) != -1)
 		{
@@ -100,7 +99,7 @@ void EnemyFly::UpdatePath(Map* map)
 			}
 			path.Flip();
 		}
-	}
+
 }
 
 void EnemyFly::OnCollision(Collider* collision)
