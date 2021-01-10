@@ -38,7 +38,7 @@ class SceneTitle : public Scene
 {
 public:
 
-    SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app, GuiManager* guiManager);
+    SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app);
     virtual ~SceneTitle();
 
     bool Load(Textures* tex);

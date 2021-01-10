@@ -19,7 +19,7 @@
 
 #include "Timer.h"
 
-#define MAX_CHECKPOINTS 1
+#define MAX_CHECKPOINTS 2
 #define MAX_HEARTS 1
 #define MAX_COINS 1
 #define MAX_FLYING_ENEMIES 1
@@ -116,6 +116,8 @@ private:
 
     bool fullscreen = false;
     bool vsync = false;
+
+    bool debugCP = false;
 };
 
 #endif // __SCENEGAMEPLAY_H__

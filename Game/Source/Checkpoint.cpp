@@ -19,6 +19,8 @@ Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManage
 	velocity = { 0,0 };
 	scale = 3;
 	collider = collisions->AddCollider({ position.x,position.y,35*scale,57*scale }, Collider::Type::ITEM_COIN, (Module*)entityManager);
+
+	achieved = false;
 }
 
 bool Checkpoint::Update(float dt)
@@ -65,4 +67,6 @@ void Checkpoint::OnCollision(Collider* collider)
 	audio->PlayFx(fx);
 	player->lastCheckpointPos = { this->position.x-player->width,this->position.y };
 	checkpointAnimation.speed = 0.04f;
+
+	achieved = true;
 }

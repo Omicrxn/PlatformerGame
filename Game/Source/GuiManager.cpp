@@ -11,9 +11,9 @@ GuiManager::GuiManager(Input* input, Render* render, AudioManager* audio) : Modu
 {
 	name.Create("guimanager");
 
-	this->render = render;
-	this->audio = audio;
-	this->input = input;
+	//this->render = render;
+	//this->audio = audio;
+	//this->input = input;
 }
 
 // Destructor
@@ -75,10 +75,10 @@ bool GuiManager::UpdateAll(float dt, bool doLogic)
 	ListItem<GuiControl*>* control = controls.start;
 	while (control != nullptr)
 	{
-		if (doLogic) 
-			control->data->Update(input, dt);
+		//if (doLogic) 
+		//	control->data->Update(input, dt);
 
-		control->data->Draw(render);
+		//control->data->Draw(render);
 
 		//if (!control->data->active)
 		//	DestroyGuiControl(control->data);
