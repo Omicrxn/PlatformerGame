@@ -125,15 +125,17 @@ bool Player::Update(Input* input, float dt)
         if (input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
         {
             Shoot();
-
         }
 
-        // Debug
+        // Debug Keys
+
+        // God Mode
         if (godMode && input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
         {
             position.y += 3;
         }
 
+        // Start from the beggining of the current level
         if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
         {
             position = iPoint(96, 2300);

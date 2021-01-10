@@ -242,6 +242,13 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 
 		// Debug Keys
 
+		// Request Save / Load
+		if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+			app->SaveGameRequest();
+		if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+			app->LoadGameRequest();
+
+		// Move between the different checkpoints
 		if (input->GetKey(SDL_SCANCODE_F7) == KeyState::KEY_DOWN)
 		{
 			if (!debugCP)
@@ -258,6 +265,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 			}
 		}
 
+		// View colliders
 		if (input->GetKey(SDL_SCANCODE_F9) == KeyState::KEY_DOWN)
 		{
 			map->drawColliders = !map->drawColliders;
@@ -273,14 +281,11 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 			}
 		}
 
+		// God Mode
 		if (input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
 		{
 			player->godMode = !player->godMode;
 		}
-
-		// Request Save / Load
-		if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
-		if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 
 		// Pause
 		if (input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
