@@ -18,8 +18,6 @@
 #include "GuiSlider.h"
 #include "GuiCheckBox.h"
 
-#include "Timer.h"
-
 #define MAX_CHECKPOINTS 2
 #define MAX_HEARTS 1
 #define MAX_COINS 1
@@ -100,8 +98,6 @@ private:
 
     Font* font;
 
-    Timer timer;
-
     EntityManager* entityManager;
     Window* window;
 
@@ -126,6 +122,8 @@ private:
     bool vsync = false;
 
     bool debugCP = false;
+
+    float timer;
 };
 
 #endif // __SCENEGAMEPLAY_H__

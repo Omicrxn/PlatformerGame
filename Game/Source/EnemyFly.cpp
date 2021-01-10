@@ -93,17 +93,15 @@ void EnemyFly::UpdatePath(Map* map)
 	origin = map->WorldToMap(position.x, position.y);
 	goal = map->WorldToMap(player->GetBounds().x, player->GetBounds().y);
 
-
-		pathfinding->lastPath.Clear();
-		if (pathfinding->CreatePath(origin, goal) != -1)
+	pathfinding->lastPath.Clear();
+	if (pathfinding->CreatePath(origin, goal) != -1)
+	{
+		for (int i = 0; i < pathfinding->lastPath.Count(); i++)
 		{
-			for (int i = 0; i < pathfinding->lastPath.Count(); i++)
-			{
-				path.PushBack(*pathfinding->lastPath.At(i));
-			}
-			path.Flip();
+			path.PushBack(*pathfinding->lastPath.At(i));
 		}
-
+		path.Flip();
+	}
 }
 
 void EnemyFly::OnCollision(Collider* collision)

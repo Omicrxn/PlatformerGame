@@ -59,8 +59,6 @@ SceneGameplay::SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager
 	cbxVSync = new GuiCheckBox(8, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 200, 45, 49 }, "VSYNC");
 	cbxVSync->SetObserver(this);
 
-	timer.Start();
-
 	barRect = { 0,0,300,35 };
 
 	mouseCursorRect[0] = { 30,482,30,30 };
@@ -70,6 +68,8 @@ SceneGameplay::SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager
 	settingsCurrentSelection = SettingsSelection::NONE;
 
 	debugCP = false;
+
+	timer = 0;
 }
 
 SceneGameplay::~SceneGameplay()
@@ -230,7 +230,6 @@ inline bool CheckCollision(SDL_Rect rec1, SDL_Rect rec2)
 
 bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 {
-
 	if (!pause)
 	{
 		// Collision detection: map vs player
@@ -289,6 +288,8 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 				entity = entity->next;
 			}
 		}
+
+		timer += dt;
 	}
 	else
 	{
@@ -430,9 +431,9 @@ bool SceneGameplay::Draw(Render* render)
 		render->DrawText(font, coins, 575, 30, 40, 5, { 255,255,255,255 });
 
 		char time[16] = { 0 };
-		sprintf_s(time, 16, "Timer: %03i", (int)timer.ReadSec() - 2);
-		render->DrawText(font, time, 1025 + offset, 25 + offset, 40, 5, { 105,105,105,255 });
-		render->DrawText(font, time, 1025, 25, 40, 5, { 255,255,255,255 });
+		sprintf_s(time, 16, "Time: %03d", (int)timer);
+		render->DrawText(font, time, 1075 + offset, 25 + offset, 40, 5, { 105,105,105,255 });
+		render->DrawText(font, time, 1075, 25, 40, 5, { 255,255,255,255 });
 	}
 	else
 	{
