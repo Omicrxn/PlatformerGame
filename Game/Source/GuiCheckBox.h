@@ -35,6 +35,8 @@ private:
     SDL_Rect whiteTick = { 370,75,16,15 };
     SDL_Rect yellowCross = { 369,169,15,15 };
     SDL_Rect yellowTick = { 369,184,16,15 };
+
+    bool debug = false;
 };
 
 #endif // __GUICHECKBOX_H__

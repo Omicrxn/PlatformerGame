@@ -31,8 +31,6 @@ bool GuiSlider::Update(Input* input, float dt)
         value = (mouseX - leftLimit) / unit;
         value = round(value);
 
-        // bounds.x += render->camera.x
-
         // Check collision between mouse and button bounds
         if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 
             (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
@@ -71,6 +69,11 @@ bool GuiSlider::Update(Input* input, float dt)
             state = GuiControlState::NORMAL;
     }
 
+    if (input->GetKey(SDL_SCANCODE_F8) == KeyState::KEY_DOWN)
+    {
+        debug = !debug;
+    }
+
     return false;
 }
 
@@ -79,18 +82,22 @@ bool GuiSlider::Draw(Render* render)
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 100, 100, 100, 255 });
+    case GuiControlState::DISABLED: /*render->DrawRectangle(bounds, { 100, 100, 100, 255 });*/
         break;
-    case GuiControlState::NORMAL: /*render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greySlider);
+    case GuiControlState::NORMAL: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greySlider);
+        if (debug)
+            render->DrawRectangle(bounds, { 0, 255, 0, 127 });
         break;
-    case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 255, 255, 0, 255 });*/
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowSlider);
+    case GuiControlState::FOCUSED: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowSlider);
+        if (debug)
+            render->DrawRectangle(bounds, { 255, 255, 0, 127 });
         break;
     case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
         render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownSlider);
+        if (debug)
+            render->DrawRectangle(bounds, { 0, 255, 255, 127 });
         break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
+    case GuiControlState::SELECTED: /*render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
         break;
     default:
         break;

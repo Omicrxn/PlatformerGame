@@ -37,6 +37,8 @@ private:
     SDL_Rect greySlider = { 335,38,35,35 };
     SDL_Rect yellowSlider = { 335,76,35,35 };
     SDL_Rect brownSlider = { 335,114,35,35 };
+
+    bool debug = false;
 };
 
 #endif // __GUISLIDER_H__

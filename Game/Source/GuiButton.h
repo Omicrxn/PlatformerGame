@@ -32,6 +32,8 @@ private:
     SDL_Rect yellowButton = { 0,282,190,49 };
 
     bool isFocusing;
+
+    bool debug = false;
 };
 
 #endif // __GUIBUTTON_H__

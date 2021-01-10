@@ -55,6 +55,11 @@ bool GuiButton::Update(Input* input, float dt, AudioManager* audio, int hoverFx,
         }
     }
 
+    if (input->GetKey(SDL_SCANCODE_F8) == KeyState::KEY_DOWN)
+    {
+        debug = !debug;
+    }
+
     return false;
 }
 
@@ -63,17 +68,21 @@ bool GuiButton::Draw(Render* render)
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: /*render->DrawRectangle(bounds, { 100, 100, 100, 255 });*/
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &whiteButton);
+    case GuiControlState::DISABLED: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &whiteButton);
+        if (debug)
+            render->DrawRectangleWithoutCamera(bounds, { 100, 100, 100, 127 });
         break;
-    case GuiControlState::NORMAL: /*render->DrawRectangle(bounds, { 0, 139, 139, 127 });*/
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greyButton);
+    case GuiControlState::NORMAL: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greyButton);
+        if (debug)
+            render->DrawRectangleWithoutCamera(bounds, { 0, 255, 0, 127 });
         break;
-    case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 224, 255, 255, 127 });*/
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowButton);
+    case GuiControlState::FOCUSED: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowButton);
+        if (debug)
+            render->DrawRectangleWithoutCamera(bounds, { 255, 255, 0, 127 });
         break;
-    case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
-        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownButton);
+    case GuiControlState::PRESSED: render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownButton);
+        if (debug)
+            render->DrawRectangle(bounds, { 0, 255, 255, 127 });
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;
