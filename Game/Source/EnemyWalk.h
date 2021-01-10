@@ -30,13 +30,13 @@ public:
 
     void Draw(Render* render);
 
-    void SetTexture(SDL_Texture* tex);
+    void SetTexture(SDL_Texture* tex, SDL_Texture* tex2);
     void SetPlayer(Player* player);
     void SetMap(Map* map);
 
     void Move(Map* map);
 
-
+    SDL_Texture* pathDebugTexture;
     Animation movingAnim;
     SDL_Rect rectAnim;
 
@@ -56,6 +56,8 @@ public:
     Map* map;
     Player* player;
     PathFinding* pathfinding;
+
+    bool debugDraw;
 };
 
 #endif // __ENEMYWALK_H__

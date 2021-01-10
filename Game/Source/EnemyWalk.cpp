@@ -85,7 +85,6 @@ void EnemyWalk::Move(Map* map)
 	{
 		velocity = { 0,0 };
 	}
-
 }
 
 void EnemyWalk::UpdatePath(Map* map)
@@ -96,6 +95,7 @@ void EnemyWalk::UpdatePath(Map* map)
 	pathfinding->lastPath.Clear();
 	if (pathfinding->CreatePath(origin, goal) != -1)
 	{
+		path.Clear();
 		for (int i = 0; i < pathfinding->lastPath.Count(); i++)
 		{
 			path.PushBack(*pathfinding->lastPath.At(i));
@@ -123,11 +123,22 @@ void EnemyWalk::Draw(Render* render)
 			isLeft = true;
 		render->DrawTexture(texture, position.x, position.y, &rectAnim, 1.0f, isLeft);
 	}
+
+	if (debugDraw)
+	{
+		// Draw path
+		for (uint i = 0; i < path.Count(); ++i)
+		{
+			iPoint pos = { path.At(i)->x * 64, path.At(i)->y * 64 };
+			render->DrawTexture(pathDebugTexture, pos.x, pos.y);
+		}
+	}
 }
 
-void EnemyWalk::SetTexture(SDL_Texture* tex)
+void EnemyWalk::SetTexture(SDL_Texture* tex, SDL_Texture* tex2)
 {
 	texture = tex;
+	pathDebugTexture = tex2;
 }
 
 void EnemyWalk::SetPlayer(Player* player)

@@ -207,7 +207,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	for (int i = 0; i < MAX_WALKING_ENEMIES; ++i)
 	{
 		enemiesWalk[i] = (EnemyWalk*)entityManager->CreateEntity(EntityType::ENEMYWALK);
-		enemiesWalk[i]->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/slime.png"));
+		enemiesWalk[i]->SetTexture(tex->Load("Assets/Textures/Entities/Enemies/slime.png"), tex->Load("Assets/Maps/path_debug.png"));
 
 		// Assign player and map to walking enemies
 		enemiesWalk[i]->SetPlayer(player);
@@ -262,6 +262,15 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		{
 			map->drawColliders = !map->drawColliders;
 			collisions->debug = !collisions->debug;
+
+			for (int i = 0; i < MAX_FLYING_ENEMIES; ++i)
+			{
+				enemiesFly[i]->debugDraw = !enemiesFly[i]->debugDraw;
+			}
+			for (int i = 0; i < MAX_WALKING_ENEMIES; ++i)
+			{
+				enemiesWalk[i]->debugDraw = !enemiesWalk[i]->debugDraw; enemiesWalk[i]->debugDraw;
+			}
 		}
 
 		if (input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)

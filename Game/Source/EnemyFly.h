@@ -56,6 +56,8 @@ public:
     Map* map;
     Player* player;
     PathFinding* pathfinding;
+
+    bool debugDraw;
 };
 
 #endif // __ENEMYFLY_H__
