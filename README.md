@@ -2,7 +2,7 @@
 
 ## Description
 
-Fantasy 2D platformer game developed by 3 students at CITM. In the game you are a magician who can control the elements which are learned after defeating the elemental enemies.
+Fantasy 2D platformer game developed by 3 students at CITM-UPC. In the game you are a magician who can control the elements which are learned after defeating the elemental enemies.
 
 ## Key Features
 
@@ -18,13 +18,17 @@ Fantasy 2D platformer game developed by 3 students at CITM. In the game you are 
  - Background with parallax
  - DEBUG keys
  - Walking and Flying enemy types that can pathfind the player.
- - Load/Save includes enemy states.
+ - Load/Save includes enemy, player and checkpoints states.
  - Game is capped to stable 60 frames per second without vsync.
  - Game has all its movement normalized using dt (deltaTime).
  - The player can destroy enemies shooting to them.
  - Game item (heart) to recover lifes.
  - Game collectable item (coin) to accumulate points.
  - Map Checkpoints autosave with feedback and on passing and teleportation.
+ - Menus like Title including settings and credits, and a Pause Menu with settings.
+ - Settings include different graphical and audio options.
+ - Buttons, sliders and checkboxes with responsive feedback are into the different menus.
+ - Entity and Scene managers are added.
 
 ## Controls
 
@@ -32,22 +36,26 @@ Fantasy 2D platformer game developed by 3 students at CITM. In the game you are 
 
 |Key|Action|
 |---|------|
-|W / SPACE|Jump|
-|A|Move left|
-|D|Move right|
+|🡱|Jump|
+|🡰|Move Left|
+|🡲|Move Right|
+|🡳|Move Down (in God Mode)|
+|SPACE|Shoot|
+|ESC|Pause (in Level)|
 
 ### DEBUG Keys
 
 |Key|Action|
 |---|------|
 |F1|Start from the first level|
-|F3| Start from the beginning of the current level|
+|F3|Start from the beginning of the current level|
 |F5|Save the current game state|
 |F6|Load the previous state (even across levels)|
+|F7|Move between the different checkpoints|
+|F8|View GUI bounds rectangles and state in different colors|
 |F9|View colliders / logic|
 |F10|God Mode (fly around, cannot be killed)|
-|F11|Enable/Disable FPS cap to 60|
-|C|Start from the last completed checkpoint|
+|F11|Enable/Disable FPS cap to 30|
 
 ## Developers
 
@@ -61,4 +69,3 @@ This project is licensed under an unmodified MIT license, which is an OSI-certif
 
 ### Additional Licenses
 The assets' work of this project is licensed under the Creative Commons Attribution 4.0 International License.
-For map assets license, check [LICENSE_MAP](/Output/Assets/maps/LICENSE_MAP) for the artists' work link.
