@@ -218,6 +218,7 @@ void Player::Die()
     currentAnim = PlayerAnim::DEAD;
     if (deadAnim.Finished())
     {
+        dead = true;
         if (lifes > 0)
         {
             lifes--;
@@ -225,10 +226,6 @@ void Player::Die()
             tempPosition = lastCheckpointPos;
             dead = false;
             deadAnim.Reset();
-        }
-        else
-        {
-            active = false;
         }
     }
     

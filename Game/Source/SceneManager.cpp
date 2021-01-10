@@ -17,8 +17,8 @@
 
 #include "SDL/include/SDL.h"
 
-#define FADEOUT_TRANSITION_SPEED	2.0f
-#define FADEIN_TRANSITION_SPEED		2.0f
+#define FADEOUT_TRANSITION_SPEED	4.0f
+#define FADEIN_TRANSITION_SPEED		4.0f
 
 SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio, App* app, GuiManager* guiManager) : Module()
 {
@@ -171,7 +171,7 @@ bool SceneManager::Update(float dt)
 	// Draw full screen rectangle in front of everything
 	if (onTransition)
 	{
-		render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, (unsigned char)(255.0f * transitionAlpha) });
+		render->DrawRectangleWithoutCamera({ 0, 0, 1280, 720 }, { 0, 0, 0, (unsigned char)(255.0f * transitionAlpha) });
 	}
 
 	// L12b: Debug pathfinding

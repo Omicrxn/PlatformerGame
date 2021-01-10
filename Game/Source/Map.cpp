@@ -257,6 +257,7 @@ bool Map::Load(const char* filename)
 		if (ret == true) ret = LoadTilesetImage(tileset, set);
 
 		data.tilesets.Add(set);
+		//RELEASE(set);
 	}
 
 	// L04: DONE 4: Iterate all layers and load each of them
@@ -269,6 +270,7 @@ bool Map::Load(const char* filename)
 		ret = LoadLayer(layer, lay);
 
 		if (ret == true) data.layers.Add(lay);
+		//RELEASE(lay);
 	}
     
     if(ret == true)
@@ -482,6 +484,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 			p->value = prop.attribute("value").as_int();
 
 			properties.list.Add(p);
+			//RELEASE(p);
 		}
 	}
 	
@@ -525,7 +528,7 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		width = data.width;
 		height = data.height;
 		ret = true;
-
+		RELEASE(map);
 		break;
 	}
 

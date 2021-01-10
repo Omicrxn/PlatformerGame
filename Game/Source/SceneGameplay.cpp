@@ -220,10 +220,15 @@ inline bool CheckCollision(SDL_Rect rec1, SDL_Rect rec2)
 
 bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 {
+
 	if (!pause)
 	{
 		// Collision detection: map vs player
 		player->Update(input, dt);
+		if (player->dead)
+		{
+			TransitionToScene(SceneType::TITLE);
+		}
 		CollisionHandler();
 
 		// Debug Keys
@@ -296,7 +301,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 			{
 				if (fullscreen == false)
 				{
-					SDL_SetWindowFullscreen(window->window, SDL_WINDOW_FULLSCREEN);
+					SDL_SetWindowFullscreen(window->window, 1);
 					fullscreen = true;
 				}
 				else
@@ -304,6 +309,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 					SDL_SetWindowFullscreen(window->window, 0);
 					fullscreen = false;
 				}
+				settingsCurrentSelection = SettingsSelection::NONE;
 			}
 			else if (settingsCurrentSelection == SettingsSelection::VSYNC)
 			{
@@ -458,14 +464,14 @@ bool SceneGameplay::Unload(Textures* tex, AudioManager* audio)
 	tex->UnLoad(background4);
 
 	map->CleanUp();
-	delete map;
+	RELEASE(map);
 	tex->UnLoad(barTexture);
 	tex->UnLoad(atlasGUITexture);
 
 	tex->UnLoad(heartTexture);
 	tex->UnLoad(coinTexture);
 
-	delete font;
+	RELEASE(font);
 	player->active = false;
 	for (int i = MAX_CHECKPOINTS-1; i >= 0; i--)
 	{
@@ -489,22 +495,22 @@ bool SceneGameplay::Unload(Textures* tex, AudioManager* audio)
 	}
 
 	// GUI: Initialize required controls for the screen
-	delete btnResume;
+	RELEASE(btnResume);
 
-	delete btnSettings;
+	RELEASE(btnSettings);
 
-	delete btnTitle;
+	RELEASE(btnTitle);
 
-	delete btnExit;
+	RELEASE(btnExit);
 
 	// GUI: Initialize required controls for the settings
-	delete sldrMusicVolume;
+	RELEASE(sldrMusicVolume);
 
-	delete sldrFxVolume;
+	RELEASE(sldrFxVolume);
 
-	delete cbxFullscreen;
+	RELEASE(cbxFullscreen);
 
-	delete cbxVSync;
+	RELEASE(cbxVSync);
 
 	PathFinding::GetInstance()->CleanUp();
     return true;

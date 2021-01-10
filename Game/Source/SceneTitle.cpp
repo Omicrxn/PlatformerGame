@@ -129,7 +129,7 @@ bool SceneTitle::Update(Input* input, float dt)
         {
             if (fullscreen == false)
             {
-                SDL_SetWindowFullscreen(window->window, SDL_WINDOW_FULLSCREEN);
+                SDL_SetWindowFullscreen(window->window, 1);
                 fullscreen = true;
             }
             else
@@ -137,6 +137,7 @@ bool SceneTitle::Update(Input* input, float dt)
                 SDL_SetWindowFullscreen(window->window, 0);
                 fullscreen = false;
             }
+            settingsCurrentSelection = SettingsSelection::NONE;
         }
         else if (settingsCurrentSelection == SettingsSelection::VSYNC)
         {
