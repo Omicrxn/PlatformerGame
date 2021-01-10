@@ -169,8 +169,6 @@ void Collisions::DebugDraw()
 
 bool Collisions::CleanUp()
 {
-
-
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] != nullptr)

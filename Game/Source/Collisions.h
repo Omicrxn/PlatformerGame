@@ -86,9 +86,11 @@ private:
 
 	// The amount of colliders loaded into the array
 	uint colliderCount = 0;
+
 public:
 	// Simple debugging flag to draw all colliders
 	bool debug = false;
+
 private:
 	Render* render;
 };
