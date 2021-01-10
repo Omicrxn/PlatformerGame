@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="512" tileheight="512" infinite="0" backgroundcolor="#ffffff" nextlayerid="15" nextobjectid="1">
  <tileset firstgid="1" name="Tileset" tilewidth="512" tileheight="512" tilecount="49" columns="7">
-  <image source="Mossy - TileSet.png" trans="ff00ff" width="3584" height="3584"/>
+  <image source="mossy_tileset.png" trans="ff00ff" width="3584" height="3584"/>
  </tileset>
  <tileset firstgid="50" name="Mossy - FloatingPlatforms" tilewidth="512" tileheight="512" tilecount="16" columns="4">
-  <image source="Mossy - FloatingPlatforms.png" trans="ff00ff" width="2048" height="2048"/>
+  <image source="mossy_platforms.png" trans="ff00ff" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="66" name="Mossy - MossyHills" tilewidth="512" tileheight="512" tilecount="16" columns="4">
-  <image source="Mossy - MossyHills.png" trans="ff00ff" width="2048" height="2048"/>
+  <image source="mossy_hills.png" trans="ff00ff" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="82" name="collisions" tilewidth="512" tileheight="512" tilecount="8" columns="8">
   <image source="collisions.png" trans="ff00ff" width="4096" height="512"/>
  </tileset>
  <tileset firstgid="90" name="WaterTile" tilewidth="512" tileheight="512" tilecount="2" columns="1">
-  <image source="WaterTile.png" trans="ff00ff" width="512" height="1024"/>
+  <image source="water_tile.png" trans="ff00ff" width="512" height="1024"/>
  </tileset>
  <tileset firstgid="92" name="Mossy - Decorations&amp;Hazards" tilewidth="512" tileheight="512" tilecount="96" columns="12">
-  <image source="Mossy - Decorations&amp;Hazards.png" trans="ff00ff" width="6144" height="4096"/>
+  <image source="mossy_assets.png" trans="ff00ff" width="6144" height="4096"/>
  </tileset>
- <tileset firstgid="188" name="Mossy - BackgroundDecoration" tilewidth="512" tileheight="512" tilecount="64" columns="8">
-  <image source="Mossy - BackgroundDecoration.png" trans="ff00ff" width="4096" height="4096"/>
+ <tileset firstgid="188" name="mossy_decorations" tilewidth="512" tileheight="512" tilecount="64" columns="8">
+  <image source="mossy_decorations.png" trans="ff00ff" width="4096" height="4096"/>
  </tileset>
  <tileset firstgid="252" name="Mossy - Hanging Plants" tilewidth="512" tileheight="512" tilecount="20" columns="4">
-  <image source="Mossy - Hanging Plants.png" trans="ff00ff" width="2048" height="2948"/>
+  <image source="mossy_plants.png" trans="ff00ff" width="2048" height="2948"/>
  </tileset>
  <layer id="7" name="water" width="45" height="45">
   <data>
@@ -8140,7 +8140,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="6" name="collisions" width="45" height="45" visible="0" opacity="0.5">
+ <layer id="6" name="collisions" width="45" height="45" opacity="0.5">
   <properties>
    <property name="Navigation" type="int" value="1"/>
    <property name="drawable" value="0"/>
@@ -8334,8 +8334,6 @@
    <tile gid="86"/>
    <tile gid="86"/>
    <tile gid="86"/>
-   <tile/>
-   <tile/>
    <tile gid="86"/>
    <tile gid="86"/>
    <tile gid="86"/>
@@ -8347,10 +8345,12 @@
    <tile gid="86"/>
    <tile gid="86"/>
    <tile gid="86"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="86"/>
+   <tile gid="86"/>
+   <tile gid="86"/>
+   <tile gid="86"/>
+   <tile gid="86"/>
+   <tile gid="86"/>
    <tile gid="86"/>
    <tile gid="86"/>
    <tile gid="86"/>
