@@ -6,16 +6,21 @@
 #include "Window.h"
 #include "Font.h"
 
-#include "EntityManager.h"
-
 #include "SDL/include/SDL.h"
 #include "SDL_mixer/include/SDL_mixer.h"
 
-SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app)
+SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app, GuiManager* guiManager)
 {
+    this->app = app;
+    this->sceneManager = sceneManager;
+    this->window = win;
+    this->audio = audio;
+    this->render = render;
+    this->guiManager = guiManager;
+
     // GUI: Initialize required controls for the screen
-    btnStart = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
-    btnStart->SetObserver(this);
+    //btnStart = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
+    //btnStart->SetObserver(this);
 
     btnContinue = new GuiButton(2, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 80, 190, 40 }, "CONTINUE");
     btnContinue->SetObserver(this);
@@ -46,12 +51,6 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* au
     backgroundRect = { 0,0,1280,720 };
     barRect = { 0,0,300,35 };
 
-    this->app = app;
-    this->sceneManager = sceneManager;
-    this->window = win;
-    this->audio = audio;
-    this->render = render;
-
     menuCurrentSelection = MenuSelection::NONE;
     settingsCurrentSelection = SettingsSelection::NONE;
 }
@@ -62,6 +61,11 @@ SceneTitle::~SceneTitle()
 
 bool SceneTitle::Load(Textures* tex)
 {
+    //btnStart = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
+    //btnStart->SetObserver(this);
+    btnStart = (GuiButton*)guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, { (int)window->GetWindowWidth() / 2 - 190 / 2, (int)window->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
+    btnStart->SetObserver(this);
+
     backgroundTexture = tex->Load("Assets/Textures/Scenes/title_screen.png");
     barTexture = tex->Load("Assets/Textures/UI/bar.png");
     atlasGUI = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
@@ -105,6 +109,7 @@ bool SceneTitle::Update(Input* input, float dt)
     {
         if (app->isGameSaved())
         {
+            sceneManager->continueOption = true;
             TransitionToScene(SceneType::GAMEPLAY);
         }
     }

@@ -3,11 +3,12 @@
 #include "EntityManager.h"
 #include "Pathfinding.h"
 
-SceneGameplay::SceneGameplay(App* app)
+SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager)
 {
 	name = "Gameplay";
 
 	this->app = app;
+	this->sceneManager = sceneManager;
 
 	timer.Start();
 }
@@ -107,7 +108,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	}
 	enemiesWalk[0]->position = iPoint(20 * 64, -10 * 64);
 
-	if (app->isGameSaved())
+	if (app->isGameSaved() && sceneManager->continueOption)
 		app->LoadGameRequest();
 
     return false;

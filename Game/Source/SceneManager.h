@@ -4,20 +4,19 @@
 #include "Module.h"
 #include "Scene.h"
 
-class GuiButton;
-
 class App;
 class Input;
 class Render;
 class Textures;
 class Window;
 class Collisions;
+class GuiManager;
 
 class SceneManager : public Module
 {
 public:
 
-	SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio, App* app);
+	SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio, App* app, GuiManager* guiManager);
 
 	// Destructor
 	virtual ~SceneManager();
@@ -43,6 +42,8 @@ public:
 	// Exit call coming from the menu
 	bool menuExitCall = false;
 
+	bool continueOption = false;
+
 private:
 
 	App* app;
@@ -53,6 +54,7 @@ private:
 	Window* win;
 	Collisions* collisions;
 	AudioManager* audio;
+	GuiManager* guiManager;
 	
 	Scene* current;
 	Scene* next;

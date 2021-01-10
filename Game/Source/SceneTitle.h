@@ -6,6 +6,7 @@
 #include "GuiButton.h"
 #include "GuiSlider.h"
 #include "GuiCheckBox.h"
+
 #include "App.h"
 #include "SceneManager.h"
 #include "Window.h"
@@ -37,7 +38,7 @@ class SceneTitle : public Scene
 {
 public:
 
-    SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app);
+    SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* audio, Render* render, App* app, GuiManager* guiManager);
     virtual ~SceneTitle();
 
     bool Load(Textures* tex);
@@ -77,6 +78,7 @@ private:
     AudioManager* audio;
     Render* render;
     App* app;
+    GuiManager* guiManager;
 
     MenuSelection menuCurrentSelection;
     SettingsSelection settingsCurrentSelection;

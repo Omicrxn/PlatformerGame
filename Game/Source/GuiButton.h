@@ -2,6 +2,10 @@
 #define __GUIBUTTON_H__
 
 #include "GuiControl.h"
+#include "Render.h"
+
+#include "GuiManager.h"
+#include "Audio.h"
 
 #include "Point.h"
 #include "SString.h"

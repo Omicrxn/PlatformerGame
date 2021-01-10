@@ -12,8 +12,6 @@
 #include "Window.h"
 #include "Collisions.h"
 
-#include "GuiButton.h"
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -22,7 +20,7 @@
 #define FADEOUT_TRANSITION_SPEED	2.0f
 #define FADEIN_TRANSITION_SPEED		2.0f
 
-SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio, App* app) : Module()
+SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityManager* entityManager, Window* win, Collisions* collisions, AudioManager* audio, App* app, GuiManager* guiManager) : Module()
 {
 	name.Create("scenemanager");
 
@@ -38,6 +36,7 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex, EntityMa
 	this->win = win;
 	this->collisions = collisions;
 	this->audio = audio;
+	this->guiManager = guiManager;
 }
 
 // Destructor
@@ -57,7 +56,7 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 	//current = new SceneLogo();
-	current = new SceneTitle(win, this, audio, render, app);
+	current = new SceneTitle(win, this, audio, render, app, guiManager);
 
 	if (current->name == "Gameplay")
 	{
@@ -200,8 +199,8 @@ bool SceneManager::Update(float dt)
 		switch (current->nextScene)
 		{
 			case SceneType::LOGO: next = new SceneLogo(); break;
-			case SceneType::TITLE: next = new SceneTitle(win, this, audio, render, app); break;
-			case SceneType::GAMEPLAY: next = new SceneGameplay(app); break;
+			case SceneType::TITLE: next = new SceneTitle(win, this, audio, render, app, guiManager); break;
+			case SceneType::GAMEPLAY: next = new SceneGameplay(app, this); break;
 			case SceneType::ENDING: next = new SceneEnding(win); break;
 			default: break;
 		}

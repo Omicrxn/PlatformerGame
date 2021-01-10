@@ -20,7 +20,7 @@ public:
 	virtual ~EntityManager();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node&);
+	bool Awake();
 
 	bool Update(float dt);
 

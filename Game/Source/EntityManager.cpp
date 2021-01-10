@@ -8,7 +8,6 @@
 #include "Coin.h"
 #include "Heart.h"
 #include "Map.h"
-#include "Collisions.h"
 #include "Particles.h"
 
 #include "Defs.h"
@@ -28,7 +27,7 @@ EntityManager::~EntityManager()
 {}
 
 // Called before render is available
-bool EntityManager::Awake(pugi::xml_node& config)
+bool EntityManager::Awake()
 {
 	LOG("Loading Entity Manager");
 	bool ret = true;
@@ -87,10 +86,14 @@ bool EntityManager::UpdateAll(float dt, bool doLogic)
 	ListItem<Entity*>* entity = entities.start;
 	while (entity != nullptr)
 	{
-		
-		if (doLogic) entity->data->Update(dt);
+		if (doLogic)
+			entity->data->Update(dt);
+
 		entity->data->Draw(render);
-		if (!entity->data->active)DestroyEntity(entity->data);
+
+		if (!entity->data->active)
+			DestroyEntity(entity->data);
+
 		entity = entity->next;
 	}
 

@@ -19,6 +19,7 @@ class Render;
 class Textures;
 class AudioManager;
 class EntityManager;
+class GuiManager;
 class SceneManager;
 class Collisions;
 class Particles;
@@ -93,6 +94,7 @@ public:
 	Textures* tex;
 	AudioManager* audio;
 	EntityManager* entityManager;
+	GuiManager* guiManager;
 	SceneManager* sceneManager;
 	Collisions* collisions;
 	Particles* particles;

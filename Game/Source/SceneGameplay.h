@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "App.h"
+#include "SceneManager.h"
 
 #include "Map.h"
 #include "Player.h"
@@ -11,6 +12,7 @@
 #include "Heart.h"
 #include "EnemyFly.h"
 #include "EnemyWalk.h"
+
 #include "Timer.h"
 
 #define MAX_CHECKPOINTS 1
@@ -23,7 +25,7 @@ class SceneGameplay : public Scene
 {
 public:
 
-    SceneGameplay(App* app);
+    SceneGameplay(App* app, SceneManager* sceneManager);
     virtual ~SceneGameplay();
 
     bool Load(Textures* tex, EntityManager* entityManager);
@@ -38,6 +40,7 @@ public:
 private:
 
     App* app;
+    SceneManager* sceneManager;
 
     Map* map;
 
