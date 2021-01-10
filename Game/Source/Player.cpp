@@ -86,19 +86,19 @@ bool Player::Update(Input* input, float dt)
         tempPosition = position;
 
         // Calculate movement
-        if (!dead && !godMode)
+        if (!hit && !godMode)
         {
             position.x = position.x + velocity.x * dt;
             position.y = position.y + velocity.y * dt + (GRAVITY * dt * dt * 0.5);
             velocity.y = velocity.y + GRAVITY * dt;
         }
 
-        if (!dead)
+        if (!hit)
         {
 
             if (readyToJump)
             {
-                if (shootingAnim.Finished())
+                if (shootingAnim.Finished() || deadAnim.Finished())
                 {
                     currentAnim = PlayerAnim::IDLE;
                 }
@@ -216,16 +216,20 @@ void Player::SmallJump()
 void Player::Die()
 {
     currentAnim = PlayerAnim::DEAD;
+    hit = true;
     if (deadAnim.Finished())
     {
-        dead = true;
         if (lifes > 0)
         {
             lifes--;
             position = lastCheckpointPos;
             tempPosition = lastCheckpointPos;
-            dead = false;
+            hit = false;
             deadAnim.Reset();
+        }
+        else
+        {
+            dead = true;
         }
     }
     
@@ -257,7 +261,6 @@ void Player::OnCollision(Collider* collider)
 	if (collider->type == Collider::Type::ENEMY)
 	{
 		//audio->PlayFx(fx);
-		
         Die();
 	}
 }

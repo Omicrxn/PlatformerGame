@@ -137,7 +137,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		int w, h;
 		uchar* data = NULL;
 
-		//if (map->CreateWalkabilityMap(w, h, &data)) PathFinding::GetInstance()->SetMap(w, h, data);
+		if (map->CreateWalkabilityMap(w, h, &data)) PathFinding::GetInstance()->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
 	}

@@ -192,11 +192,11 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		{
 			PathNode node = close.list.end->data;
 			lastPath.PushBack(node.pos);
-			do
+			while(node.parent != nullptr)
 			{
 				node = close.Find(node.parent->pos)->data;
 				lastPath.PushBack(node.pos);
-			} while (node.parent != nullptr);
+			}
 			lastPath.Flip();
 			return 0;
 		}

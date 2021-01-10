@@ -528,7 +528,6 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		width = data.width;
 		height = data.height;
 		ret = true;
-		RELEASE(map);
 		break;
 	}
 
