@@ -67,4 +67,10 @@ void Coin::OnCollision(Collider* collider)
 	printf("Score: %d \n", player->score);
 	this->collider->pendingToDelete = true;
 	active = false;
+	sceneGameplay->animateCoin = true;
+}
+
+void Coin::SetScene(Scene* scene)
+{
+	sceneGameplay = (SceneGameplay*)scene;
 }

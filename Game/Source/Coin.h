@@ -7,11 +7,14 @@
 
 #include "EntityManager.h"
 #include "Audio.h"
+#include "Scene.h"
+#include "SceneGameplay.h"
 
 #include "Point.h"
 #include "SString.h"
 
 class Player;
+class SceneGameplay;
 
 class Coin : public Entity
 {
@@ -30,6 +33,8 @@ public:
 
     void OnCollision(Collider* collider) override;
 
+    void SetScene(Scene* scene);
+
 public:
 
     SDL_Texture* texture;
@@ -40,6 +45,8 @@ public:
     int fx;
 
     Player* player;
+
+    SceneGameplay* sceneGameplay;
 };
 
 #endif // __COIN_H__

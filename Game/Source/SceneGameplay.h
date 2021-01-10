@@ -27,6 +27,8 @@
 
 enum class MenuSelection;
 enum class SettingsSelection;
+class Coin;
+class Heart;
 
 class SceneGameplay : public Scene
 {
@@ -44,6 +46,9 @@ public:
     bool Unload();
     void CollisionHandler();
     bool OnGuiMouseClickEvent(GuiControl* control);
+
+    bool animateHeart;
+    bool animateCoin;
 
 private:
 
@@ -72,8 +77,18 @@ private:
     SDL_Rect backgroundRect;
     SDL_Rect menuRect;
 
+    // Menu textures
+    SDL_Texture* atlasGUITexture;
     SDL_Texture* barTexture;
     SDL_Rect barRect;
+    SDL_Texture* heartTexture;
+    SDL_Rect heartRect;
+    SDL_Texture* coinTexture;
+    SDL_Rect coinRect;
+
+    Animation heartAnimation;
+    
+    Animation coinAnimation;
 
     Font* font;
 
@@ -83,8 +98,6 @@ private:
     Window* window;
 
     bool pause;
-
-    SDL_Texture* atlasGUI;
 
     // In-game menu buttons
     GuiButton* btnResume;

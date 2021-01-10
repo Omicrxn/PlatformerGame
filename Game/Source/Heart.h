@@ -5,11 +5,14 @@
 #include "Entity.h"
 #include "Render.h"
 #include "EntityManager.h"
+#include "Scene.h"
+#include "SceneGameplay.h"
 
 #include "Point.h"
 #include "SString.h"
 
 class Player;
+class SceneGameplay;
 
 class Heart : public Entity
 {
@@ -29,6 +32,8 @@ public:
 
 	void OnCollision(Collider* collider) override;
 
+	void SetScene(Scene* scene);
+
 public:
 
 	SDL_Texture* texture;
@@ -39,5 +44,7 @@ public:
 	int fx;
 
 	Player* player;
+
+	SceneGameplay* sceneGameplay;
 };
 #endif //__HEART_H__

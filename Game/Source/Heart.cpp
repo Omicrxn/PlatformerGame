@@ -71,4 +71,10 @@ void Heart::OnCollision(Collider* collider)
 	printf("Lifes: %d \n", player->lifes);
 	this->collider->pendingToDelete = true;
 	active = false;
+	sceneGameplay->animateHeart = true;
+}
+
+void Heart::SetScene(Scene* scene)
+{
+	sceneGameplay = (SceneGameplay*)scene;
 }

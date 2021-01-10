@@ -83,16 +83,42 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	
 	map = new Map(tex);
 
+	// Load GUI assets
 	barTexture = tex->Load("Assets/Textures/UI/bar.png");
-	atlasGUI = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
-	btnResume->SetTexture(atlasGUI);
-	btnSettings->SetTexture(atlasGUI);
-	btnTitle->SetTexture(atlasGUI);
-	btnExit->SetTexture(atlasGUI);
-	sldrMusicVolume->SetTexture(atlasGUI);
-	sldrFxVolume->SetTexture(atlasGUI);
-	cbxFullscreen->SetTexture(atlasGUI);
-	cbxVSync->SetTexture(atlasGUI);
+	atlasGUITexture = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
+	btnResume->SetTexture(atlasGUITexture);
+	btnSettings->SetTexture(atlasGUITexture);
+	btnTitle->SetTexture(atlasGUITexture);
+	btnExit->SetTexture(atlasGUITexture);
+	sldrMusicVolume->SetTexture(atlasGUITexture);
+	sldrFxVolume->SetTexture(atlasGUITexture);
+	cbxFullscreen->SetTexture(atlasGUITexture);
+	cbxVSync->SetTexture(atlasGUITexture);
+
+	heartAnimation.PushBack({ 0,0,16,16 });
+	heartAnimation.PushBack({ 16,0,16,16 });
+	heartAnimation.PushBack({ 32,0,16,16 });
+	heartAnimation.PushBack({ 48,0,16,16 });
+	heartAnimation.PushBack({ 64,0,16,16 });
+	heartAnimation.PushBack({ 80,0,16,16 });
+	heartAnimation.PushBack({ 96,0,16,16 });
+	heartAnimation.PushBack({ 112,0,16,16 });
+	heartAnimation.loop = false;
+	heartAnimation.speed = 0.09f;
+
+	coinAnimation.PushBack({ 0,0,16,16 });
+	coinAnimation.PushBack({ 16,0,16,16 });
+	coinAnimation.PushBack({ 32,0,16,16 });
+	coinAnimation.PushBack({ 48,0,16,16 });
+	coinAnimation.PushBack({ 63,0,16,16 });
+	coinAnimation.loop = false;
+	coinAnimation.speed = 0.09f;
+
+	// Load HUD assets
+	heartTexture = tex->Load("Assets/Textures/Entities/Items/heart.png");
+	heartRect = { 0,0,16,16 };
+	coinTexture = tex->Load("Assets/Textures/Entities/Items/coin.png");
+	coinRect = { 0,0,16,16 };
 
 	// L03: DONE: Load map
 	// L12b: Create walkability map on map loading
@@ -135,6 +161,9 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		
 		// Assign player to coins
 		coins[i]->SetPlayer(player);
+
+		// Assign scene to coins
+		coins[i]->SetScene(this);
 	}
 	coins[0]->position = iPoint(21 * 64+16, 39 * 64);
 
@@ -145,6 +174,9 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 
 		// Assign player to hearts
 		hearts[i]->SetPlayer(player);
+
+		// Assign scene to hearts
+		hearts[i]->SetScene(this);
 	}
 	hearts[0]->position = iPoint(6 * 64, 23 * 64);
 
@@ -313,17 +345,48 @@ bool SceneGameplay::Draw(Render* render)
 
 	if (!pause)
 	{
+		if (animateHeart)
+		{
+			animateHeart = false;
+			heartAnimation.Reset();
+		}
+		if (animateCoin)
+		{
+			animateCoin = false;
+			coinAnimation.Reset();
+		}
+		render->scale = 3;
+		if (heartAnimation.Finished())
+		{
+			render->DrawTextureWithoutCamera(heartTexture, 25, 25, &heartRect);
+		}
+		else
+		{
+			SDL_Rect heart = heartAnimation.GetCurrentFrame();
+			render->DrawTextureWithoutCamera(heartTexture, 25, 25, &heart, 1.0f);
+		}
+		if (coinAnimation.Finished())
+		{
+			render->DrawTextureWithoutCamera(coinTexture, 500, 25, &coinRect);
+		}
+		else
+		{
+			SDL_Rect coin = coinAnimation.GetCurrentFrame();
+			render->DrawTextureWithoutCamera(coinTexture, 500, 25, &coin, 1.0f);
+		}
+		render->scale = 1;
+
 		int offset = 3;
 
 		char lifes[16] = { 0 };
-		sprintf_s(lifes, 16, "Lifes: %03i", player->lifes);
-		render->DrawText(font, lifes, 50 + offset, 25 + offset, 40, 5, { 105,105,105,255 });
-		render->DrawText(font, lifes, 50, 25, 40, 5, { 255,255,255,255 });
+		sprintf_s(lifes, 16, "%03i", player->lifes);
+		render->DrawText(font, lifes, 95 + offset, 30 + offset, 40, 5, { 105,105,105,255 });
+		render->DrawText(font, lifes, 95, 30, 40, 5, { 255,255,255,255 });
 
 		char coins[16] = { 0 };
-		sprintf_s(coins, 16, "Coins: %03i", player->score);
-		render->DrawText(font, coins, 550 + offset, 25 + offset, 40, 5, { 105,105,105,255 });
-		render->DrawText(font, coins, 550, 25, 40, 5, { 255,255,255,255 });
+		sprintf_s(coins, 16, "%03i", player->score);
+		render->DrawText(font, coins, 575 + offset, 30 + offset, 40, 5, { 105,105,105,255 });
+		render->DrawText(font, coins, 575, 30, 40, 5, { 255,255,255,255 });
 
 		char time[16] = { 0 };
 		sprintf_s(time, 16, "Timer: %03i", (int)timer.ReadSec() - 2);
