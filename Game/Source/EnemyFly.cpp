@@ -35,26 +35,30 @@ bool EnemyFly::Update(float dt)
 {
 	bool ret = true;
 
-	tempPosition = position;
-
-	if (!dead)
+	if (!pause)
 	{
-		position.x = position.x + velocity.x;
-		position.y = position.y + velocity.y;
-	}
 
-	if (counter >= 0.27f)
-	{
-		counter = 0.0f;
-		UpdatePath(map);
-		Move(map);
-	}
-	counter += dt;
+		tempPosition = position;
 
-	// Update collider position
-	if (collider != nullptr)
-	{
-		collider->SetPos(position.x + 15, position.y + 15);
+		if (!dead)
+		{
+			position.x = position.x + velocity.x;
+			position.y = position.y + velocity.y;
+		}
+
+		if (counter >= 0.27f)
+		{
+			counter = 0.0f;
+			UpdatePath(map);
+			Move(map);
+		}
+		counter += dt;
+
+		// Update collider position
+		if (collider != nullptr)
+		{
+			collider->SetPos(position.x + 15, position.y + 15);
+		}
 	}
 
 	return ret;
@@ -112,18 +116,21 @@ void EnemyFly::OnCollision(Collider* collision)
 
 void EnemyFly::Draw(Render* render)
 {
-	rectAnim = movingAnim.GetCurrentFrame();
-	if (velocity.x > 0)
-		isLeft = false;
-	else
-		isLeft = true;
-	render->DrawTexture(texture, position.x, position.y, &rectAnim, 1.0f, isLeft);
-
-	// Draw path
-	for (uint i = 0; i < path.Count(); ++i)
+	if (!pause)
 	{
-		iPoint pos = map->MapToWorld(path.At(i)->x, path.At(i)->y);
-		render->DrawTexture(pathDebugTexture, pos.x, pos.y, &rectAnim, 1.0f, isLeft);
+		rectAnim = movingAnim.GetCurrentFrame();
+		if (velocity.x > 0)
+			isLeft = false;
+		else
+			isLeft = true;
+		render->DrawTexture(texture, position.x, position.y, &rectAnim, 1.0f, isLeft);
+
+		// Draw path
+		for (uint i = 0; i < path.Count(); ++i)
+		{
+			iPoint pos = map->MapToWorld(path.At(i)->x, path.At(i)->y);
+			render->DrawTexture(pathDebugTexture, pos.x, pos.y, &rectAnim, 1.0f, isLeft);
+		}
 	}
 }
 

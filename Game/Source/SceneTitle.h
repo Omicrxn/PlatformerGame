@@ -55,7 +55,7 @@ public:
 private:
 
     // Main menu buttons
-    GuiButton* btnStart;
+    GuiButton* btnPlay;
     GuiButton* btnContinue;
     GuiButton* btnSettings;
     GuiButton* btnCredits;
@@ -86,7 +86,7 @@ private:
     Font* font;
 
     bool fullscreen = false;
-    bool vsync;
+    bool vsync = false;
 };
 
 #endif // __SCENETITLE_H__

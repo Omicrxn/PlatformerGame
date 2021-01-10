@@ -23,10 +23,13 @@ bool Checkpoint::Update(float dt)
 {
 	bool ret = true;
 
-	// Update collider position
-	if (collider != nullptr)
+	if (!pause)
 	{
-		collider->SetPos(position.x, position.y);
+		// Update collider position
+		if (collider != nullptr)
+		{
+			collider->SetPos(position.x, position.y);
+		}
 	}
 
 	return ret;
@@ -34,13 +37,15 @@ bool Checkpoint::Update(float dt)
 
 void Checkpoint::Draw(Render* render)
 {
-	// TODO: Calculate the corresponding rectangle depending on the
-	// animation state and animation frame
-	SDL_Rect rec = checkpointAnimation.GetCurrentFrame();
-
-	render->scale = scale;
-	render->DrawTexture(texture, position.x, position.y, &rec, 1.0f,true);
-	render->scale = 1;
+	if (!pause)
+	{
+		// TODO: Calculate the corresponding rectangle depending on the
+		// animation state and animation frame
+		SDL_Rect rec = checkpointAnimation.GetCurrentFrame();
+		render->scale = scale;
+		render->DrawTexture(texture, position.x, position.y, &rec, 1.0f, true);
+		render->scale = 1;
+	}
 }
 
 void Checkpoint::SetPlayer(Player* player)

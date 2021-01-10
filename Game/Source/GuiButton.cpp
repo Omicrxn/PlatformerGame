@@ -46,16 +46,16 @@ bool GuiButton::Draw(Render* render)
     switch (state)
     {
     case GuiControlState::DISABLED: /*render->DrawRectangle(bounds, { 100, 100, 100, 255 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &whiteButton);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &whiteButton);
         break;
     case GuiControlState::NORMAL: /*render->DrawRectangle(bounds, { 0, 139, 139, 127 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &greyButton);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greyButton);
         break;
     case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 224, 255, 255, 127 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &yellowButton);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowButton);
         break;
     case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &brownButton);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownButton);
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;

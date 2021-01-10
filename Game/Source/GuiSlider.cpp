@@ -82,13 +82,13 @@ bool GuiSlider::Draw(Render* render)
     case GuiControlState::DISABLED: render->DrawRectangle(bounds, { 100, 100, 100, 255 });
         break;
     case GuiControlState::NORMAL: /*render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &greySlider);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greySlider);
         break;
     case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 255, 255, 0, 255 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &yellowSlider);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowSlider);
         break;
     case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &brownSlider);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownSlider);
         break;
     case GuiControlState::SELECTED: render->DrawRectangle(bounds, { 0, 255, 0, 255 });
         break;

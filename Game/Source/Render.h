@@ -51,6 +51,9 @@ public:
 
 	bool DrawText(Font* font, const char* text, int x, int y, int size, int spacing, SDL_Color tint);
 
+	bool DrawRectangleWithoutCamera(const SDL_Rect& rect, SDL_Color color, bool filled = true) const;
+	bool DrawTextureWithoutCamera(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, bool isLeft = false, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
+
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 

@@ -57,6 +57,8 @@ public:
     // SDL_Texture* texture;
 
     iPoint tempPosition = { 0,0 };
+
+    bool pause;
 };
 
 #endif // __ENTITY_H__

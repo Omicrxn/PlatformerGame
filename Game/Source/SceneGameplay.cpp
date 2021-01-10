@@ -2,15 +2,68 @@
 
 #include "EntityManager.h"
 #include "Pathfinding.h"
+#include "Window.h"
 
-SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager)
+#include "SDL_mixer/include/SDL_mixer.h"
+
+enum class MenuSelection
+{
+	NONE,
+	RESUME,
+	SETTINGS,
+	TITLE,
+	EXIT
+};
+
+enum class SettingsSelection
+{
+	NONE,
+	MUSICVOLUME,
+	FXVOLUME,
+	FULLSCREEN,
+	VSYNC
+};
+
+SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager, Window* win)
 {
 	name = "Gameplay";
 
 	this->app = app;
 	this->sceneManager = sceneManager;
+	this->window = win;
+
+	// GUI: Initialize required controls for the screen
+	btnResume = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "RESUME");
+	btnResume->SetObserver(this);
+
+	btnSettings = new GuiButton(2, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 80, 190, 40 }, "CONTINUE");
+	btnSettings->SetObserver(this);
+
+	btnTitle = new GuiButton(3, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 140, 190, 40 }, "SETTINGS");
+	btnTitle->SetObserver(this);
+
+	btnExit = new GuiButton(4, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 200, 190, 40 }, "CREDITS");
+	btnExit->SetObserver(this);
+
+	// GUI: Initialize required controls for the settings
+	sldrMusicVolume = new GuiSlider(5, { 700, (int)win->GetWindowHeight() / 2 + 23, 35, 35 }, "MUSICVOLUME");
+	sldrMusicVolume->SetObserver(this);
+
+	sldrFxVolume = new GuiSlider(6, { 700, (int)win->GetWindowHeight() / 2 + 83, 35, 35 }, "FXVOLUME");
+	sldrFxVolume->SetObserver(this);
+
+	cbxFullscreen = new GuiCheckBox(7, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 140, 45, 49 }, "FULLSCREEN");
+	cbxFullscreen->SetObserver(this);
+
+	cbxVSync = new GuiCheckBox(8, { (int)win->GetWindowWidth() / 2 - 45 / 2 - 200, (int)win->GetWindowHeight() / 2 + 200, 45, 49 }, "VSYNC");
+	cbxVSync->SetObserver(this);
 
 	timer.Start();
+
+	barRect = { 0,0,300,35 };
+
+	menuCurrentSelection = MenuSelection::NONE;
+	settingsCurrentSelection = SettingsSelection::NONE;
 }
 
 SceneGameplay::~SceneGameplay()
@@ -26,8 +79,20 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	background3 = tex->Load("Assets/Maps/background3.png");
 	background4 = tex->Load("Assets/Maps/background4a.png");
 	backgroundRect = { 0,0,2880,1440 };
+	menuRect = { 0,0,1280,720 };
 	
 	map = new Map(tex);
+
+	barTexture = tex->Load("Assets/Textures/UI/bar.png");
+	atlasGUI = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
+	btnResume->SetTexture(atlasGUI);
+	btnSettings->SetTexture(atlasGUI);
+	btnTitle->SetTexture(atlasGUI);
+	btnExit->SetTexture(atlasGUI);
+	sldrMusicVolume->SetTexture(atlasGUI);
+	sldrFxVolume->SetTexture(atlasGUI);
+	cbxFullscreen->SetTexture(atlasGUI);
+	cbxVSync->SetTexture(atlasGUI);
 
 	// L03: DONE: Load map
 	// L12b: Create walkability map on map loading
@@ -123,29 +188,117 @@ inline bool CheckCollision(SDL_Rect rec1, SDL_Rect rec2)
 
 bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 {
-	// Collision detection: map vs player
-	player->Update(input,dt);
-	CollisionHandler();
+	if (!pause)
+	{
+		// Collision detection: map vs player
+		player->Update(input, dt);
+		CollisionHandler();
 
-	// Debug Keys
-	if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
-	{
-		TransitionToScene(SceneType::GAMEPLAY);
-	}
-	if (input->GetKey(SDL_SCANCODE_F9) == KeyState::KEY_DOWN)
-	{
-		map->drawColliders = !map->drawColliders;
-		collisions->debug = !collisions->debug;
-		
-	}
-	if (input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
-	{
-		player->godMode = !player->godMode;
-	}
+		// Debug Keys
+		if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
+		{
+			TransitionToScene(SceneType::GAMEPLAY);
+		}
+		if (input->GetKey(SDL_SCANCODE_F9) == KeyState::KEY_DOWN)
+		{
+			map->drawColliders = !map->drawColliders;
+			collisions->debug = !collisions->debug;
+		}
+		if (input->GetKey(SDL_SCANCODE_F10) == KeyState::KEY_DOWN)
+		{
+			player->godMode = !player->godMode;
+		}
 
-	// Request Load / Save
-	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
-	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
+		// Request Save / Load
+		if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
+		if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
+
+		// Pause
+		if (input->GetKey(SDL_SCANCODE_P) == KeyState::KEY_DOWN)
+		{
+			pause = !pause;
+			ListItem<Entity*>* entity = entityManager->entities.start;
+			while (entity != NULL)
+			{
+				entity->data->pause = !entity->data->pause;
+				entity = entity->next;
+			}
+		}
+	}
+	else
+	{
+		if (menuCurrentSelection == MenuSelection::NONE)
+		{
+			btnResume->Update(input, dt);
+			btnSettings->Update(input, dt);
+			btnTitle->Update(input, dt);
+			btnExit->Update(input, dt);
+		}
+		else if (menuCurrentSelection == MenuSelection::RESUME)
+		{
+			menuCurrentSelection = MenuSelection::NONE;
+			pause = !pause;
+			ListItem<Entity*>* entity = entityManager->entities.start;
+			while (entity != NULL)
+			{
+				entity->data->pause = !entity->data->pause;
+				entity = entity->next;
+			}
+		}
+		else if (menuCurrentSelection == MenuSelection::SETTINGS)
+		{
+			sldrMusicVolume->Update(input, dt);
+			sldrFxVolume->Update(input, dt);
+			cbxFullscreen->Update(input, dt);
+			cbxVSync->Update(input, dt);
+
+			if (settingsCurrentSelection == SettingsSelection::MUSICVOLUME)
+			{
+				Mix_VolumeMusic(sldrMusicVolume->GetValue());
+			}
+			else if (settingsCurrentSelection == SettingsSelection::FXVOLUME)
+			{
+				Mix_Volume(-1, sldrFxVolume->GetValue());
+			}
+			else if (settingsCurrentSelection == SettingsSelection::FULLSCREEN)
+			{
+				if (fullscreen == false)
+				{
+					SDL_SetWindowFullscreen(window->window, SDL_WINDOW_FULLSCREEN);
+					fullscreen = true;
+				}
+				else
+				{
+					SDL_SetWindowFullscreen(window->window, 0);
+					fullscreen = false;
+				}
+			}
+			else if (settingsCurrentSelection == SettingsSelection::VSYNC)
+			{
+				if (vsync == false)
+				{
+					SDL_GL_SetSwapInterval(1);
+					vsync = true;
+				}
+				else
+				{
+					SDL_GL_SetSwapInterval(0);
+					vsync = false;
+				}
+			}
+		}
+		else if (menuCurrentSelection == MenuSelection::TITLE)
+		{
+			TransitionToScene(SceneType::TITLE);
+		}
+		else if (menuCurrentSelection == MenuSelection::EXIT)
+		{
+			sceneManager->menuExitCall = true;
+		}
+
+		if (input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+			menuCurrentSelection = MenuSelection::NONE;
+	}
 
 	return true;
 }
@@ -158,17 +311,72 @@ bool SceneGameplay::Draw(Render* render)
 	// Draw map
 	map->Draw(render);
 
-	char lifes[16] = { 0 };
-	sprintf_s(lifes, 16, "Lifes: %03i", player->lifes);
-	render->DrawText(font, lifes, 25, 10, 50, 5, { 255,255,255,255 });
+	if (!pause)
+	{
+		char lifes[16] = { 0 };
+		sprintf_s(lifes, 16, "Lifes: %03i", player->lifes);
+		render->DrawText(font, lifes, 25, 10, 50, 5, { 255,255,255,255 });
 
-	char coins[16] = { 0 };
-	sprintf_s(coins, 16, "Coins: %03i", player->score);
-	render->DrawText(font, coins, 525, 10, 50, 5, { 255,255,255,255 });
+		char coins[16] = { 0 };
+		sprintf_s(coins, 16, "Coins: %03i", player->score);
+		render->DrawText(font, coins, 525, 10, 50, 5, { 255,255,255,255 });
 
-	char time[16] = { 0 };
-	sprintf_s(time, 16, "Timer: %03i", (int)timer.ReadSec() - 2);
-	render->DrawText(font, time, 1025, 10, 50, 5, { 255,255,255,255 });
+		char time[16] = { 0 };
+		sprintf_s(time, 16, "Timer: %03i", (int)timer.ReadSec() - 2);
+		render->DrawText(font, time, 1025, 10, 50, 5, { 255,255,255,255 });
+	}
+	else
+	{
+		render->DrawRectangleWithoutCamera(menuRect, { 0,0,0,127 });
+
+		if (menuCurrentSelection == MenuSelection::NONE)
+		{
+			btnResume->Draw(render);
+			btnSettings->Draw(render);
+			btnTitle->Draw(render);
+			btnExit->Draw(render);
+
+			int offset = 3;
+			render->DrawText(font, "PAUSE", 500 + offset, 250 + offset, 100, 13, { 105,105,105,255 });
+			render->DrawText(font, "PAUSE", 500, 250, 100, 13, { 255,255,255,255 });
+
+			render->DrawText(font, "RESUME", 575 + offset, 383 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "SETTINGS", 557 + offset, 443 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "TITLE", 595 + offset, 503 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "EXIT", 605 + offset, 563 + offset, 40, 5, { 105,105,105,255 });
+
+			render->DrawText(font, "RESUME", 575, 383, 40, 5, { 255,255,255,255 });
+			render->DrawText(font, "SETTINGS", 557, 443, 40, 5, { 255,255,255,255 });
+			render->DrawText(font, "TITLE", 595, 503, 40, 5, { 255,255,255,255 });
+			render->DrawText(font, "EXIT", 605, 563, 40, 5, { 255,255,255,255 });
+		}
+		else if (menuCurrentSelection == MenuSelection::SETTINGS)
+		{
+			render->DrawTextureWithoutCamera(barTexture, 567, 383, &barRect);
+			render->DrawTextureWithoutCamera(barTexture, 567, 443, &barRect);
+
+			sldrMusicVolume->Draw(render);
+			sldrFxVolume->Draw(render);
+			cbxFullscreen->Draw(render);
+			cbxVSync->Draw(render);
+
+			int offset = 3;
+			render->DrawText(font, "SETTINGS", 425 + offset, 250 + offset, 100, 13, { 105,105,105,255 });
+			render->DrawText(font, "SETTINGS", 425, 250, 100, 13, { 255,255,255,255 });
+
+			render->DrawText(font, "MUSIC", 425 + offset, 383 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "MUSIC", 425, 383, 40, 5, { 255,255,255,255 });
+			render->DrawText(font, "FX", 425 + offset, 443 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "FX", 425, 443, 40, 5, { 255,255,255,255 });
+			render->DrawText(font, "FULLSCREEN", 475 + offset, 503 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "FULLSCREEN", 475, 503, 40, 5, { 255,255,255,255 });
+			render->DrawText(font, "VSYNC", 475 + offset, 563 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "VSYNC", 475, 563, 40, 5, { 255,255,255,255 });
+
+			render->DrawText(font, "PRESS 'B' TO RETURN", 475 + offset, 623 + offset, 40, 5, { 105,105,105,255 });
+			render->DrawText(font, "PRESS 'B' TO RETURN", 475, 623, 40, 5, { 255,255,255,255 });
+		}
+	}
 	
     return false;
 }
@@ -191,30 +399,29 @@ void SceneGameplay::CollisionHandler()
 		{
 			for (int x = 0; x < map->data.width; x++)
 			{
-				
-					//Check ground
-					if ((map->data.layers[4]->Get(x, y) >= 86) &&
-						CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
+				//Check ground
+				if ((map->data.layers[4]->Get(x, y) >= 86) &&
+					CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
+				{
+					if (entity->data->type == EntityType::PLAYER)
 					{
-						if (entity->data->type == EntityType::PLAYER)
-						{
-							player->readyToJump = true;
-						}
-						entity->data->position = entity->data->tempPosition;
-						entity->data->velocity.y = 0.0f;
-
-						break;
+						player->readyToJump = true;
 					}
+					entity->data->position = entity->data->tempPosition;
+					entity->data->velocity.y = 0.0f;
 
-					//Check water
-					if ((map->data.layers[4]->Get(x, y) == 85) &&
-						CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
-					{
+					break;
+				}
+
+				//Check water
+				if ((map->data.layers[4]->Get(x, y) == 85) &&
+					CheckCollision(map->GetTilemapRec(x, y), entity->data->GetBounds()))
+				{
 
 					entity->data->velocity.y = 0.0f;
-					
+
 					break;
-					}
+				}
 			}
 		}
 		entity = entity->next;
@@ -229,4 +436,34 @@ void SceneGameplay::DrawBackground(Render* render)
 	render->DrawTexture(background3, 0, 150, &backgroundRect, 0.6f);
 	render->DrawTexture(background4, 0, 150, &backgroundRect, 0.8f);
 	render->scale = 1;
+}
+
+//----------------------------------------------------------
+// Manage GUI events for this screen
+//----------------------------------------------------------
+bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
+{
+	switch (control->type)
+	{
+	case GuiControlType::BUTTON:
+	{
+		if (control->id == 1) menuCurrentSelection = MenuSelection::RESUME;
+		else if (control->id == 2) menuCurrentSelection = MenuSelection::SETTINGS;
+		else if (control->id == 3) menuCurrentSelection = MenuSelection::TITLE;
+		else if (control->id == 4) menuCurrentSelection = MenuSelection::EXIT;
+	}
+	case GuiControlType::SLIDER:
+	{
+		if (control->id == 5) settingsCurrentSelection = SettingsSelection::MUSICVOLUME;
+		else if (control->id == 6) settingsCurrentSelection = SettingsSelection::FXVOLUME;
+	}
+	case GuiControlType::CHECKBOX:
+	{
+		if (control->id == 7) settingsCurrentSelection = SettingsSelection::FULLSCREEN;
+		else if (control->id == 8) settingsCurrentSelection = SettingsSelection::VSYNC;
+	}
+	default: break;
+	}
+
+	return true;
 }

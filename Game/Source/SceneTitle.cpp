@@ -19,8 +19,8 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* au
     this->guiManager = guiManager;
 
     // GUI: Initialize required controls for the screen
-    //btnStart = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
-    //btnStart->SetObserver(this);
+    btnPlay = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "PLAY");
+    btnPlay->SetObserver(this);
 
     btnContinue = new GuiButton(2, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 80, 190, 40 }, "CONTINUE");
     btnContinue->SetObserver(this);
@@ -61,15 +61,10 @@ SceneTitle::~SceneTitle()
 
 bool SceneTitle::Load(Textures* tex)
 {
-    //btnStart = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
-    //btnStart->SetObserver(this);
-    btnStart = (GuiButton*)guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, { (int)window->GetWindowWidth() / 2 - 190 / 2, (int)window->GetWindowHeight() / 2 + 20, 190, 40 }, "START");
-    btnStart->SetObserver(this);
-
     backgroundTexture = tex->Load("Assets/Textures/Scenes/title_screen.png");
     barTexture = tex->Load("Assets/Textures/UI/bar.png");
     atlasGUI = tex->Load("Assets/Textures/UI/uipack_rpg_sheet.png");
-    btnStart->SetTexture(atlasGUI);
+    btnPlay->SetTexture(atlasGUI);
     btnContinue->SetTexture(atlasGUI);
     btnSettings->SetTexture(atlasGUI);
     btnCredits->SetTexture(atlasGUI);
@@ -95,7 +90,7 @@ bool SceneTitle::Update(Input* input, float dt)
 {
     if (menuCurrentSelection == MenuSelection::NONE)
     {
-        btnStart->Update(input, dt);
+        btnPlay->Update(input, dt);
         btnContinue->Update(input, dt);
         btnSettings->Update(input, dt);
         btnCredits->Update(input, dt);
@@ -174,7 +169,7 @@ bool SceneTitle::Draw(Render* render)
 
     if (menuCurrentSelection == MenuSelection::NONE)
     {
-        btnStart->Draw(render);
+        btnPlay->Draw(render);
         btnContinue->Draw(render);
         btnSettings->Draw(render);
         btnCredits->Draw(render);
@@ -185,15 +180,14 @@ bool SceneTitle::Draw(Render* render)
         render->DrawText(font, "PARACELSUS", 370, 250, 100, 13, { 255,255,255,255 });
 
         render->DrawText(font, "PLAY", 596 + offset, 383 + offset, 40, 5, { 105,105,105,255 });
-        render->DrawText(font, "CONTINUE", 557 + offset, 443 + offset, 40, 5, { 105,105,105,255 });
-        render->DrawText(font, "SETTINGS", 557 + offset, 503 + offset, 40, 5, { 105,105,105,255 });
-        render->DrawText(font, "CREDITS", 573 + offset, 563 + offset, 40, 5, { 105,105,105,255 });
-        render->DrawText(font, "EXIT", 605 + offset, 623 + offset, 40, 5, { 105,105,105,255 });
-
         render->DrawText(font, "PLAY", 596, 383, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "CONTINUE", 557 + offset, 443 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "CONTINUE", 557, 443, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "SETTINGS", 557 + offset, 503 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "SETTINGS", 557, 503, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "CREDITS", 573 + offset, 563 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "CREDITS", 573, 563, 40, 5, { 255,255,255,255 });
+        render->DrawText(font, "EXIT", 605 + offset, 623 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "EXIT", 605, 623, 40, 5, { 255,255,255,255 });
     }
     else if (menuCurrentSelection == MenuSelection::SETTINGS)
@@ -207,6 +201,9 @@ bool SceneTitle::Draw(Render* render)
         cbxVSync->Draw(render);
 
         int offset = 3;
+        render->DrawText(font, "SETTINGS", 425 + offset, 250 + offset, 100, 13, { 105,105,105,255 });
+        render->DrawText(font, "SETTINGS", 425, 250, 100, 13, { 255,255,255,255 });
+
         render->DrawText(font, "MUSIC", 425 + offset, 383 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "MUSIC", 425, 383, 40, 5, { 255,255,255,255 });
         render->DrawText(font, "FX", 425 + offset, 443 + offset, 40, 5, { 105,105,105,255 });
@@ -215,28 +212,35 @@ bool SceneTitle::Draw(Render* render)
         render->DrawText(font, "FULLSCREEN", 475, 503, 40, 5, { 255,255,255,255 });
         render->DrawText(font, "VSYNC", 475 + offset, 563 + offset, 40, 5, { 105,105,105,255 });
         render->DrawText(font, "VSYNC", 475, 563, 40, 5, { 255,255,255,255 });
+
+        render->DrawText(font, "PRESS 'B' TO RETURN" , 475 + offset, 623 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "PRESS 'B' TO RETURN", 475, 623, 40, 5, { 255,255,255,255 });
     }
     else if (menuCurrentSelection == MenuSelection::CREDITS)
     {
         int offset = 3;
         render->DrawText(font, "AUTHORS:", 570 + offset, 190 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "AUTHORS:", 570, 190, 40, 5, { 255,255,255,255 });
         render->DrawText(font, "ALEJANDRO AVILA", 490 + offset, 230 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "ALEJANDRO AVILA", 490, 230, 40, 5, { 255,255,255,255 });
         render->DrawText(font, "BOSCO BARBER", 520 + offset, 270 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "BOSCO BARBER", 520, 270, 40, 5, { 255,255,255,255 });
         render->DrawText(font, "YERAY TARIFA", 520 + offset, 310 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "YERAY TARIFA", 520, 310, 40, 5, { 255,255,255,255 });
+
         offset = 2;
         render->DrawText(font, "This project is licensed under an unmodified MIT license, which is an", 150 + offset, 400 + offset, 30, 3, { 105,105,105,255 });
-        render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 150 + offset, 430 + offset, 30, 3, { 105,105,105,255 });
-        render->DrawText(font, "The assets' work of this project is licensed under the", 150 + offset, 490 + offset, 30, 3, { 105,105,105,255 });
-        render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 150 + offset, 520 + offset, 30, 3, { 105,105,105,255 });
-
-        render->DrawText(font, "AUTHORS:", 570, 190, 40, 5, { 255,255,255,255 });
-        render->DrawText(font, "ALEJANDRO AVILA", 490, 230, 40, 5, { 255,255,255,255 });
-        render->DrawText(font, "BOSCO BARBER", 520, 270, 40, 5, { 255,255,255,255 });
-        render->DrawText(font, "YERAY TARIFA", 520, 310, 40, 5, { 255,255,255,255 });
         render->DrawText(font, "This project is licensed under an unmodified MIT license, which is an", 150, 400, 30, 3, { 255,255,255,255 });
+        render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 150 + offset, 430 + offset, 30, 3, { 105,105,105,255 });
         render->DrawText(font, "OSI-certified license that allows static linking with closed source software.", 150, 430, 30, 3, { 255,255,255,255 });
+        render->DrawText(font, "The assets' work of this project is licensed under the", 150 + offset, 490 + offset, 30, 3, { 105,105,105,255 });
         render->DrawText(font, "The assets' work of this project is licensed under the", 150, 490, 30, 3, { 255,255,255,255 });
+        render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 150 + offset, 520 + offset, 30, 3, { 105,105,105,255 });
         render->DrawText(font, "Creative Commons Attribution 4.0 International License.", 150, 520, 30, 3, { 255,255,255,255 });
+
+        offset = 3;
+        render->DrawText(font, "PRESS 'B' TO RETURN", 475 + offset, 623 + offset, 40, 5, { 105,105,105,255 });
+        render->DrawText(font, "PRESS 'B' TO RETURN", 475, 623, 40, 5, { 255,255,255,255 });
     }
 
     return false;

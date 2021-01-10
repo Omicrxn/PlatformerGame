@@ -37,29 +37,32 @@ bool EnemyWalk::Update(float dt)
 {
 	bool ret = true;
 
-	#define GRAVITY 600
-
-	tempPosition = position;
-
-	if (!dead)
+	if (!pause)
 	{
-		position.x = position.x + velocity.x * dt;
-		position.y = position.y + velocity.y * dt + (GRAVITY * dt * dt * 0.5);
-		velocity.y = velocity.y + GRAVITY * dt;
-	}
+#define GRAVITY 600
 
-	if (counter >= 0.27f)
-	{
-		counter = 0.0f;
-		UpdatePath(map);
-		Move(map);
-	}
-	counter += dt;
+		tempPosition = position;
 
-	// Update collider position
-	if (collider != nullptr)
-	{
-		collider->SetPos(position.x, position.y);
+		if (!dead)
+		{
+			position.x = position.x + velocity.x * dt;
+			position.y = position.y + velocity.y * dt + (GRAVITY * dt * dt * 0.5);
+			velocity.y = velocity.y + GRAVITY * dt;
+		}
+
+		if (counter >= 0.27f)
+		{
+			counter = 0.0f;
+			UpdatePath(map);
+			Move(map);
+		}
+		counter += dt;
+
+		// Update collider position
+		if (collider != nullptr)
+		{
+			collider->SetPos(position.x, position.y);
+		}
 	}
 
 	return ret;
@@ -111,12 +114,15 @@ void EnemyWalk::OnCollision(Collider* collision)
 
 void EnemyWalk::Draw(Render* render)
 {
-	rectAnim = movingAnim.GetCurrentFrame();
-	if (velocity.x > 0)
-		isLeft = false;
-	else
-		isLeft = true;
-	render->DrawTexture(texture, position.x, position.y, &rectAnim, 1.0f, isLeft);
+	if (!pause)
+	{
+		rectAnim = movingAnim.GetCurrentFrame();
+		if (velocity.x > 0)
+			isLeft = false;
+		else
+			isLeft = true;
+		render->DrawTexture(texture, position.x, position.y, &rectAnim, 1.0f, isLeft);
+	}
 }
 
 void EnemyWalk::SetTexture(SDL_Texture* tex)

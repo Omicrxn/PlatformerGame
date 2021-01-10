@@ -81,19 +81,21 @@ bool Player::Update(Input* input, float dt)
 {
     #define GRAVITY 600.0f
 
-    tempPosition = position;
-
-    // Calculate movement
-    if (!dead && !godMode)
+    if (!pause)
     {
-        position.x = position.x + velocity.x * dt;
-        position.y = position.y + velocity.y * dt + (GRAVITY * dt * dt * 0.5);
-        velocity.y = velocity.y + GRAVITY * dt;
-    }
+        tempPosition = position;
 
-    if (!dead)
-    {
-       
+        // Calculate movement
+        if (!dead && !godMode)
+        {
+            position.x = position.x + velocity.x * dt;
+            position.y = position.y + velocity.y * dt + (GRAVITY * dt * dt * 0.5);
+            velocity.y = velocity.y + GRAVITY * dt;
+        }
+
+        if (!dead)
+        {
+
             if (readyToJump)
             {
                 if (shootingAnim.Finished())
@@ -110,27 +112,28 @@ bool Player::Update(Input* input, float dt)
             {
                 currentAnim = PlayerAnim::FALL;
             }
-    }
-    else
-    {
-        Die();
-        
-    }
+        }
+        else
+        {
+            Die();
 
-    if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT);
-    if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) Run(true);
-    if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) Run(false);
-    if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) Jump();
-    if (input->GetKey(SDL_SCANCODE_UP) == KEY_UP) SmallJump();
-    if (input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-    {
-        Shoot();
+        }
 
-    }
-    // Update collider position
-    if (collider != nullptr)
-    {
-        collider->SetPos(position.x + 86, position.y + 43);
+        if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT);
+        if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) Run(true);
+        if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) Run(false);
+        if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) Jump();
+        if (input->GetKey(SDL_SCANCODE_UP) == KEY_UP) SmallJump();
+        if (input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+        {
+            Shoot();
+
+        }
+        // Update collider position
+        if (collider != nullptr)
+        {
+            collider->SetPos(position.x + 86, position.y + 43);
+        }
     }
 
     return true;
@@ -138,31 +141,33 @@ bool Player::Update(Input* input, float dt)
 
 void Player::Draw(Render* render)
 {
-    
-    switch (currentAnim)
+    if (!pause)
     {
-    case PlayerAnim::IDLE:
-        animRec = idleAnim.GetCurrentFrame();
-        break;
-    case PlayerAnim::WALK:
-        animRec = runningAnim.GetCurrentFrame();
-        break;
-    case PlayerAnim::JUMP:
-        animRec = jumpingAnim.GetCurrentFrame();
-        break;
-    case PlayerAnim::FALL:
-        animRec = fallingAnim.GetCurrentFrame();
-        break;    
-    case PlayerAnim::SHOOTING:
-        animRec = shootingAnim.GetCurrentFrame();
-        break;
-    case PlayerAnim::DEAD:
-        animRec = deadAnim.GetCurrentFrame();
-        break;
-    default:
-        break;
+        switch (currentAnim)
+        {
+        case PlayerAnim::IDLE:
+            animRec = idleAnim.GetCurrentFrame();
+            break;
+        case PlayerAnim::WALK:
+            animRec = runningAnim.GetCurrentFrame();
+            break;
+        case PlayerAnim::JUMP:
+            animRec = jumpingAnim.GetCurrentFrame();
+            break;
+        case PlayerAnim::FALL:
+            animRec = fallingAnim.GetCurrentFrame();
+            break;
+        case PlayerAnim::SHOOTING:
+            animRec = shootingAnim.GetCurrentFrame();
+            break;
+        case PlayerAnim::DEAD:
+            animRec = deadAnim.GetCurrentFrame();
+            break;
+        default:
+            break;
+        }
+        render->DrawTexture(texture, position.x, position.y + 15, &animRec, 1.0f, isLeft);
     }
-    render->DrawTexture(texture, position.x, position.y+15, &animRec, 1.0f, isLeft);
 }
 
 void Player::SetTexture(SDL_Texture *tex)

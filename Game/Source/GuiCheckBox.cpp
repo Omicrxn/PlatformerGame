@@ -53,47 +53,47 @@ bool GuiCheckBox::Draw(Render* render)
     } break;
     case GuiControlState::NORMAL: 
     {
-        render->DrawTexture(texture, bounds.x, bounds.y, &greyCheckBox);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &greyCheckBox);
         if (checked) /*render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
         {
             render->scale = 2;
-            render->DrawTexture(texture, bounds.x + 7, bounds.y + 7, &whiteTick);
+            render->DrawTextureWithoutCamera(texture, bounds.x + 7, bounds.y + 7, &whiteTick);
             render->scale = 1;
         }
         else /*render->DrawRectangle(bounds, { 0, 255, 0, 255 });*/
         {
             render->scale = 2;
-            render->DrawTexture(texture, bounds.x + 7, bounds.y + 7, &whiteCross);
+            render->DrawTextureWithoutCamera(texture, bounds.x + 7, bounds.y + 7, &whiteCross);
             render->scale = 1;
         }
     } break;
     case GuiControlState::FOCUSED: /*render->DrawRectangle(bounds, { 255, 255, 0, 255 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &yellowCheckBox);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &yellowCheckBox);
         if (checked)
         {
             render->scale = 2;
-            render->DrawTexture(texture, bounds.x + 7, bounds.y + 7, &whiteTick);
+            render->DrawTextureWithoutCamera(texture, bounds.x + 7, bounds.y + 7, &whiteTick);
             render->scale = 1;
         }
         else
         {
             render->scale = 2;
-            render->DrawTexture(texture, bounds.x + 7, bounds.y + 7, &whiteCross);
+            render->DrawTextureWithoutCamera(texture, bounds.x + 7, bounds.y + 7, &whiteCross);
             render->scale = 1;
         }
         break;
     case GuiControlState::PRESSED: /*render->DrawRectangle(bounds, { 0, 255, 255, 255 });*/
-        render->DrawTexture(texture, bounds.x, bounds.y, &brownCheckBox);
+        render->DrawTextureWithoutCamera(texture, bounds.x, bounds.y, &brownCheckBox);
         if (checked)
         {
             render->scale = 1.5;
-            render->DrawTexture(texture, bounds.x + 11, bounds.y + 11, &whiteTick);
+            render->DrawTextureWithoutCamera(texture, bounds.x + 11, bounds.y + 11, &whiteTick);
             render->scale = 1;
         }
         else
         {
             render->scale = 1.5;
-            render->DrawTexture(texture, bounds.x + 11, bounds.y + 11, &whiteCross);
+            render->DrawTextureWithoutCamera(texture, bounds.x + 11, bounds.y + 11, &whiteCross);
             render->scale = 1;
         }
         break;

@@ -1,10 +1,10 @@
 #ifndef __SCENEGAMEPLAY_H__
 #define __SCENEGAMEPLAY_H__
 
-#include "Scene.h"
 #include "App.h"
 #include "SceneManager.h"
 
+#include "Window.h"
 #include "Map.h"
 #include "Player.h"
 #include "Checkpoint.h"
@@ -12,6 +12,10 @@
 #include "Heart.h"
 #include "EnemyFly.h"
 #include "EnemyWalk.h"
+
+#include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiCheckBox.h"
 
 #include "Timer.h"
 
@@ -21,11 +25,14 @@
 #define MAX_FLYING_ENEMIES 1
 #define MAX_WALKING_ENEMIES 1
 
+enum class MenuSelection;
+enum class SettingsSelection;
+
 class SceneGameplay : public Scene
 {
 public:
 
-    SceneGameplay(App* app, SceneManager* sceneManager);
+    SceneGameplay(App* app, SceneManager* sceneManager, Window* win);
     virtual ~SceneGameplay();
 
     bool Load(Textures* tex, EntityManager* entityManager);
@@ -36,6 +43,7 @@ public:
     void DrawBackground(Render* render);
     bool Unload();
     void CollisionHandler();
+    bool OnGuiMouseClickEvent(GuiControl* control);
 
 private:
 
@@ -62,12 +70,39 @@ private:
     SDL_Texture* background3;
     SDL_Texture* background4;
     SDL_Rect backgroundRect;
+    SDL_Rect menuRect;
+
+    SDL_Texture* barTexture;
+    SDL_Rect barRect;
 
     Font* font;
 
     Timer timer;
 
     EntityManager* entityManager;
+    Window* window;
+
+    bool pause;
+
+    SDL_Texture* atlasGUI;
+
+    // In-game menu buttons
+    GuiButton* btnResume;
+    GuiButton* btnSettings;
+    GuiButton* btnTitle;
+    GuiButton* btnExit;
+
+    // Settings' sliders and checkboxes
+    GuiSlider* sldrMusicVolume;
+    GuiSlider* sldrFxVolume;
+    GuiCheckBox* cbxFullscreen;
+    GuiCheckBox* cbxVSync;
+
+    MenuSelection menuCurrentSelection;
+    SettingsSelection settingsCurrentSelection;
+
+    bool fullscreen = false;
+    bool vsync = false;
 };
 
 #endif // __SCENEGAMEPLAY_H__
