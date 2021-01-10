@@ -16,7 +16,8 @@ private:
 	float currentFrame = 0.0f;
 	int lastFrame = 0;
 	int loops = 0;
-	enum flow {
+	enum flow 
+	{
 		FORWARDS,
 		BACKWARDS
 	} direction = FORWARDS;
@@ -24,7 +25,8 @@ private:
 public:
 	Animation() {}
 
-	Animation(const Animation& anim) : loop(anim.loop), speed(anim.speed), lastFrame(anim.lastFrame) { // the colon is used to inherit or in this case to initialize variables before the constructor is called
+	Animation(const Animation& anim) : loop(anim.loop), speed(anim.speed), lastFrame(anim.lastFrame) 
+	{ // the colon is used to inherit or in this case to initialize variables before the constructor is called
 		SDL_memcpy(&frames, anim.frames, sizeof(frames));//copies the info in anim.frames to local variable frames
 	}
 
@@ -64,7 +66,8 @@ public:
 		return frames[(int)currentFrame];
 	}
 
-	SDL_Rect& GetFrame(int frameNumber) {
+	SDL_Rect& GetFrame(int frameNumber) 
+	{
 		return frames[frameNumber];
 	}
 	bool Finished() const
