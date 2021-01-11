@@ -21,7 +21,8 @@ enum class GuiControlType
     DROPDOWNBOX,
     INPUTBOX,
     VALUEBOX,
-    SPINNER
+    SPINNER,
+    NONE
 };
 
 enum class GuiControlState
@@ -30,7 +31,8 @@ enum class GuiControlState
     NORMAL,
     FOCUSED,
     PRESSED,
-    SELECTED
+    SELECTED,
+    NONE
 };
 
 class GuiControl
@@ -77,20 +79,20 @@ public:
 
 public:
 
-    uint32 id;
-    GuiControlType type;
-    GuiControlState state;
+    uint32 id = 0;
+    GuiControlType type = GuiControlType::NONE;
+    GuiControlState state = GuiControlState::NONE;
 
-    SString text;           // Control text (if required)
-    SDL_Rect bounds;        // Position and size
-    SDL_Color color;        // Tint color
+    SString text = "";                   // Control text (if required)
+    SDL_Rect bounds = { 0,0,0,0 };       // Position and size
+    SDL_Color color = { 0,0,0,0 };       // Tint color
 
-    SDL_Texture* texture;   // Texture atlas reference
-    SDL_Rect section;       // Texture atlas base section
+    SDL_Texture* texture = nullptr;      // Texture atlas reference
+    SDL_Rect section = { 0,0,0,0 };      // Texture atlas base section
 
-    //Font font;              // Text font
+    //Font font;                         // Text font
 
-    Scene* observer;        // Observer module (it should probably be an array/list)
+    Scene* observer = nullptr;           // Observer module (it should probably be an array/list)
 };
 
 #endif // __GUICONTROL_H__

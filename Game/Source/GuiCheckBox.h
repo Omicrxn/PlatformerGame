@@ -20,7 +20,7 @@ private:
 
     // GuiCheckBox specific properties
     // Maybe some animation properties for state change?
-    bool checked;
+    bool checked = false;
 
     SDL_Rect greyCheckBox = { 290,0,45,49 };
     SDL_Rect yellowCheckBox = { 293,294,45,49 };

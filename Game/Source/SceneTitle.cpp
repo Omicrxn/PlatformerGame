@@ -18,7 +18,6 @@ SceneTitle::SceneTitle(Window* win, SceneManager* sceneManager, AudioManager* au
     this->window = win;
     this->audio = audio;
     this->render = render;
-    this->guiManager = guiManager;
 
     // GUI: Initialize required controls for the screen
     btnPlay = new GuiButton(1, { (int)win->GetWindowWidth() / 2 - 190 / 2, (int)win->GetWindowHeight() / 2 + 20, 190, 40 }, "PLAY");

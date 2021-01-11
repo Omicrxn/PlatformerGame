@@ -22,16 +22,16 @@ private:
 
     // GuiSlider specific properties
     // Maybe some animation properties for state change?
-    SDL_Rect slider;
-    int value;
+    SDL_Rect slider = { 0,0,0,0 };
+    int value = 0;
 
-    int minValue;
-    int maxValue;
-    int barWidth;
-    int unit;
+    int minValue = 0;
+    int maxValue = 0;
+    int barWidth = 0;
+    int unit = 0;
 
-    int leftLimit;
-    int rightLimit;
+    int leftLimit = 0;
+    int rightLimit = 0;
 
     SDL_Rect whiteSlider = { 335,0,35,35 };
     SDL_Rect greySlider = { 335,38,35,35 };

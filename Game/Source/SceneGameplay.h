@@ -46,74 +46,74 @@ public:
     void CollisionHandler();
     bool OnGuiMouseClickEvent(GuiControl* control);
 
-    bool animateHeart;
-    bool animateCoin;
+    bool animateHeart = false;
+    bool animateCoin = false;
 
 private:
 
-    App* app;
-    SceneManager* sceneManager;
-    AudioManager* audio;
+    App* app = nullptr;
+    SceneManager* sceneManager = nullptr;
+    AudioManager* audio = nullptr;
 
-    Map* map;
+    Map* map = nullptr;
 
     // Entities
-    Player* player;
-    EnemyFly* enemiesFly[MAX_FLYING_ENEMIES];
-    EnemyWalk* enemiesWalk[MAX_WALKING_ENEMIES];
-    Coin* coins[MAX_COINS];
-    Heart* hearts[MAX_HEARTS];
-    Checkpoint* checkpoints[MAX_CHECKPOINTS];
+    Player* player = nullptr;
+    EnemyFly* enemiesFly[MAX_FLYING_ENEMIES] = { nullptr };
+    EnemyWalk* enemiesWalk[MAX_WALKING_ENEMIES] = { nullptr };
+    Coin* coins[MAX_COINS] = { nullptr };
+    Heart* hearts[MAX_HEARTS] = { nullptr };
+    Checkpoint* checkpoints[MAX_CHECKPOINTS] = { nullptr };
 
-    SDL_Texture* playerTexture;
-    SDL_Rect camera;
-    iPoint tempPlayerPosition;
+    SDL_Texture* playerTexture = nullptr;
+    SDL_Rect camera = { 0,0,0,0 };
+    iPoint tempPlayerPosition = { 0,0 };
 
     // Background textures
-    SDL_Texture* background1;
-    SDL_Texture* background2;
-    SDL_Texture* background3;
-    SDL_Texture* background4;
-    SDL_Rect backgroundRect;
-    SDL_Rect menuRect;
+    SDL_Texture* background1 = nullptr;
+    SDL_Texture* background2 = nullptr;
+    SDL_Texture* background3 = nullptr;
+    SDL_Texture* background4 = nullptr;
+    SDL_Rect backgroundRect = { 0,0,0,0 };
+    SDL_Rect menuRect = { 0,0,0,0 };
 
-    SDL_Rect mouseCursorRect[2];
-    iPoint mousePos;
-    bool clicking;
-    int hoverFx;
-    int clickFx;
+    SDL_Rect mouseCursorRect[2] = { 0,0,0,0 };
+    iPoint mousePos = { 0,0 };
+    bool clicking = false;
+    int hoverFx = -1;
+    int clickFx = -1;
 
     // Menu textures
-    SDL_Texture* atlasGUITexture;
-    SDL_Texture* barTexture;
-    SDL_Rect barRect;
-    SDL_Texture* heartTexture;
-    SDL_Rect heartRect;
-    SDL_Texture* coinTexture;
-    SDL_Rect coinRect;
+    SDL_Texture* atlasGUITexture = nullptr;
+    SDL_Texture* barTexture = nullptr;
+    SDL_Rect barRect = { 0,0,0,0 };
+    SDL_Texture* heartTexture = nullptr;
+    SDL_Rect heartRect = { 0,0,0,0 };
+    SDL_Texture* coinTexture = nullptr;
+    SDL_Rect coinRect = { 0,0,0,0 };
 
     Animation heartAnimation;
     
     Animation coinAnimation;
 
-    Font* font;
+    Font* font = nullptr;
 
-    EntityManager* entityManager;
-    Window* window;
+    EntityManager* entityManager = nullptr;
+    Window* window = nullptr;
 
-    bool pause;
+    bool pause = false;
 
     // In-game menu buttons
-    GuiButton* btnResume;
-    GuiButton* btnSettings;
-    GuiButton* btnTitle;
-    GuiButton* btnExit;
+    GuiButton* btnResume = nullptr;
+    GuiButton* btnSettings = nullptr;
+    GuiButton* btnTitle = nullptr;
+    GuiButton* btnExit = nullptr;
 
     // Settings' sliders and checkboxes
-    GuiSlider* sldrMusicVolume;
-    GuiSlider* sldrFxVolume;
-    GuiCheckBox* cbxFullscreen;
-    GuiCheckBox* cbxVSync;
+    GuiSlider* sldrMusicVolume = nullptr;
+    GuiSlider* sldrFxVolume = nullptr;
+    GuiCheckBox* cbxFullscreen = nullptr;
+    GuiCheckBox* cbxVSync = nullptr;
 
     MenuSelection menuCurrentSelection;
     SettingsSelection settingsCurrentSelection;
@@ -123,7 +123,7 @@ private:
 
     bool debugCP = false;
 
-    float timer;
+    float timer = 0.0f;
 };
 
 #endif // __SCENEGAMEPLAY_H__

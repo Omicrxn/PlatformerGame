@@ -22,11 +22,12 @@ public:
 
 private:
 
-    SDL_Rect logo;
+    SDL_Rect logo = { 0,0,0,0 };
     SDL_Texture* logoTexture = nullptr;
-    int state;
-    float timeCounter;
-    float logoAlpha;
+
+    int state = 0;
+    float timeCounter = 0.0f;
+    float logoAlpha = 0.0f;
 };
 
 #endif // __SCENELOGO_H__

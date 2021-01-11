@@ -87,22 +87,22 @@ private:
 public:
 
 	// Modules
-	Window* win;
-	Input* input;
-	Render* render;
-	Textures* tex;
-	AudioManager* audio;
-	EntityManager* entityManager;
-	SceneManager* sceneManager;
-	Collisions* collisions;
-	Particles* particles;
+	Window* win = nullptr;
+	Input* input = nullptr;
+	Render* render = nullptr;
+	Textures* tex = nullptr;
+	AudioManager* audio = nullptr;
+	EntityManager* entityManager = nullptr;
+	SceneManager* sceneManager = nullptr;
+	Collisions* collisions = nullptr;
+	Particles* particles = nullptr;
 
 private:
 
-	int argc;
-	char** args;
-	SString title;
-	SString organization;
+	int argc = 0;
+	char** args = nullptr;
+	SString title = "";
+	SString organization = "";
 
 	List<Module *> modules;
 
@@ -112,8 +112,8 @@ private:
 	//pugi::xml_node config;
 	//pugi::xml_node configApp;
 
-	mutable bool saveGameRequested;
-	bool loadGameRequested;
+	mutable bool saveGameRequested = false;
+	bool loadGameRequested = false;
 
 	// L07: DONE 4: Calculate some timing measures
 	// required variables are provided:
@@ -128,7 +128,7 @@ private:
 
 	float dt = 0.0f;
 
-	bool capTo30fps = true;
+	bool capTo30fps = false;
 
 	int	cappedMs = -1;
 };

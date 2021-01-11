@@ -55,41 +55,42 @@ public:
 private:
 
     // Main menu buttons
-    GuiButton* btnPlay;
-    GuiButton* btnContinue;
-    GuiButton* btnSettings;
-    GuiButton* btnCredits;
-    GuiButton* btnExit;
+    GuiButton* btnPlay = nullptr;
+    GuiButton* btnContinue = nullptr;
+    GuiButton* btnSettings = nullptr;
+    GuiButton* btnCredits = nullptr;
+    GuiButton* btnExit = nullptr;
 
     // Settings' sliders and checkboxes
-    GuiSlider* sldrMusicVolume;
-    GuiSlider* sldrFxVolume;
-    GuiCheckBox* cbxFullscreen;
-    GuiCheckBox* cbxVSync;
+    GuiSlider* sldrMusicVolume = nullptr;
+    GuiSlider* sldrFxVolume = nullptr;
+    GuiCheckBox* cbxFullscreen = nullptr;
+    GuiCheckBox* cbxVSync = nullptr;
 
-    SDL_Texture* atlasGUITexture;
-    SDL_Texture* backgroundTexture;
-    SDL_Texture* barTexture;
-    SDL_Rect backgroundRect;
-    SDL_Rect barRect;
+    SDL_Texture* atlasGUITexture = nullptr;
+    SDL_Texture* backgroundTexture = nullptr;
+    SDL_Texture* barTexture = nullptr;
+    SDL_Rect backgroundRect = { 0,0,0,0 };
+    SDL_Rect barRect = { 0,0,0,0 };
 
-    SDL_Rect mouseCursorRect[2];
-    iPoint mousePos;
-    bool clicking;
-    int hoverFx;
-    int clickFx;
+    SDL_Rect mouseCursorRect[2] = { 0,0,0,0 };
 
-    SceneManager* sceneManager;
-    Window* window;
-    AudioManager* audio;
-    Render* render;
-    App* app;
-    GuiManager* guiManager;
+    iPoint mousePos = { 0,0 };
+    bool clicking = false;
+    int hoverFx = -1;
+    int clickFx = -1;
 
-    MenuSelection menuCurrentSelection;
-    SettingsSelection settingsCurrentSelection;
+    SceneManager* sceneManager = nullptr;
+    Window* window = nullptr;
+    AudioManager* audio = nullptr;
+    Render* render = nullptr;
+    App* app = nullptr;
+    GuiManager* guiManager = nullptr;
 
-    Font* font;
+    MenuSelection menuCurrentSelection = MenuSelection::NONE;
+    SettingsSelection settingsCurrentSelection = SettingsSelection::NONE;
+
+    Font* font = nullptr;
 
     bool fullscreen = false;
     bool vsync = false;

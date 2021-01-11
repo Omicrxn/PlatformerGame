@@ -31,7 +31,7 @@ private:
     SDL_Rect greyButton = { 0,188,190,49 };
     SDL_Rect yellowButton = { 0,282,190,49 };
 
-    bool isFocusing;
+    bool isFocusing = false;
 
     bool debug = false;
 };
