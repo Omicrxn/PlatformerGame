@@ -396,7 +396,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 			else
 				player->lastCheckpointPos = iPoint(96, 2300);
 		}
-		checked = false;
+		checked = true;
 	}
 
 	return true;

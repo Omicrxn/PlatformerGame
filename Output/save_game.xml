@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<save>
+	<window />
+	<input />
+	<textures />
+	<audio />
+	<collisions />
+	<particles />
+	<scenemanager />
+	<entitymanager>
+		<Entity1 x="47" y="1279" lifes="5" score="0" last_checkpoint_x="1159" last_checkpoint_y="1572" />
+		<Entity2 x="1216" y="1572" />
+		<Entity3 x="2304" y="1051" />
+		<Entity4 x="1360" y="2496" />
+		<Entity5 x="653" y="1343" />
+		<Entity6 x="574" y="1260" />
+	</entitymanager>
+	<renderer>
+		<camera x="0" y="-919" />
+	</renderer>
+</save>
