@@ -442,7 +442,7 @@ bool App::isGameSaved()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(SAVE_STATE_FILENAME);
 
-	if (result == NULL)
+	if (result.status == 1)
 	{
 		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
 		ret = false;

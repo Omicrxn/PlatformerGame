@@ -66,12 +66,15 @@ void Heart::SetTexture(SDL_Texture* tex)
 
 void Heart::OnCollision(Collider* collider)
 {
-	audio->PlayFx(fx);
-	player->lifes++;
-	printf("Lifes: %d \n", player->lifes);
-	this->collider->pendingToDelete = true;
-	active = false;
-	sceneGameplay->animateHeart = true;
+	if (collider->type == Collider::Type::PLAYER)
+	{
+		audio->PlayFx(fx);
+		player->lifes++;
+		printf("Lifes: %d \n", player->lifes);
+		this->collider->pendingToDelete = true;
+		active = false;
+		sceneGameplay->animateHeart = true;
+	}
 }
 
 void Heart::SetScene(Scene* scene)

@@ -62,12 +62,15 @@ void Coin::SetTexture(SDL_Texture* tex)
 
 void Coin::OnCollision(Collider* collider)
 {
-	audio->PlayFx(fx);
-	player->score += 100;
-	printf("Score: %d \n", player->score);
-	this->collider->pendingToDelete = true;
-	active = false;
-	sceneGameplay->animateCoin = true;
+	if (collider->type == Collider::Type::PLAYER)
+	{
+		audio->PlayFx(fx);
+		player->score += 100;
+		printf("Score: %d \n", player->score);
+		this->collider->pendingToDelete = true;
+		active = false;
+		sceneGameplay->animateCoin = true;
+	}
 }
 
 void Coin::SetScene(Scene* scene)
