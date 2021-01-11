@@ -96,7 +96,7 @@ void EnemyFly::UpdatePath(Map* map)
 	pathfinding->lastPath.Clear();
 	if (pathfinding->CreatePath(origin, goal) != -1)
 	{
-		path.Clear();
+		//path.Clear();
 		for (int i = 0; i < pathfinding->lastPath.Count(); i++)
 		{
 			path.PushBack(*pathfinding->lastPath.At(i));
@@ -126,10 +126,11 @@ void EnemyFly::Draw(Render* render)
 
 		if (debugDraw)
 		{
-			// Draw path
-			for (uint i = 0; i < path.Count(); ++i)
+			const DynArray<iPoint>* pathDebug = &pathfinding->lastPath;
+
+			for (uint i = 0; i < pathDebug->Count(); ++i)
 			{
-				iPoint pos = { path.At(i)->x * 64, path.At(i)->y * 64 };
+				iPoint pos = { pathDebug->At(i)->x * 64, pathDebug->At(i)->y * 64 };
 				render->DrawTexture(pathDebugTexture, pos.x, pos.y);
 			}
 		}

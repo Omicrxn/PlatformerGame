@@ -29,7 +29,6 @@ public:
     void OnCollision(Collider* collider);
 
     void Draw(Render* render);
-
     void SetTexture(SDL_Texture* tex, SDL_Texture* tex2);
     void SetPlayer(Player* player);
     void SetMap(Map* map);
