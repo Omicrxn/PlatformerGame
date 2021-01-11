@@ -59,11 +59,11 @@ private:
 	PathFinding& operator=(const PathFinding&);
 
 	// Size of the map
-	uint width;
-	uint height;
+	uint width = 0;
+	uint height = 0;
 
 	// Map walkability values [0..255]
-	uchar* map;
+	uchar* map = nullptr;
 
 public:
 	// We store the created path here
@@ -78,10 +78,10 @@ struct PathList;
 // ---------------------------------------------------------------------
 struct PathNode
 {
-	int g;
-	int h;
-	iPoint pos;
-	const PathNode* parent; // needed to reconstruct the path in the end
+	int g = 0;
+	int h = 0;
+	iPoint pos = { 0, 0 };
+	const PathNode* parent = nullptr; // needed to reconstruct the path in the end
 
 	// Convenient constructors
 	PathNode();

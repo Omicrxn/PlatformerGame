@@ -53,8 +53,8 @@ struct Properties
 {
 	struct Property
 	{
-		SString name;
-		int value;
+		SString name = "";
+		int value = 0;
 	};
 
 	~Properties()
@@ -80,10 +80,10 @@ struct Properties
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
-	SString	name;
-	int width;
-	int height;
-	uint* data;
+	SString	name = "";
+	int width = 0;
+	int height = 0;
+	uint* data = nullptr;
 
 	// L06: DONE 1: Support custom properties
 	Properties properties;
@@ -106,12 +106,12 @@ struct MapLayer
 // L03: DONE 1: Create a struct needed to hold the information to Map node
 struct MapData
 {
-	int width;
-	int	height;
-	int	tileWidth;
-	int	tileHeight;
-	SDL_Color backgroundColor;
-	MapTypes type;
+	int width = 0;
+	int	height = 0;
+	int	tileWidth = 0;
+	int	tileHeight = 0;
+	SDL_Color backgroundColor = { 0,0,0,0 };
+	MapTypes type = MapTypes::MAPTYPE_UNKNOWN;
 	List<TileSet*> tilesets;
 
 	// L04: DONE 2: Add a list/array of layers to the map
@@ -195,33 +195,14 @@ public:
 
 private:
 
-	Textures* tex;
+	Textures* tex = nullptr;
 
     pugi::xml_document mapFile;
-    SString folder;
-    bool mapLoaded;
+    SString folder = "";
+    bool mapLoaded = false;
 
-	float scale;
-	iPoint camOffset;
-    
-	// BFS/Dijkstra variables not required any more: Using PathFinding class
-	/*
-	// L10: BFS Pathfinding variables
-	PQueue<iPoint> frontier;
-	List<iPoint> visited;
-    
-    // L11: Additional variables
-    List<iPoint> breadcrumbs;
-	DynArray<iPoint> path;
-	
-	// L11: Dijkstra cost
-	uint costSoFar[COST_MAP_SIZE][COST_MAP_SIZE];
-    
-	// L12a: AStar (A*) variables
-	iPoint goalAStar;			// Store goal target tile
-	bool finishAStar = false;	// Detect when reached goal
-	SDL_Texture* tileX = nullptr;
-	*/
+	float scale = 0.125f;
+	iPoint camOffset = { 0, 0 };
 };
 
 #endif // __MAP_H__

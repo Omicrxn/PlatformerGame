@@ -74,8 +74,8 @@ public:
 
 public:
 
-	SString name;
-	bool active;
+	SString name = "";
+	bool active = false;
 };
 
 #endif // __MODULE_H__

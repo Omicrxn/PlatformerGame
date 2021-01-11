@@ -32,9 +32,9 @@ struct Collider
 	bool Intersects(const SDL_Rect& r) const;
 
 	//Variables
-	SDL_Rect rect;
+	SDL_Rect rect = { 0, 0, 0, 0 };
 	bool pendingToDelete = false;
-	Type type;
+	Type type = Type::NONE;
 	Module* listener = nullptr;
 };
 
@@ -92,5 +92,5 @@ public:
 	bool debug = false;
 
 private:
-	Render* render;
+	Render* render = nullptr;
 };

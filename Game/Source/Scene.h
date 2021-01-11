@@ -70,14 +70,14 @@ public:
 public:
 
     bool active = true;
-    SString name;         // Scene name identifier?
+    SString name = "";         // Scene name identifier?
 
     // Possible properties
     bool loaded = false;
     // TODO: Transition animation properties
 
-    bool transitionRequired;
-    SceneType nextScene;
+    bool transitionRequired = false;
+    SceneType nextScene = SceneType::TITLE;
 };
 
 #endif // __SCENE_H__

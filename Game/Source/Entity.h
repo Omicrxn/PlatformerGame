@@ -42,33 +42,33 @@ public:
 
 public:
 
-    EntityType type;
+    EntityType type = EntityType::UNKNOWN;
 
     bool active = true;
     //uint32 id;            // Entity identifier?
 
     Collider* collider = nullptr;
-    SString name;
+    SString name = "";
     // Possible properties, it depends on how generic we
     // want our Entity class, maybe it's not renderable...
-    iPoint position;        // Use a float instead?
-    fPoint velocity;
-    bool renderable = false;
-    int width, height;
-    SDL_Texture* texture;
+    iPoint position = { 0, 0 };        // Use a float instead?
+    fPoint velocity = { 0.0f, 0.0f };
+    bool renderable = true;
+    int width = 0, height = 0;
+    SDL_Texture* texture = nullptr;
 
     iPoint tempPosition = { 0,0 };
 
-    bool pause;
+    bool pause = false;
 
     // Entities attributes that need load / save
     // Checkpoint
-    bool achieved;
+    bool achieved = false;
 
     // Player
-    iPoint lastCheckpointPos;
-    int lifes;
-    int score;
+    iPoint lastCheckpointPos = { 0, 0 };
+    int lifes = 5;
+    int score = 0;
 };
 
 #endif // __ENTITY_H__

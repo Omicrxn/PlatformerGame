@@ -69,16 +69,16 @@ public:
 
 private:
 
-	Window* win;
+	Window* win = nullptr;
 
 	bool windowEvents[WE_COUNT];
-	KeyState* keyboard;
+	KeyState* keyboard = nullptr;
 	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
 
-	int	mouseMotionX;
-	int mouseMotionY;
-	int mouseX;
-	int mouseY;
+	int	mouseMotionX = 0;
+	int mouseMotionY = 0;
+	int mouseX = 0;
+	int mouseY = 0;
 };
 
 #endif // __INPUT_H__

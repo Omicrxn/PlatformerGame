@@ -36,28 +36,28 @@ public:
 
     void Move(Map* map);
 
-    SDL_Texture* pathDebugTexture;
+    SDL_Texture* pathDebugTexture = nullptr;
     Animation movingAnim;
-    SDL_Rect rectAnim;
+    SDL_Rect rectAnim = { 0, 0, 0, 0, };
 
-    bool dead;
-    bool isLeft;
+    bool dead = false;
+    bool isLeft = false;
 
     // Variables to manage the enemy path
     DynArray<iPoint> path;
-    iPoint origin;
-    iPoint goal;
-    float counter;
+    iPoint origin = { 0, 0 };
+    iPoint goal = { 0, 0 };
+    float counter = 0.0f;
 
     // Enemy audio
-    AudioManager* audio;
-    int fx;
+    AudioManager* audio = nullptr;
+    int fx = -1;
 
-    Map* map;
-    Player* player;
-    PathFinding* pathfinding;
+    Map* map = nullptr;
+    Player* player = nullptr;
+    PathFinding* pathfinding = nullptr;
 
-    bool debugDraw;
+    bool debugDraw = false;
 };
 
 #endif // __ENEMYFLY_H__

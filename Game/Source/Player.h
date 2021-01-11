@@ -20,7 +20,7 @@ enum class PlayerAnim
     FALL,
     MELEE,
     SHOOTING,
-    DEAD
+    DEAD,
 };
 
 class Player: public Entity
@@ -45,7 +45,7 @@ public:
     void Shoot();
 public:
 
-    SDL_Rect animRec;
+    SDL_Rect animRec = { 0, 0, 0, 0 };
     // Define all animation properties
     Animation idleAnim;
     Animation runningAnim;
@@ -57,7 +57,7 @@ public:
     Animation shootingAnim;
     PlayerAnim currentAnim;
 
-    Particles* particles;
+    Particles* particles = nullptr;
 
     bool readyToJump = true;
     bool hitObstacle = false;

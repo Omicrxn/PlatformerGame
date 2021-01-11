@@ -36,7 +36,7 @@ public:
 
 public:
 
-	Render* render;
+	Render* render = nullptr;
 
 	List<SDL_Texture*> textures;
 };

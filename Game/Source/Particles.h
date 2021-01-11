@@ -33,10 +33,10 @@ public:
 
 public:
 	// Defines the position in the screen
-	iPoint position;
+	iPoint position = { 0, 0 };
 
 	// Defines the speed at which the particle will move (pixels per second)
-	iPoint speed;
+	iPoint speed = { 0, 0 };
 
 	// A set of rectangle sprites
 	Animation anim;
@@ -111,11 +111,11 @@ private:
 	// Total amount of particles loaded into the array
 	uint particlesCount = 0;
 
-	Textures* tex;
+	Textures* tex = nullptr;
 
-	Render* render;
+	Render* render = nullptr;
 
-	Collisions* collisions;
+	Collisions* collisions = nullptr;
 
 public:
 	// Template particle for an explosion

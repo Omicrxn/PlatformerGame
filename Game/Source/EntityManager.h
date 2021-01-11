@@ -53,11 +53,11 @@ public:
 
 private:
 
-	Collisions* collisions;
-	Render* render;
-	AudioManager* audio;
-	Particles* particles;
-	Textures* tex;
+	Collisions* collisions = nullptr;
+	Render* render = nullptr;
+	AudioManager* audio = nullptr;
+	Particles* particles = nullptr;
+	Textures* tex = nullptr;
 };
 
 #endif // __ENTITYMANAGER_H__

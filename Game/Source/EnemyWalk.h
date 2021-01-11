@@ -45,19 +45,19 @@ public:
 
     // Variables to manage the enemy path
     DynArray<iPoint> path;
-    iPoint origin;
-    iPoint goal;
-    float counter;
+    iPoint origin = { 0, 0 };
+    iPoint goal = { 0, 0 };
+    float counter = 0.0f;
 
     // Enemy audio
-    AudioManager* audio;
-    int fx;
+    AudioManager* audio = nullptr;
+    int fx = -1;
 
-    Map* map;
-    Player* player;
-    PathFinding* pathfinding;
+    Map* map = nullptr;
+    Player* player = nullptr;
+    PathFinding* pathfinding = nullptr;
 
-    bool debugDraw;
+    bool debugDraw = false;
 };
 
 #endif // __ENEMYWALK_H__

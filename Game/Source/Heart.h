@@ -39,11 +39,11 @@ public:
 
 	Animation heartAnimation;
 
-	AudioManager* audio;
-	int fx;
+	AudioManager* audio = nullptr;
+	int fx = -1;
 
-	Player* player;
+	Player* player = nullptr;
 
-	SceneGameplay* sceneGameplay;
+	SceneGameplay* sceneGameplay = nullptr;
 };
 #endif //__HEART_H__

@@ -46,22 +46,22 @@ public:
 
 private:
 
-	App* app;
-	Input* input;
-	Render* render;
-	Textures* tex;
-	EntityManager* entityManager;
-	Window* win;
-	Collisions* collisions;
-	AudioManager* audio;
+	App* app = nullptr;
+	Input* input = nullptr;
+	Render* render = nullptr;
+	Textures* tex = nullptr;
+	EntityManager* entityManager = nullptr;
+	Window* win = nullptr;
+	Collisions* collisions = nullptr;
+	AudioManager* audio = nullptr;
 
-	Scene* current;
-	Scene* next;
+	Scene* current = nullptr;
+	Scene* next = nullptr;
 
 	// Required variables to manage screen transitions (fade-in, fade-out)
-	bool onTransition;
-	bool fadeOutCompleted;
-	float transitionAlpha;
+	bool onTransition = false;
+	bool fadeOutCompleted = false;
+	float transitionAlpha = 0.0f;
 };
 
 #endif // __SCENEMANAGER_H__

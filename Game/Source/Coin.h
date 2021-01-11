@@ -40,12 +40,12 @@ public:
 
     Animation coinAnimation;
 
-    AudioManager* audio;
-    int fx;
+    AudioManager* audio = nullptr;
+    int fx = -1;
 
-    Player* player;
+    Player* player = nullptr;
 
-    SceneGameplay* sceneGameplay;
+    SceneGameplay* sceneGameplay = nullptr;
 };
 
 #endif // __COIN_H__

@@ -32,16 +32,16 @@ public:
 
 public:
 
-    SDL_Texture* texture;
+    SDL_Texture* texture = nullptr;
 
     Animation checkpointAnimation;
 
-    AudioManager* audio;
-    int fx;
+    AudioManager* audio = nullptr;
+    int fx = -1;
 
-    Player* player;
+    Player* player = nullptr;
     
-    int scale;
+    int scale = 1;
 };
 
 #endif // __CHECKPOINT_H__
