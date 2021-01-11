@@ -4,7 +4,7 @@
 
 Heart::Heart(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::HEART)
 {
-	name = "Heart";
+	name = "heart";
 
 	heartAnimation.PushBack({ 0,0,16,16 });
 	heartAnimation.PushBack({ 16,0,16,16 });

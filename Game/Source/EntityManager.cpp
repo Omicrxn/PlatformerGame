@@ -137,7 +137,7 @@ bool EntityManager::LoadState(pugi::xml_node& data)
 	for (int i = 0; i < entities.Count(); ++i)
 	{
 		SString entityName;
-		entityName.Create("entity%d", entities.At(i)->data->name.GetString());
+		entityName.Create("entity%d", i + 1);
 		pugi::xml_node currentEntity = data.child(entityName.GetString());
 
 		if (entities.At(i)->data->type == EntityType::PLAYER)
@@ -160,7 +160,7 @@ bool EntityManager::SaveState(pugi::xml_node& data) const
 	for (int i = 0; i < entities.Count(); i++)
 	{
 		SString entityName;
-		entityName.Create("entity%s", entities.At(i)->data->name.GetString());
+		entityName.Create("entity%d", i + 1);
 		pugi::xml_node currentEntity = data.append_child(entityName.GetString());
 
 		if (entities.At(i)->data->type == EntityType::PLAYER)
