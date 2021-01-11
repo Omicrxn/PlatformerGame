@@ -144,7 +144,6 @@ bool EntityManager::LoadState(pugi::xml_node& data)
 		{
 			entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
 			entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
-			entities.At(i)->data->achieved = currentEntity.attribute("achieved").as_bool();
 		}
 		else if (entities.At(i)->data->type == EntityType::PLAYER)
 		{
@@ -153,7 +152,7 @@ bool EntityManager::LoadState(pugi::xml_node& data)
 			entities.At(i)->data->lifes = currentEntity.attribute("lifes").as_int();
 			entities.At(i)->data->score = currentEntity.attribute("score").as_int();
 
-			entities.At(i)->data->lastCheckpointPos.y = currentEntity.attribute("last_checkpoint_x").as_int();
+			entities.At(i)->data->lastCheckpointPos.x = currentEntity.attribute("last_checkpoint_x").as_int();
 			entities.At(i)->data->lastCheckpointPos.y = currentEntity.attribute("last_checkpoint_y").as_int();
 		}
 		else
@@ -179,7 +178,6 @@ bool EntityManager::SaveState(pugi::xml_node& data) const
 		{
 			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
 			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
-			currentEntity.append_attribute("achieved").set_value(entities.At(i)->data->achieved);
 		}
 		else if (entities.At(i)->data->type == EntityType::PLAYER)
 		{

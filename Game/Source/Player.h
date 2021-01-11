@@ -46,6 +46,7 @@ public:
 public:
 
     SDL_Rect animRec = { 0, 0, 0, 0 };
+
     // Define all animation properties
     Animation idleAnim;
     Animation runningAnim;
@@ -55,6 +56,7 @@ public:
     Animation fallingAnim;
     Animation meleeAnim;
     Animation shootingAnim;
+
     PlayerAnim currentAnim;
 
     Particles* particles = nullptr;

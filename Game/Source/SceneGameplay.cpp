@@ -68,6 +68,7 @@ SceneGameplay::SceneGameplay::SceneGameplay(App* app, SceneManager* sceneManager
 	settingsCurrentSelection = SettingsSelection::NONE;
 
 	debugCP = false;
+	checked = false;
 
 	timer = 0;
 }
@@ -216,8 +217,10 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	enemiesWalk[0]->position = iPoint(20 * 64, -10 * 64);
 
 	if (app->isGameSaved() && sceneManager->continueOption)
+	{
 		app->LoadGameRequest();
-
+	}
+	
     return false;
 }
 
@@ -383,6 +386,18 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		clicking = true;
 	else
 		clicking = false;
+
+	if (!checked)
+	{
+		for (int i = 0; i < MAX_CHECKPOINTS; ++i)
+		{
+			if (player->lastCheckpointPos.x == checkpoints[i]->position.x - player->width && player->lastCheckpointPos.y == checkpoints[i]->position.y)
+				checkpoints[i]->achieved = true;
+			else
+				player->lastCheckpointPos = iPoint(96, 2300);
+		}
+		checked = false;
+	}
 
 	return true;
 }

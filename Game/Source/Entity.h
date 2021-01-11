@@ -62,9 +62,6 @@ public:
     bool pause = false;
 
     // Entities attributes that need load / save
-    // Checkpoint
-    bool achieved = false;
-
     // Player
     iPoint lastCheckpointPos = { 0, 0 };
     int lifes = 5;

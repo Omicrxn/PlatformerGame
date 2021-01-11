@@ -123,6 +123,8 @@ private:
 
     bool debugCP = false;
 
+    bool checked = false;
+
     float timer = 0.0f;
 };
 

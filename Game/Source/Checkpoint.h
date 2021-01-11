@@ -36,6 +36,8 @@ public:
 
     Animation checkpointAnimation;
 
+    bool achieved = false;
+
     AudioManager* audio = nullptr;
     int fx = -1;
 
