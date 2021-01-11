@@ -113,6 +113,7 @@ bool SceneTitle::Update(Input* input, float dt)
         if (app->isGameSaved())
         {
             sceneManager->continueOption = true;
+            app->LoadGameRequest();
             TransitionToScene(SceneType::GAMEPLAY);
         }
     }
@@ -292,7 +293,7 @@ bool SceneTitle::Unload(Textures* tex, AudioManager* audio)
     this->window = nullptr;
     this->audio = nullptr;
     this->render = nullptr;
-    this->guiManager = nullptr;
+
     delete font;
 
     return true;

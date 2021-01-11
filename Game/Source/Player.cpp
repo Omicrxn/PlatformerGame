@@ -142,7 +142,7 @@ bool Player::Update(Input* input, float dt)
         // Start from the beggining of the current level
         if (input->GetKey(SDL_SCANCODE_F3) == KeyState::KEY_DOWN)
         {
-            position = iPoint(96, 2300);
+            position = iPoint(96, 2367);
         }
 
         // Update collider position

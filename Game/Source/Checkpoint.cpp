@@ -47,20 +47,10 @@ void Checkpoint::Draw(Render* render)
 	{
 		// TODO: Calculate the corresponding rectangle depending on the
 		// animation state and animation frame
-		if (!achieved)
-		{
-			SDL_Rect rec = checkpointAnimation.GetCurrentFrame();
-			render->scale = scale;
-			render->DrawTexture(texture, position.x, position.y, &rec, 1.0f, true);
-			render->scale = 1;
-		}
-		else
-		{
-			SDL_Rect rec = checkpointAnimation.GetFrame(3);
-			render->scale = scale;
-			render->DrawTexture(texture, position.x, position.y, &rec, 1.0f, true);
-			render->scale = 1;
-		}
+		SDL_Rect rec = checkpointAnimation.GetFrame(3);
+		render->scale = scale;
+		render->DrawTexture(texture, position.x, position.y, &rec, 1.0f, true);
+		render->scale = 1;
 	}
 }
 

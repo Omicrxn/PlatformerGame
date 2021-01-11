@@ -215,10 +215,11 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	}
 	enemiesWalk[0]->position = iPoint(20 * 64, -10 * 64);
 
-	if (sceneManager->continueOption)
-	{
-		app->LoadGameRequest();
-	}
+	//if (sceneManager->continueOption)
+	//{
+	//	app->LoadGameRequest();
+	//	//sceneManager->continueOption = false;
+	//}
 	
     return false;
 }
@@ -392,7 +393,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 			if (player->lastCheckpointPos.x == checkpoints[i]->position.x - player->width && player->lastCheckpointPos.y == checkpoints[i]->position.y)
 				checkpoints[i]->achieved = true;
 			else
-				player->lastCheckpointPos = iPoint(96, 2300);
+				player->lastCheckpointPos = iPoint(96, 2367);
 		}
 		checked = true;
 	}
@@ -537,28 +538,6 @@ bool SceneGameplay::Unload(Textures* tex, AudioManager* audio)
 
 	RELEASE(font);
 	player->active = false;
-	for (int i = MAX_CHECKPOINTS-1; i >= 0; i--)
-	{
-		checkpoints[i]->active = false;
-	}
-	for (int i = MAX_COINS-1; i >= 0; i--)
-	{
-		if (coins[i] != nullptr)
-		coins[i]->active = false;
-	}
-	for (int i = MAX_HEARTS-1; i >= 0; i--)
-	{
-		if(hearts[i] != nullptr)
-		hearts[i]->active = false;
-	}
-	for (int i = MAX_FLYING_ENEMIES-1; i >= 0; i--)
-	{
-		enemiesFly[i]->active = false;
-	}
-	for (int i = MAX_WALKING_ENEMIES-1; i >= 0; i--)
-	{
-		enemiesWalk[i]->active = false;
-	}
 
 	// GUI: Initialize required controls for the screen
 	RELEASE(btnResume);

@@ -85,7 +85,6 @@ private:
     AudioManager* audio = nullptr;
     Render* render = nullptr;
     App* app = nullptr;
-    GuiManager* guiManager = nullptr;
 
     MenuSelection menuCurrentSelection = MenuSelection::NONE;
     SettingsSelection settingsCurrentSelection = SettingsSelection::NONE;

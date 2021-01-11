@@ -68,7 +68,7 @@ public:
     // Entities attributes that need load / save
     // Player
     iPoint lastCheckpointPos = { 0, 0 };
-    int lifes = 5;
+    int lifes = 0;
     int score = 0;
 };
 
