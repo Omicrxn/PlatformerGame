@@ -545,10 +545,12 @@ bool SceneGameplay::Unload(Textures* tex, AudioManager* audio)
 	}
 	for (int i = MAX_COINS-1; i >= 0; i--)
 	{
+		if (coins[i] != nullptr)
 		coins[i]->active = false;
 	}
 	for (int i = MAX_HEARTS-1; i >= 0; i--)
 	{
+		if(hearts[i] != nullptr)
 		hearts[i]->active = false;
 	}
 	for (int i = MAX_FLYING_ENEMIES-1; i >= 0; i--)

@@ -28,8 +28,8 @@ bool GuiSlider::Update(Input* input, float dt)
         input->GetMouseMotion(motionX, motionY);
 
         unit = barWidth / maxValue;
-        value = (mouseX - leftLimit) / unit;
-        value = round(value);
+        /*value = (mouseX - leftLimit) / unit;
+        value = round(value);*/
 
         // Check collision between mouse and button bounds
         if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 
@@ -64,16 +64,17 @@ bool GuiSlider::Update(Input* input, float dt)
         {
             bounds.x = rightLimit;
         }
-
+        value = ((bounds.x+(bounds.w/2)) - leftLimit) / unit;
+        value = round(value);
         if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
             state = GuiControlState::NORMAL;
     }
-
+    
     if (input->GetKey(SDL_SCANCODE_F8) == KeyState::KEY_DOWN)
     {
         debug = !debug;
     }
-
+    
     return false;
 }
 
