@@ -3,6 +3,7 @@
 Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entityManager, Particles* particles) : Entity(EntityType::PLAYER)
 {
     name = "player";
+
     texture = NULL;
 
     velocity = { 0,0 };

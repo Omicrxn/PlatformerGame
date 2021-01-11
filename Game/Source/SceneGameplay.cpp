@@ -200,7 +200,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		enemiesFly[i]->SetPlayer(player);
 		enemiesFly[i]->SetMap(map);
 	}
-	enemiesFly[0]->position = iPoint(15 * 64, 16 * 64);
+	enemiesFly[0]->position = iPoint(16 * 64, 12 * 64);
 
 	// Walking enemy load
 
@@ -278,7 +278,7 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 			}
 			for (int i = 0; i < MAX_WALKING_ENEMIES; ++i)
 			{
-				enemiesWalk[i]->debugDraw = !enemiesWalk[i]->debugDraw; enemiesWalk[i]->debugDraw;
+				enemiesWalk[i]->debugDraw = !enemiesWalk[i]->debugDraw;
 			}
 		}
 
@@ -602,10 +602,11 @@ void SceneGameplay::CollisionHandler()
 						player->readyToJump = true;
 					}
 
-					if(entity->data->type != EntityType::ENEMYFLY)
-					entity->data->position = entity->data->tempPosition;
-
-					entity->data->velocity.y = 0.0f;
+					if (entity->data->type != EntityType::ENEMYFLY)
+					{
+						entity->data->position = entity->data->tempPosition;
+						entity->data->velocity.y = 0.0f;
+					}
 
 					break;
 				}
@@ -618,7 +619,9 @@ void SceneGameplay::CollisionHandler()
 					{
 						player->Die();
 					}
-					entity->data->velocity.y = 0.0f;
+
+					if (entity->data->type != EntityType::ENEMYFLY)
+						entity->data->velocity.y = 0.0f;
 
 					break;
 				}

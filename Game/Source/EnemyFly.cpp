@@ -20,7 +20,6 @@ EnemyFly::EnemyFly(Collisions* collisions, AudioManager* audio, EntityManager* e
 	this->audio = audio;
 
     position = { 0, 0 };
-	tempPosition = position;
 
     dead = false;
 
@@ -39,14 +38,13 @@ bool EnemyFly::Update(float dt)
 
 	if (!pause)
 	{
-
 		if (!dead)
 		{
 			position.x = position.x + velocity.x;
 			position.y = position.y + velocity.y;
 		}
 
-		if (counter >= 0.27f)
+		if (counter >= 0.15f)
 		{
 			counter = 0.0f;
 			UpdatePath(map);
@@ -71,13 +69,15 @@ void EnemyFly::Move(Map* map)
 		iPoint nextTile;
 		path.Pop(nextTile);
 
-		iPoint mapPos = map->WorldToMap(position.x, position.y);
-		if (mapPos.x < nextTile.x)
+		nextTile = { nextTile.x * 64, nextTile.y * 64 };
+
+		/*iPoint mapPos = map->WorldToMap(position.x, position.y);*/
+		if (position.x < nextTile.x)
 			velocity.x = 1;
 		else
 			velocity.x = -1;
 
-		if (mapPos.y < nextTile.y)
+		if (position.y < nextTile.y)
 			velocity.y = 1;
 		else
 			velocity.y = -1;
@@ -96,12 +96,15 @@ void EnemyFly::UpdatePath(Map* map)
 	pathfinding->lastPath.Clear();
 	if (pathfinding->CreatePath(origin, goal) != -1)
 	{
-		//path.Clear();
+		path.Clear();
 		for (int i = 0; i < pathfinding->lastPath.Count(); i++)
 		{
 			path.PushBack(*pathfinding->lastPath.At(i));
 		}
 		path.Flip();
+		path.Pop(iPoint());
+		path.Pop(iPoint());
+		path.Pop(iPoint());
 	}
 }
 
@@ -123,16 +126,16 @@ void EnemyFly::Draw(Render* render)
 		else
 			isLeft = true;
 		render->DrawTexture(texture, position.x, position.y, &rectAnim, 1.0f, isLeft);
+	}
 
-		if (debugDraw)
+	if (debugDraw)
+	{
+		/*const DynArray<iPoint>* pathDebug = &pathfinding->lastPath;*/
+
+		for (uint i = 0; i < path.Count(); ++i)
 		{
-			const DynArray<iPoint>* pathDebug = &pathfinding->lastPath;
-
-			for (uint i = 0; i < pathDebug->Count(); ++i)
-			{
-				iPoint pos = { pathDebug->At(i)->x * 64, pathDebug->At(i)->y * 64 };
-				render->DrawTexture(pathDebugTexture, pos.x, pos.y);
-			}
+			iPoint pos = { path.At(i)->x * 64, path.At(i)->y * 64 };
+			render->DrawTexture(pathDebugTexture, pos.x, pos.y);
 		}
 	}
 }

@@ -6,13 +6,13 @@
 EnemyWalk::EnemyWalk(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::ENEMYWALK)
 {
 	name = "walkingenemy";
+
 	pathfinding = PathFinding::GetInstance();
 
 	for (int i = 0; i < 8; i++)
 	{
 		movingAnim.PushBack({ i * 32, 0, 32, 24 });
 	}
-	
 	movingAnim.loop = true;
 	movingAnim.speed = 0.1f;
 
