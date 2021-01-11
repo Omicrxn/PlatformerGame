@@ -603,7 +603,10 @@ void SceneGameplay::CollisionHandler()
 					{
 						player->readyToJump = true;
 					}
+
+					if(entity->data->type != EntityType::ENEMYFLY)
 					entity->data->position = entity->data->tempPosition;
+
 					entity->data->velocity.y = 0.0f;
 
 					break;

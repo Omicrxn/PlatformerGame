@@ -38,8 +38,6 @@ bool EnemyFly::Update(float dt)
 	if (!pause)
 	{
 
-		tempPosition = position;
-
 		if (!dead)
 		{
 			position.x = position.x + velocity.x;
