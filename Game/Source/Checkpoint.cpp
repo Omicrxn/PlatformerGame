@@ -4,6 +4,8 @@
 
 Checkpoint::Checkpoint(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::CHECKPOINT)
 {
+	name = "checkpoint";
+
 	texture = NULL;
 	checkpointAnimation.PushBack({ 20,7,35,57 });
 	checkpointAnimation.PushBack({ 82,7,35,57 });

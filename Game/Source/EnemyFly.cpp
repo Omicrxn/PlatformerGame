@@ -5,6 +5,8 @@
 
 EnemyFly::EnemyFly(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::ENEMYFLY)
 {
+	name = "flyingenemy";
+
 	pathfinding = PathFinding::GetInstance();
 
 	for (int i = 0; i < 5; i++)

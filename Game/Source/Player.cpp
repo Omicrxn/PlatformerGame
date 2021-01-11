@@ -68,9 +68,13 @@ Player::Player(Collisions* collisions, AudioManager* audio, EntityManager* entit
 
     width = 57;
     height = 86;
-    position = iPoint(96,2300);
+
+    position = iPoint(96,2367);
+    lastCheckpointPos = position;
+
     score = 0;
     lifes = 5;
+
     collider = collisions->AddCollider({ position.x+86,position.y+43,width,height }, Collider::Type::PLAYER, (Module*)entityManager);
     this->particles = particles;
 }

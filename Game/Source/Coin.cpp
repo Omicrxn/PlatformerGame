@@ -3,6 +3,8 @@
 
 Coin::Coin(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::COIN)
 {
+	name = "Coin";
+
 	texture = NULL;
 	coinAnimation.PushBack({ 0,0,16,16 });
 	coinAnimation.PushBack({ 16,0,16,16 });

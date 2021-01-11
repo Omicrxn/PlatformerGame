@@ -48,12 +48,16 @@ public:
     //uint32 id;            // Entity identifier?
 
     Collider* collider = nullptr;
+
     SString name = "";
+
     // Possible properties, it depends on how generic we
     // want our Entity class, maybe it's not renderable...
-    iPoint position = { 0, 0 };        // Use a float instead?
+    iPoint position = { 0, 0 };
     fPoint velocity = { 0.0f, 0.0f };
+
     bool renderable = true;
+
     int width = 0, height = 0;
     SDL_Texture* texture = nullptr;
 

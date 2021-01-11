@@ -5,6 +5,7 @@
 
 EnemyWalk::EnemyWalk(Collisions* collisions, AudioManager* audio, EntityManager* entityManager) : Entity(EntityType::ENEMYWALK)
 {
+	name = "walkingenemy";
 	pathfinding = PathFinding::GetInstance();
 
 	for (int i = 0; i < 8; i++)

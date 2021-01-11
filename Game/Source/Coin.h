@@ -37,7 +37,6 @@ public:
 
 public:
 
-
     Animation coinAnimation;
 
     AudioManager* audio = nullptr;

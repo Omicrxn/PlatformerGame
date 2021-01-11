@@ -150,7 +150,6 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	// Player load
 	player = (Player*)entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetTexture(tex->Load("Assets/Textures/Entities/Player/player_sheet.png"));
-	player->position = iPoint(96, 2350);
 
 	// Checkpoint load
 	for (int i = 0; i < MAX_CHECKPOINTS; ++i)
@@ -244,7 +243,6 @@ bool SceneGameplay::Update(Input* input, Collisions* collisions, float dt)
 		CollisionHandler();
 
 		// Debug Keys
-
 		// Request Save / Load
 		if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 			app->SaveGameRequest();
