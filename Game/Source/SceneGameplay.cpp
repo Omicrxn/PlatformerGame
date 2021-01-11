@@ -200,7 +200,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 		enemiesFly[i]->SetPlayer(player);
 		enemiesFly[i]->SetMap(map);
 	}
-	enemiesFly[0]->position = iPoint(16 * 64, 12 * 64);
+	enemiesFly[0]->position = iPoint(15 * 64, 33 * 64);
 
 	// Walking enemy load
 
