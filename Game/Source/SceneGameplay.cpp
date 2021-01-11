@@ -216,7 +216,7 @@ bool SceneGameplay::Load(Textures* tex, EntityManager* entityManager)
 	}
 	enemiesWalk[0]->position = iPoint(20 * 64, -10 * 64);
 
-	if (app->isGameSaved() && sceneManager->continueOption)
+	if (sceneManager->continueOption)
 	{
 		app->LoadGameRequest();
 	}

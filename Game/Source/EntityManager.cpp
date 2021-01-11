@@ -134,18 +134,13 @@ void EntityManager::OnCollision(Collider* c1, Collider* c2)
 // Load Game State
 bool EntityManager::LoadState(pugi::xml_node& data)
 {
-	for (int i = 1; i <= entities.Count(); ++i)
+	for (int i = 0; i < entities.Count(); ++i)
 	{
 		SString entityName;
 		entityName.Create("Entity%d", i);
 		pugi::xml_node currentEntity = data.child(entityName.GetString());
 
-		if (entities.At(i)->data->type == EntityType::CHECKPOINT)
-		{
-			entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
-			entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
-		}
-		else if (entities.At(i)->data->type == EntityType::PLAYER)
+		if (entities.At(i)->data->type == EntityType::PLAYER)
 		{
 			entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
 			entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
@@ -174,12 +169,7 @@ bool EntityManager::SaveState(pugi::xml_node& data) const
 		entityName.Create("Entity%d", i + 1);
 		pugi::xml_node currentEntity = data.append_child(entityName.GetString());
 
-		if (entities.At(i)->data->type == EntityType::CHECKPOINT)
-		{
-			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
-			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
-		}
-		else if (entities.At(i)->data->type == EntityType::PLAYER)
+		if (entities.At(i)->data->type == EntityType::PLAYER)
 		{
 			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
 			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
