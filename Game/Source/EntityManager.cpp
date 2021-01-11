@@ -137,24 +137,18 @@ bool EntityManager::LoadState(pugi::xml_node& data)
 	for (int i = 0; i < entities.Count(); ++i)
 	{
 		SString entityName;
-		entityName.Create("Entity%d", i);
+		entityName.Create("entity%d", entities.At(i)->data->name.GetString());
 		pugi::xml_node currentEntity = data.child(entityName.GetString());
 
 		if (entities.At(i)->data->type == EntityType::PLAYER)
 		{
-			entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
-			entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
 			entities.At(i)->data->lifes = currentEntity.attribute("lifes").as_int();
 			entities.At(i)->data->score = currentEntity.attribute("score").as_int();
-
 			entities.At(i)->data->lastCheckpointPos.x = currentEntity.attribute("last_checkpoint_x").as_int();
 			entities.At(i)->data->lastCheckpointPos.y = currentEntity.attribute("last_checkpoint_y").as_int();
 		}
-		else
-		{
-			entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
-			entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
-		}
+		entities.At(i)->data->position.x = currentEntity.attribute("x").as_int();
+		entities.At(i)->data->position.y = currentEntity.attribute("y").as_int();
 	}
 
 	return true;
@@ -166,24 +160,18 @@ bool EntityManager::SaveState(pugi::xml_node& data) const
 	for (int i = 0; i < entities.Count(); i++)
 	{
 		SString entityName;
-		entityName.Create("Entity%d", i + 1);
+		entityName.Create("entity%s", entities.At(i)->data->name.GetString());
 		pugi::xml_node currentEntity = data.append_child(entityName.GetString());
 
 		if (entities.At(i)->data->type == EntityType::PLAYER)
 		{
-			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
-			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
 			currentEntity.append_attribute("lifes").set_value(entities.At(i)->data->lifes);
 			currentEntity.append_attribute("score").set_value(entities.At(i)->data->score);
-
 			currentEntity.append_attribute("last_checkpoint_x").set_value(entities.At(i)->data->lastCheckpointPos.x);
 			currentEntity.append_attribute("last_checkpoint_y").set_value(entities.At(i)->data->lastCheckpointPos.y);
 		}
-		else
-		{
-			currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
-			currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
-		}
+		currentEntity.append_attribute("x").set_value(entities.At(i)->data->position.x);
+		currentEntity.append_attribute("y").set_value(entities.At(i)->data->position.y);
 	}
 
 	return true;
